@@ -7,11 +7,11 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.Constants.DriveTrainConstants;
 import frc.robot.commands.JoystickDrive;
-
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 /**
@@ -31,6 +31,22 @@ public class DriveTrain extends Subsystem {
 
 
   public DriveTrain(){
+    LeftAT.configFactoryDefault();
+    LeftBT.configFactoryDefault();
+    RightAT.configFactoryDefault();
+    RightBT.configFactoryDefault();
+
+    LeftAT.setNeutralMode(NeutralMode.Coast);
+    LeftAT.setNeutralMode(NeutralMode.Coast);
+    LeftBT.setNeutralMode(NeutralMode.Coast);
+    RightAT.setNeutralMode(NeutralMode.Coast);
+    RightBT.setNeutralMode(NeutralMode.Coast);
+
+    LeftAT.configOpenloopRamp(0.5);
+    LeftBT.configOpenloopRamp(0.5);
+    RightAT.configOpenloopRamp(0.5);
+    RightBT.configOpenloopRamp(0.5);
+
     LeftBT.follow(LeftAT);
     RightBT.follow(RightAT);
 
