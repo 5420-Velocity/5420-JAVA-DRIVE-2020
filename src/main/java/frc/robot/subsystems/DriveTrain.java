@@ -9,31 +9,32 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import frc.robot.RobotMap;
+import frc.robot.Constants.DriveTrainConstants;
 import frc.robot.commands.JoystickDrive;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+
 /**
  * Add your docs here.
  */
 public class DriveTrain extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
-  private CANSparkMax Left1 = new CANSparkMax(RobotMap.Left1, MotorType.kBrushless );
-  private CANSparkMax Left2 = new CANSparkMax(RobotMap.Left2, MotorType.kBrushless );
 
-  private CANSparkMax Right1 = new CANSparkMax(RobotMap.Right1, MotorType.kBrushless );
-  private CANSparkMax Right2 = new CANSparkMax(RobotMap.Right2, MotorType.kBrushless );
+  private WPI_TalonFX LeftAT = new WPI_TalonFX(DriveTrainConstants.Left_A_ID);
+  private WPI_TalonFX LeftBT = new WPI_TalonFX(DriveTrainConstants.Left_B_ID);
+
+  private WPI_TalonFX RightAT = new WPI_TalonFX(DriveTrainConstants.Right_A_ID);
+  private WPI_TalonFX RightBT = new WPI_TalonFX(DriveTrainConstants.Right_B_ID);
 
   private DifferentialDrive drive;
 
 
   public DriveTrain(){
-    Left2.follow(Left1);
-    Right2.follow(Right1);
+    LeftBT.follow(LeftAT);
+    RightBT.follow(RightAT);
 
-    drive = new DifferentialDrive(Left1, Right1);
+    drive = new DifferentialDrive(LeftAT, LeftBT);
   }
 
   public void arcadeDrive(double speed, double rotation){

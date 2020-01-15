@@ -1,10 +1,3 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2017-2018 FIRST. All Rights Reserved.                        */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
 package frc.robot;
 
 /**
@@ -17,12 +10,14 @@ public class RobotMap {
   //Drive motors
   public static int Left1 = 1;
   public static int Left2 = 2;
-
   public static int Right1 = 3;
   public static int Right2 = 4;
 
-  //Joystick
+  public static int Left1T = 1;
+  public static int Left2T = 2;
 
+
+  //Joystick
   public static int JOYSTICK_USB_DRIVER = 0;
   public static int JOYSTICK_USB_OPERATOR = 1;
 
