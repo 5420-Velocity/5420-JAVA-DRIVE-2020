@@ -9,16 +9,17 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-    public static final class DriveTrainConstants {
+	
+	public static final class DriveTrainConstants {
 
-        // Left Motor Controller Map for the Talon CAN IDs
-        public static final int Left_A_ID = 1;
-        public static final int Left_B_ID = 2;
+		// Left Motor Controller Map for the Talon CAN IDs
+		public static final int Left_A_ID = 1;
+		public static final int Left_B_ID = 2;
 
-        // Right Motor Controller Map for the Talon CAN IDs
-        public static final int Right_A_ID = 1;
-        public static final int Right_B_ID = 2;
+		// Right Motor Controller Map for the Talon CAN IDs
+		public static final int Right_A_ID = 1;
+		public static final int Right_B_ID = 2;
 
-    }
+	}
 
 }

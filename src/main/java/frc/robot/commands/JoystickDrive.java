@@ -12,43 +12,43 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class JoystickDrive extends Command {
 
-  public JoystickDrive() {
-    requires(Robot.driveTrain);
-  }
+	public JoystickDrive() {
+		requires(Robot.driveTrain);
+	}
 
-  // Called just before this Command runs the first time
-  @Override
-  protected void initialize() {
-  }
+	// Called just before this Command runs the first time
+	@Override
+	protected void initialize() {
+	}
 
-  // Called repeatedly when this Command is scheduled to run
-  @Override
-  protected void execute() {
-    double speed = Robot.m_oi.getSpeed();
-    double turn = Robot.m_oi.getTurn();
-    
-    if(Math.abs(speed) > 0.1 || Math.abs(turn) > 0.1){
-      Robot.driveTrain.arcadeDrive(speed, turn);
-    }
-    else{
-      Robot.driveTrain.arcadeDrive(0, 0);
-    }
-  }
+	// Called repeatedly when this Command is scheduled to run
+	@Override
+	protected void execute() {
+		double speed = Robot.m_oi.getSpeed();
+		double turn = Robot.m_oi.getTurn();
+		
+		if(Math.abs(speed) > 0.1 || Math.abs(turn) > 0.1){
+			Robot.driveTrain.arcadeDrive(speed, turn);
+		}
+		else{
+			Robot.driveTrain.arcadeDrive(0, 0);
+		}
+	}
 
-  // Make this return true when this Command no longer needs to run execute()
-  @Override
-  protected boolean isFinished() {
-    return false;
-  }
+	// Make this return true when this Command no longer needs to run execute()
+	@Override
+	protected boolean isFinished() {
+		return false;
+	}
 
-  // Called once after isFinished returns true
-  @Override
-  protected void end() {
-  }
+	// Called once after isFinished returns true
+	@Override
+	protected void end() {
+	}
 
-  // Called when another command which requires one or more of the same
-  // subsystems is scheduled to run
-  @Override
-  protected void interrupted() {
-  }
+	// Called when another command which requires one or more of the same
+	// subsystems is scheduled to run
+	@Override
+	protected void interrupted() {
+	}
 }
