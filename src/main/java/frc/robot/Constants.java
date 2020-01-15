@@ -22,4 +22,25 @@ public final class Constants {
 
 	}
 
+	public static final class DS_Map {
+		
+		public static final int JOYSTICK_USB_DRIVER = 0;
+		public static final int JOYSTICK_USB_OPERATOR = 1;
+
+	}
+	
+	public static final class ButtonMapConstants {
+
+		public static final int JOYSTICK_RIGHT_X_AXIS = 4;
+		public static final int JOYSTICK_RIGHT_Y_AXIS = 5;
+		public static final int JOYSTICK_LEFT_X_AXIS = 0;
+		public static final int JOYSTICK_LEFT_Y_AXIS = 1;
+
+		public static final int Red_Button_ID = 1;
+		public static final int Green_Button_ID = 0;
+		public static final int Yellow_Button_ID = 3;
+		public static final int Blue_Button_ID = 2;
+
+	}
+
 }
