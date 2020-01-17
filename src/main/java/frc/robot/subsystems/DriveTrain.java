@@ -8,16 +8,16 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import edu.wpi.first.wpilibj.command.Subsystem;
+
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveTrainConstants;
-import frc.robot.commands.JoystickDrive;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 /**
  * Add your docs here.
  */
-public class DriveTrain extends Subsystem {
+public class DriveTrain extends SubsystemBase {
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
 
@@ -28,7 +28,6 @@ public class DriveTrain extends Subsystem {
 	private WPI_TalonFX RightBT = new WPI_TalonFX(DriveTrainConstants.Right_B_ID);
 
 	private DifferentialDrive drive;
-
 
 	public DriveTrain(){
 		LeftAT.configFactoryDefault();
@@ -55,11 +54,6 @@ public class DriveTrain extends Subsystem {
 
 	public void arcadeDrive(double speed, double rotation){
 		drive.arcadeDrive(speed, rotation);
-	}
-
-
-	@Override
-	public void initDefaultCommand() {
-		setDefaultCommand(new JoystickDrive());
-	}
+    }
+    
 }

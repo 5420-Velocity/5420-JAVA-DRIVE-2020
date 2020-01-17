@@ -7,48 +7,48 @@
 
 package frc.robot.commands;
 
-import frc.robot.Robot;
-import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.subsystems.DriveTrain;
+import java.util.function.DoubleSupplier;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 
-public class JoystickDrive extends Command {
+public class JoystickDrive extends CommandBase  {
 
-	public JoystickDrive() {
-		requires(Robot.driveTrain);
+	private final DriveTrain driveTrain;
+	private final DoubleSupplier speed;
+	private final DoubleSupplier rotation;
+
+	public JoystickDrive(DriveTrain driveTrain, DoubleSupplier speed, DoubleSupplier rotation) {
+		// Use addRequirements() here to declare subsystem dependencies.
+		this.driveTrain = driveTrain;
+		this.speed = speed;
+		this.rotation = rotation;
+		addRequirements(driveTrain);
 	}
 
 	// Called just before this Command runs the first time
 	@Override
-	protected void initialize() {
+	public void initialize() {
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
-	protected void execute() {
-		double speed = Robot.m_oi.getSpeed();
-		double turn = Robot.m_oi.getTurn();
-		
-		if(Math.abs(speed) > 0.1 || Math.abs(turn) > 0.1){
-			Robot.driveTrain.arcadeDrive(speed, turn);
+	public void execute() {
+		if (Math.abs(speed.getAsDouble()) > 0.15 || Math.abs(rotation.getAsDouble()) > 0.15) {
+			driveTrain.arcadeDrive((speed.getAsDouble()), rotation.getAsDouble());
+		} else {
+			driveTrain.arcadeDrive(0, 0);
 		}
-		else{
-			Robot.driveTrain.arcadeDrive(0, 0);
-		}
-	}
-
-	// Make this return true when this Command no longer needs to run execute()
-	@Override
-	protected boolean isFinished() {
-		return false;
 	}
 
 	// Called once after isFinished returns true
 	@Override
-	protected void end() {
+	public void end(boolean interrupted) {
 	}
 
-	// Called when another command which requires one or more of the same
-	// subsystems is scheduled to run
+	// Returns true when the command should end.
 	@Override
-	protected void interrupted() {
+	public boolean isFinished() {
+		return false;
 	}
+	
 }
