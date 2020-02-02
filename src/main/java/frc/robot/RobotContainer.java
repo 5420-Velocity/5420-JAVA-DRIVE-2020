@@ -7,6 +7,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -35,14 +37,17 @@ public class RobotContainer {
 
   private final Joystick driverJoystick = new Joystick(ControllerConstants.JOYSTICK_USB_DRIVER);
 
+  private final NetworkTableInstance tableInstance = NetworkTableInstance.getDefault();
+  private final NetworkTableEntry entryColorSensor = tableInstance.getEntry(Constants.NetworkTableEntries.COLOR_VALUE);
+
   private final DriveTrain driveTrain = new DriveTrain();
-  private final ControlPanelController controlPanelController = new ControlPanelController();
+  private final ControlPanelController controlPanelController = new ControlPanelController(entryColorSensor);
 
   private static int index;
 
   private final AutoPanel AutoPanel = new AutoPanel(controlPanelController, 
   () -> {return driverJoystick.getRawButton(ButtonMapConstants.Yellow_Button_ID);}
-  , index );
+  , index);
 
   private final JoystickDrive joystickDrive = 
     new JoystickDrive(driveTrain, 

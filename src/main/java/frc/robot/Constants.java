@@ -38,13 +38,32 @@ public final class Constants {
 
 	}
 
-	public static final class ColorTargets{
-		//need to do sensor testing 
+	public static final class ColorTargets {
 		
 		public static final Color COLOR_BLUE = ColorMatch.makeColor(0.143, 0.427, 0.429);
 		public static final Color COLOR_GREEN = ColorMatch.makeColor(0.197, 0.561, 0.240);
 		public static final Color COLOR_RED = ColorMatch.makeColor(0.561, 0.232, 0.114);
 		public static final Color COLOR_YELLOW = ColorMatch.makeColor(0.361, 0.524, 0.113);
+
+
+		/**
+		 * Retuns the string representation of the color
+		 *  instance we have.
+		 * 
+		 */
+		public static String resolveColor(Color color) {
+			if(color == COLOR_BLUE) return "blue";
+			if(color == COLOR_GREEN) return "green";
+			if(color == COLOR_RED) return "red";
+			if(color == COLOR_YELLOW) return "yellow";
+			return "unknown";
+		}
+
+	}
+
+	public static final class NetworkTableEntries {
+
+		public static final String COLOR_VALUE = "Color Sensor Value";
 
 	}
 

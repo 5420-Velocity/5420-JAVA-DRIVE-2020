@@ -8,6 +8,8 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.revrobotics.ColorMatch;
+import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorSensorV3;
 
 import edu.wpi.first.wpilibj.I2C;
@@ -15,6 +17,8 @@ import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ColorTargets;
 import frc.robot.Constants.ControlPanelConstants;
+import frc.robot.Constants.NetworkTableEntries;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.DriverStation;
 
 public class ControlPanelController extends SubsystemBase {
@@ -22,11 +26,19 @@ public class ControlPanelController extends SubsystemBase {
 	private WPI_TalonSRX panelDriver = new WPI_TalonSRX(ControlPanelConstants.ControlPanelDriver);
 	private I2C.Port ColorSensor = I2C.Port.kOnboard;
 	private ColorSensorV3 colorSensor = new ColorSensorV3(ColorSensor);
+	private ColorMatch colorMatch = new ColorMatch();
+	private NetworkTableEntry colorSensorEntry;
 	private boolean rotationsCompleted;
 	private boolean panelCompleted;
 
-	public ControlPanelController() {
+	public ControlPanelController(NetworkTableEntry networkTableEntry) {
+		this.colorSensorEntry = networkTableEntry;
+		this.colorSensorEntry.setString("");
 
+		this.colorMatch.addColorMatch(ColorTargets.COLOR_BLUE);
+		this.colorMatch.addColorMatch(ColorTargets.COLOR_GREEN);
+		this.colorMatch.addColorMatch(ColorTargets.COLOR_RED);
+		this.colorMatch.addColorMatch(ColorTargets.COLOR_YELLOW);
 	}
 
 	public boolean getRotCompletion(){
@@ -50,7 +62,13 @@ public class ControlPanelController extends SubsystemBase {
 	}
 
 	public Color getColor(){
-		return colorSensor.getColor();
+		ColorMatchResult returnColor = this.colorMatch.matchClosestColor(colorSensor.getColor());
+
+		// Save the Color to the Dashboard
+		String colorTag = ColorTargets.resolveColor(returnColor.color);
+		this.colorSensorEntry.setString(colorTag);
+
+		return returnColor.color;
 	}
 
 	public Color GameColor(){
@@ -86,6 +104,8 @@ public class ControlPanelController extends SubsystemBase {
 
 	@Override
 	public void periodic() {
-		// This method will be called once per scheduler run
+
+		this.getColor();
+
 	}
 }
