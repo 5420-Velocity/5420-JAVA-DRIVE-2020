@@ -7,6 +7,11 @@
 
 package frc.robot;
 
+import com.revrobotics.ColorMatch;
+
+import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.util.Color;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants.  This class should not be used for any other purpose.  All constants should be
@@ -17,6 +22,10 @@ package frc.robot;
  */
 public final class Constants {
 
+	public static final class ControlPanelConstants{
+		public static final int ControlPanelDriver = 5;
+	}
+
     public static final class DriveTrainConstants {
 
 		// Left Motor Controller Map for the Talon CAN IDs
@@ -26,6 +35,16 @@ public final class Constants {
 		// Right Motor Controller Map for the Talon CAN IDs
 		public static final int Right_A_ID = 1;
 		public static final int Right_B_ID = 2;
+
+	}
+
+	public static final class ColorTargets{
+		//need to do sensor testing 
+		
+		public static final Color COLOR_BLUE = ColorMatch.makeColor(0.143, 0.427, 0.429);
+		public static final Color COLOR_GREEN = ColorMatch.makeColor(0.197, 0.561, 0.240);
+		public static final Color COLOR_RED = ColorMatch.makeColor(0.561, 0.232, 0.114);
+		public static final Color COLOR_YELLOW = ColorMatch.makeColor(0.361, 0.524, 0.113);
 
 	}
 

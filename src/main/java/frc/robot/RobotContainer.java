@@ -10,9 +10,12 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.Constants.ButtonMapConstants;
 import frc.robot.Constants.ControllerConstants;
+import frc.robot.commands.AutoPanel;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.JoystickDrive;
+import frc.robot.subsystems.ControlPanelController;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -33,6 +36,13 @@ public class RobotContainer {
   private final Joystick driverJoystick = new Joystick(ControllerConstants.JOYSTICK_USB_DRIVER);
 
   private final DriveTrain driveTrain = new DriveTrain();
+  private final ControlPanelController controlPanelController = new ControlPanelController();
+
+  private static int index;
+
+  private final AutoPanel AutoPanel = new AutoPanel(controlPanelController, 
+  () -> {return driverJoystick.getRawButton(ButtonMapConstants.Yellow_Button_ID);}
+  , index );
 
   private final JoystickDrive joystickDrive = 
     new JoystickDrive(driveTrain, 
