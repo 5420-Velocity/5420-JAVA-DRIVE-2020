@@ -15,12 +15,11 @@ import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Constants.ButtonMapConstants;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.commands.AutoPanel;
-import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.EncoderArmMove;
 import frc.robot.commands.JoystickDrive;
 import frc.robot.subsystems.ControlPanelController;
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.ExampleSubsystem;
-import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.EncoderArm;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 /**
@@ -30,12 +29,10 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  * (including subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-
-  private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
-
+  // The robot's subsystems and commands are defined here..
   private final Joystick driverJoystick = new Joystick(ControllerConstants.JOYSTICK_USB_DRIVER);
+  private final Joystick operatorJoystick = new Joystick(ControllerConstants.JOYSTICK_USB_OPERATOR);
+
 
   private final NetworkTableInstance tableInstance = NetworkTableInstance.getDefault();
   private final NetworkTableEntry entryColorSensor = tableInstance.getEntry(Constants.NetworkTableEntries.COLOR_VALUE);
@@ -53,6 +50,11 @@ public class RobotContainer {
     new JoystickDrive(driveTrain, 
       () -> {return driverJoystick.getRawAxis(1);}, 
       () -> { return driverJoystick.getRawAxis(4);});
+
+  private final EncoderArm encoderArm = new EncoderArm();
+
+  private final EncoderArmMove encoderArmMove = new EncoderArmMove(encoderArm,
+  () -> {return operatorJoystick.getRawAxis(5);});
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -85,8 +87,5 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-  public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
-    return m_autoCommand;
-  }
+ 
 }

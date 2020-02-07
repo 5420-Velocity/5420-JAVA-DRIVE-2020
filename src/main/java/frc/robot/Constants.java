@@ -22,6 +22,14 @@ import edu.wpi.first.wpilibj.util.Color;
  */
 public final class Constants {
 
+	public static final class EncoderArm{
+		public static final int encoderPort1 = 0;
+		public static final int encoderPort2 = 1;
+
+		public static final int armMotor = 6;
+
+	}
+
 	public static final class ControlPanelConstants{
 		public static final int ControlPanelDriver = 5;
 	}
