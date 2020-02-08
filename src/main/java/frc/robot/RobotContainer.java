@@ -15,11 +15,13 @@ import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Constants.ButtonMapConstants;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.commands.AutoPanel;
-import frc.robot.commands.EncoderArmMove;
+import frc.robot.commands.IntakeRun;
 import frc.robot.commands.JoystickDrive;
+import frc.robot.commands.Shoot;
 import frc.robot.subsystems.ControlPanelController;
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.EncoderArm;
+import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 /**
@@ -51,10 +53,15 @@ public class RobotContainer {
       () -> {return driverJoystick.getRawAxis(1);}, 
       () -> { return driverJoystick.getRawAxis(4);});
 
-  private final EncoderArm encoderArm = new EncoderArm();
+  private final Intake intake = new Intake();
 
-  private final EncoderArmMove encoderArmMove = new EncoderArmMove(encoderArm,
-  () -> {return operatorJoystick.getRawAxis(5);});
+  private final Shooter shooter = new Shooter();
+
+  private final IntakeRun encoderArmMove = new IntakeRun(intake,
+  () -> {return operatorJoystick.getRawButton(Constants.ButtonMapConstants.Green_Button_ID);});
+
+  private final Shoot shoot = new Shoot(shooter, 
+  () -> {return operatorJoystick.getRawButton(Constants.ButtonMapConstants.Yellow_Button_ID); });
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.

@@ -14,12 +14,13 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-public class EncoderArm extends SubsystemBase {
+public class Intake extends SubsystemBase {
   
   private Encoder encoder = new Encoder(Constants.EncoderArm.encoderPort1, Constants.EncoderArm.encoderPort2, false, Encoder.EncodingType.k2X);
   private WPI_TalonSRX armMotor = new WPI_TalonSRX(Constants.EncoderArm.armMotor);
+  private WPI_TalonSRX intakeMotor = new WPI_TalonSRX(Constants.EncoderArm.intakeMotor);
 
-  public EncoderArm() {
+  public Intake() {
     //config
     encoder.setDistancePerPulse(4./256.);
     encoder.setMaxPeriod(.1);
@@ -32,8 +33,12 @@ public class EncoderArm extends SubsystemBase {
     return encoder.getDistance();
   }
 
-  public void Run(double power){
+  public void ArmRun(double power){
     armMotor.set(power);
+  }
+
+  public void IntakeMove(double power){
+
   }
 
   @Override

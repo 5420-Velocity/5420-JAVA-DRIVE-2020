@@ -7,20 +7,24 @@
 
 package frc.robot.commands;
 
-import java.util.function.DoubleSupplier;
+import java.util.function.BooleanSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.EncoderArm;
+import frc.robot.subsystems.Shooter;
 
-public class EncoderArmMove extends CommandBase {
 
-  private EncoderArm encoderArm;
-  private DoubleSupplier Input;
+public class Shoot extends CommandBase {
+  /**
+   * Creates a new Shoot.
+   */
+  private final Shooter shooter;
+  private final BooleanSupplier startShoot;
 
-  public EncoderArmMove(EncoderArm EncoderArm, DoubleSupplier input) {
-    this.Input = input;
-    this.encoderArm = EncoderArm;
-    addRequirements(EncoderArm);
+  public Shoot(Shooter Shooter, BooleanSupplier startshoot) {
+    this.shooter = Shooter;
+    this.startShoot = startshoot;
+    addRequirements(Shooter);
+    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
@@ -31,13 +35,11 @@ public class EncoderArmMove extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(Input.getAsDouble() >= 0.1 || Input.getAsDouble() <= 0.1){
-      if(encoderArm.getEncoderValue() <=5 && encoderArm.getEncoderValue() >= 0){
-        encoderArm.Run(Input.getAsDouble());
-      }
-      else{
-        encoderArm.Run(0);
-      }
+    if(startShoot.getAsBoolean()){
+      shooter.Set(0.7, 0.8);
+    }
+    else{
+      shooter.Set(0, 0);
     }
   }
 

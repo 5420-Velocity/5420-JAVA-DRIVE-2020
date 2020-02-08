@@ -9,7 +9,6 @@ package frc.robot;
 
 import com.revrobotics.ColorMatch;
 
-import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.util.Color;
 
 /**
@@ -27,7 +26,14 @@ public final class Constants {
 		public static final int encoderPort2 = 1;
 
 		public static final int armMotor = 6;
+		public static final int intakeMotor = 7;
 
+	}
+
+	public static final class ShooterConstants{
+		public static final int motor1 = 2;
+		public static final int motor2 = 3;
+		
 	}
 
 	public static final class ControlPanelConstants{
