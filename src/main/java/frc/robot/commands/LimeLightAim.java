@@ -7,20 +7,20 @@
 
 package frc.robot.commands;
 
-import java.util.function.BooleanSupplier;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Limelight;
 
-public class IntakeRun extends CommandBase {
+public class LimeLightAim extends CommandBase {
+  /**
+   * Creates a new LimeLightAim.
+   */
 
-  private Intake intake;
-  private BooleanSupplier Input;
+   private final Limelight limelight;
 
-  public IntakeRun(Intake intakeRun, BooleanSupplier input) {
-    this.Input = input;
-    this.intake = intakeRun;
-    addRequirements(intake);
+  public LimeLightAim(Limelight limeLight) {
+    this.limelight = limeLight;
+    addRequirements(limeLight);
+    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
@@ -31,24 +31,6 @@ public class IntakeRun extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(Input.getAsBoolean()){
-      if(intake.getEncoderValue() <=5 && intake.getEncoderValue() >= 0){
-        intake.ArmRun(0.8);
-        intake.IntakeMove(0.8);
-      }
-        else{
-          intake.ArmRun(0);
-          intake.IntakeMove(0);
-        }
-    }
-      else if(intake.getEncoderValue() <=5 && intake.getEncoderValue() >= 0){
-        intake.ArmRun(-0.5);
-        intake.IntakeMove(0);
-      }
-        else{
-          intake.ArmRun(0);
-          intake.IntakeMove(0);
-        }
   }
 
   // Called once the command ends or is interrupted.

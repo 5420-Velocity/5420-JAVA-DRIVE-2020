@@ -15,14 +15,15 @@ import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Constants.ButtonMapConstants;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.commands.AutoPanel;
-import frc.robot.commands.IntakeRun;
+import frc.robot.commands.IntakeDown;
 import frc.robot.commands.JoystickDrive;
 import frc.robot.commands.Shoot;
 import frc.robot.subsystems.ControlPanelController;
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -45,23 +46,25 @@ public class RobotContainer {
   private static int index;
 
   private final AutoPanel AutoPanel = new AutoPanel(controlPanelController, 
-  () -> {return driverJoystick.getRawButton(ButtonMapConstants.Yellow_Button_ID);}
-  , index);
+    () -> {return driverJoystick.getRawButton(ButtonMapConstants.Yellow_Button_ID);}
+    , index);
 
-  private final JoystickDrive joystickDrive = 
-    new JoystickDrive(driveTrain, 
-      () -> {return driverJoystick.getRawAxis(1);}, 
-      () -> { return driverJoystick.getRawAxis(4);});
+  private final JoystickDrive joystickDrive = new JoystickDrive(driveTrain, 
+    () -> {return driverJoystick.getRawAxis(1);}, 
+    () -> { return driverJoystick.getRawAxis(4);});
 
+  /**
+   * Setup Intake Subsystm and the Extra Commands to Contorl It
+   */
   private final Intake intake = new Intake();
+  private final IntakeDown intakeRun = new IntakeDown(intake);
 
-  private final Shooter shooter = new Shooter();
-
-  private final IntakeRun encoderArmMove = new IntakeRun(intake,
-  () -> {return operatorJoystick.getRawButton(Constants.ButtonMapConstants.Green_Button_ID);});
+  private final ShooterSubsystem shooter = new ShooterSubsystem();
 
   private final Shoot shoot = new Shoot(shooter, 
-  () -> {return operatorJoystick.getRawButton(Constants.ButtonMapConstants.Yellow_Button_ID); });
+    () -> {return operatorJoystick.getRawButton(Constants.ButtonMapConstants.Yellow_Button_ID); },
+    () -> {return operatorJoystick.getRawButton(5);},
+    () -> {return operatorJoystick.getRawButton(4);});
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -79,6 +82,20 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+
+    /**
+     * 
+     */
+    new JoystickButton(driverJoystick, Constants.ButtonMapConstants.Green_Button_ID)
+      .whileHeld(intakeRun);
+
+    /**
+     * Setup Button Events for the Shooter on the Driver Controller
+     */
+    new JoystickButton(driverJoystick, Constants.ButtonMapConstants.Blue_Button_ID)
+      .whenPressed(() -> shooter.Set(-0.8, -0.7))
+      .whenReleased(() -> shooter.Set(0,0));
+
   }
 
 

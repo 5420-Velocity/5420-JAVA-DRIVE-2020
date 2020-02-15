@@ -25,19 +25,21 @@ public final class Constants {
 		public static final int encoderPort1 = 0;
 		public static final int encoderPort2 = 1;
 
-		public static final int armMotor = 6;
-		public static final int intakeMotor = 7;
+		public static final int armMotor = 11;
+		public static final int intakeMotor = 9;
 
 	}
 
 	public static final class ShooterConstants{
-		public static final int motor1 = 2;
-		public static final int motor2 = 3;
+		public static final int motor1 = 6;
+		public static final int motor2 = 8;
 		
+		public static final int aimerMotor = 13;
 	}
 
 	public static final class ControlPanelConstants{
 		public static final int ControlPanelDriver = 5;
+		public static final int ControlPanelLift = 7;
 	}
 
     public static final class DriveTrainConstants {
@@ -47,8 +49,8 @@ public final class Constants {
 		public static final int Left_B_ID = 2;
 
 		// Right Motor Controller Map for the Talon CAN IDs
-		public static final int Right_A_ID = 1;
-		public static final int Right_B_ID = 2;
+		public static final int Right_A_ID = 3;
+		public static final int Right_B_ID = 4;
 
 	}
 
@@ -95,10 +97,10 @@ public final class Constants {
 		public static final int JOYSTICK_LEFT_X_AXIS = 0;
 		public static final int JOYSTICK_LEFT_Y_AXIS = 1;
 
-		public static final int Red_Button_ID = 1;
-		public static final int Green_Button_ID = 0;
-		public static final int Yellow_Button_ID = 3;
-		public static final int Blue_Button_ID = 2;
+		public static final int Red_Button_ID = 2;
+		public static final int Green_Button_ID = 1;
+		public static final int Yellow_Button_ID = 4;
+		public static final int Blue_Button_ID = 3;
 
 	}
 

@@ -49,7 +49,7 @@ public class DriveTrain extends SubsystemBase {
 		LeftBT.follow(LeftAT);
 		RightBT.follow(RightAT);
 
-		drive = new DifferentialDrive(LeftAT, LeftBT);
+		drive = new DifferentialDrive(LeftAT, RightAT);
 	}
 
 	public void arcadeDrive(double speed, double rotation){

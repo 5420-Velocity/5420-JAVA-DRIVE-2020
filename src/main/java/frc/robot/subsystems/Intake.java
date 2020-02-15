@@ -7,12 +7,12 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import  frc.robot.commands.IntakeUp;
 
 public class Intake extends SubsystemBase {
   
@@ -21,7 +21,14 @@ public class Intake extends SubsystemBase {
   private WPI_TalonSRX intakeMotor = new WPI_TalonSRX(Constants.EncoderArm.intakeMotor);
 
   public Intake() {
-    //config
+    // Configure the Default Command for the Intake to go up
+    IntakeUp intakeCommand = new IntakeUp(this);
+    setDefaultCommand(intakeCommand);
+
+    /**
+     * Setup the encoder setting
+     */
+    encoder.reset();
     encoder.setDistancePerPulse(4./256.);
     encoder.setMaxPeriod(.1);
     encoder.setMinRate(10);
@@ -38,7 +45,7 @@ public class Intake extends SubsystemBase {
   }
 
   public void IntakeMove(double power){
-
+    intakeMotor.set(power);
   }
 
   @Override
