@@ -8,22 +8,27 @@
 package frc.robot;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Constants.ButtonMapConstants;
 import frc.robot.Constants.ControllerConstants;
+import frc.robot.Constants.EncoderArm;
 import frc.robot.commands.AutoPanel;
 import frc.robot.commands.IntakeDown;
 import frc.robot.commands.JoystickDrive;
 import frc.robot.commands.Shoot;
+import frc.robot.subsystems.ChuteSubsystem;
 import frc.robot.subsystems.ControlPanelController;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj2.command.PIDCommand;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -39,6 +44,7 @@ public class RobotContainer {
 
   private final NetworkTableInstance tableInstance = NetworkTableInstance.getDefault();
   private final NetworkTableEntry entryColorSensor = tableInstance.getEntry(Constants.NetworkTableEntries.COLOR_VALUE);
+  private final NetworkTableEntry encoder = tableInstance.getEntry(Constants.NetworkTableEntries.ENCODER_VALUE);
 
   private final DriveTrain driveTrain = new DriveTrain();
   private final ControlPanelController controlPanelController = new ControlPanelController(entryColorSensor);
@@ -61,6 +67,8 @@ public class RobotContainer {
 
   private final ShooterSubsystem shooter = new ShooterSubsystem();
 
+  private final ChuteSubsystem chute = new ChuteSubsystem();
+
   private final Shoot shoot = new Shoot(shooter, 
     () -> {return operatorJoystick.getRawButton(Constants.ButtonMapConstants.Yellow_Button_ID); },
     () -> {return operatorJoystick.getRawButton(5);},
@@ -71,10 +79,15 @@ public class RobotContainer {
    */
   public RobotContainer() {
     // Configure the button bindings
+    configureNetworkTableBindings();
     configureButtonBindings();
     configureDefaultCommands();
   }
 
+  private void configureNetworkTableBindings(){
+
+  }
+  
   /**
    * Use this method to define your button->command mappings.  Buttons can be created by
    * instantiating a {@link GenericHID} or one of its subclasses ({@link
@@ -93,8 +106,31 @@ public class RobotContainer {
      * Setup Button Events for the Shooter on the Driver Controller
      */
     new JoystickButton(driverJoystick, Constants.ButtonMapConstants.Blue_Button_ID)
-      .whenPressed(() -> shooter.Set(-0.8, -0.7))
-      .whenReleased(() -> shooter.Set(0,0));
+      .whenPressed(() -> shooter.setSpeed(-0.8, -0.7))
+      .whenPressed(() -> chute.setSpeed(0.5))
+      .whenReleased(() -> chute.setSpeed(0))
+      .whenReleased(() -> shooter.setSpeed(0,0));
+
+    // Encoder PID
+    PIDController pidController = new PIDController(
+        EncoderArm.Proportional, 
+        EncoderArm.Integral, 
+        EncoderArm.Derivative);
+
+    pidController.setTolerance(.05);
+    pidController.setIntegratorRange(-0.7, 0.7);
+
+    new JoystickButton(operatorJoystick, ButtonMapConstants.Green_Button_ID)
+      // Go Down
+      .whenHeld(
+        new PIDCommand(
+          pidController,
+          () -> intake.getEncoderFromLowValue(),
+          0.0,
+          output -> intake.armRun(output),
+          intake
+        )
+      );
 
   }
 

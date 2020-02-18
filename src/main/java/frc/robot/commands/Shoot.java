@@ -41,21 +41,21 @@ public class Shoot extends CommandBase {
   public void execute() {
     //shooting
     if(startShoot.getAsBoolean()){
-      shooter.Set(0.7, 0.8);
+      shooter.setSpeed(0.7, 0.8);
     }
     else{
-      shooter.Set(0, 0);
+      shooter.setSpeed(0, 0);
     }
 
     //aiming
     if(aim1.getAsBoolean()){
-      shooter.Turn(0.5);
+      shooter.turnSpeed(0.5);
     }
     else if(aim2.getAsBoolean()){
-      shooter.Turn(-0.5);
+      shooter.turnSpeed(-0.5);
     }
     else{
-      shooter.Turn(0);
+      shooter.turnSpeed(0);
     }
   }
 

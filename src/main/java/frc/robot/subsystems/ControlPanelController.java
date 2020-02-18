@@ -24,6 +24,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 public class ControlPanelController extends SubsystemBase {
 
 	private WPI_TalonSRX panelDriver = new WPI_TalonSRX(ControlPanelConstants.ControlPanelDriver);
+	private WPI_TalonSRX panelLift = new WPI_TalonSRX(ControlPanelConstants.ControlPanelLift);
 	private I2C.Port ColorSensor = I2C.Port.kOnboard;
 	private ColorSensorV3 colorSensor = new ColorSensorV3(ColorSensor);
 	private ColorMatch colorMatch = new ColorMatch();
@@ -45,7 +46,7 @@ public class ControlPanelController extends SubsystemBase {
 		return rotationsCompleted;
 	}
 
-	public void RotationsCompleted(boolean val){
+	public void rotationsCompleted(boolean val){
 		rotationsCompleted = val;
 	}
 
@@ -53,11 +54,11 @@ public class ControlPanelController extends SubsystemBase {
 		return panelCompleted;
 	}
 
-	public void PanelCompleted(boolean val){
+	public void panelCompleted(boolean val){
 		panelCompleted = val;
 	}
 
-	public void Turn(double power){
+	public void turnSpeed(double power){
 		panelDriver.set(power * 0.75);
 	}
 

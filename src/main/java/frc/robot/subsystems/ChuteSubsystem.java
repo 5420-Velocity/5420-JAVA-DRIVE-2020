@@ -12,26 +12,20 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-public class ShooterSubsystem extends SubsystemBase {
+public class ChuteSubsystem extends SubsystemBase {
   /**
-   * Creates a new Shooter.
+   * Creates a new Chute.
    */
-  private WPI_TalonSRX aimerMotor = new WPI_TalonSRX(Constants.ShooterConstants.aimerMotor);
+  public WPI_TalonSRX chuteLeft = new WPI_TalonSRX(Constants.ChuteConstanst.LeftChute);
+  public WPI_TalonSRX chuteRight = new WPI_TalonSRX(Constants.ChuteConstanst.RightChute);
 
-  private WPI_TalonSRX shooter1 = new WPI_TalonSRX(Constants.ShooterConstants.motor1);
-  private WPI_TalonSRX shooter2 = new WPI_TalonSRX(Constants.ShooterConstants.motor2);
-
-  public ShooterSubsystem() {
+  public ChuteSubsystem() {
 
   }
 
-  public void setSpeed(double power1, double power2){
-    shooter1.set(power1);
-    shooter2.set(power2);
-  }
-
-  public void turnSpeed(double power){
-    aimerMotor.set(power);
+  public void setSpeed(double power){
+    chuteLeft.set(power);
+    chuteRight.set(-power);
   }
 
   @Override

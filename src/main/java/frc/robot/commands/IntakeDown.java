@@ -23,21 +23,22 @@ public class IntakeDown extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    //when arm is up move it down
     if(intake.getEncoderValue() < 3){
-      intake.ArmRun(0.7);
+      intake.armRun(0.7);
+      intake.intakeMove(1);
     }
     else{
-      intake.ArmRun(0);
+      intake.armRun(0);
+      intake.intakeMove(0);
     }
 
-    System.out.println(intake.getEncoderValue());
-
-   
   }
 
   // Called once the command ends or is interrupted.

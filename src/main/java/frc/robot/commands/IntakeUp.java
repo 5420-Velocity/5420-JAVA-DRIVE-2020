@@ -28,14 +28,23 @@ public class IntakeUp extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(intake.getEncoderValue() > 0.1){
-      intake.ArmRun(-0.8);
+    
+    if(intake.getEncoderValue() > 0){
+      intake.armRun(-0.8);
     }
     else{
-      intake.ArmRun(0);
+      intake.armRun(0);
     }
 
-    System.out.println(intake.getEncoderValue());
+    /** 
+     * new PIDCommand(
+          pidController,
+          () -> intake.getEncoderFromHighValue(),
+          0.0,
+          output -> intake.armRun(-output),
+          intake
+        )
+     */
    
   }
 

@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import java.util.function.BooleanSupplier;
 
+import frc.robot.Constants;
 import frc.robot.subsystems.ControlPanelController;
 
 public class AutoPanel extends CommandBase {
@@ -38,10 +39,11 @@ public class AutoPanel extends CommandBase {
 	// Called every time the scheduler runs while the command is scheduled.
 	@Override
 	public void execute() {
+		//turns the control panel based on the current situation
 		if(Activate.getAsBoolean()){
 			if(controlPanelController.isPannelComplete() == false){
 				// Start turning the Motor to turn the control pannel
-				controlPanelController.Turn(0.5);
+				controlPanelController.turnSpeed(0.5);
 
 				if(controlPanelController.getRotCompletion() == false){
 					Rotate();
@@ -49,12 +51,12 @@ public class AutoPanel extends CommandBase {
 				else{
 					// Rotations Complete
 					if(controlPanelController.getColor() == controlPanelController.GameColor()){
-						controlPanelController.PanelCompleted(true);
+						controlPanelController.panelCompleted(true);
 					}
 				}  
 			}
 			else{
-				controlPanelController.Turn(0);
+				controlPanelController.turnSpeed(0);
 			}
 		}
 	}
@@ -68,8 +70,8 @@ public class AutoPanel extends CommandBase {
 		}
 
 		// Completed rotations
-		if(index >= 24){
-			controlPanelController.RotationsCompleted(true);
+		if(index >= Constants.ControlPanelConstants.targetRotations){
+			controlPanelController.rotationsCompleted(true);
 		}
 	}
 
