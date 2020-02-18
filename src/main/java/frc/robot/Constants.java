@@ -9,6 +9,10 @@ package frc.robot;
 
 import com.revrobotics.ColorMatch;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
+
 import edu.wpi.first.wpilibj.util.Color;
 
 /**
@@ -25,8 +29,15 @@ public final class Constants {
 		public static final int encoderPort1 = 0;
 		public static final int encoderPort2 = 1;
 
+		public static final int highTarget = 0;
+		public static final int lowTarget = 5;
+
 		public static final int armMotor = 11;
 		public static final int intakeMotor = 9;
+
+		public static final double Proportional = 0.3;
+		public static final double Integral = 0.025;
+		public static final double Derivative = 0.005;
 
 	}
 
@@ -38,6 +49,9 @@ public final class Constants {
 	}
 
 	public static final class ControlPanelConstants{
+		//number of changes in color
+		public static final int targetRotations = 24;
+
 		public static final int ControlPanelDriver = 5;
 		public static final int ControlPanelLift = 7;
 	}
@@ -77,9 +91,17 @@ public final class Constants {
 
 	}
 
+	public static final class ChuteConstanst {
+		public static final int LeftChute = 10;
+		public static final int RightChute = 12;
+	}
+
 	public static final class NetworkTableEntries {
 
 		public static final String COLOR_VALUE = "Color Sensor Value";
+		public static final String ENCODER_VALUE = "Encoder";
+		//public static NetworkTable table;
+		//public static NetworkTableEntry reset;
 
 	}
 
@@ -89,6 +111,7 @@ public final class Constants {
 		public static final int JOYSTICK_USB_OPERATOR = 1;
 
 	}
+	
 	
 	public static final class ButtonMapConstants {
 
@@ -101,6 +124,11 @@ public final class Constants {
 		public static final int Green_Button_ID = 1;
 		public static final int Yellow_Button_ID = 4;
 		public static final int Blue_Button_ID = 3;
+		
+		public static final int Left_Bumper = 5;
+		public static final int Right_Bumper = 6;
+
+
 
 	}
 
