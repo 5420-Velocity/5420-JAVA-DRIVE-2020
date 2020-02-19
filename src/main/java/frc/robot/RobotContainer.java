@@ -129,6 +129,7 @@ public class RobotContainer {
      */
     new JoystickButton(this.operatorJoystick, ButtonMapConstants.Green_Button_ID)
       // Go Down on Button Press
+      .whenPressed(() -> this.intake.intakeMove(1.0))
       .whenHeld(
         new PIDCommand(
           this.pidController,
@@ -137,7 +138,10 @@ public class RobotContainer {
           output -> this.intake.armRun(output),
           this.intake
         )
-      );
+      )
+
+      // Turn off Motor
+      .whenReleased(() -> this.intake.intakeMove(0));
 
   }
 
