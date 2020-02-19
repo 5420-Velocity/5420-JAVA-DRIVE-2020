@@ -14,22 +14,22 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import  frc.robot.commands.IntakeUp;
 
 public class Intake extends SubsystemBase {
   
   private Encoder encoder = new Encoder(Constants.EncoderArm.encoderPort1, Constants.EncoderArm.encoderPort2, false, Encoder.EncodingType.k2X);
   private WPI_TalonSRX armMotor = new WPI_TalonSRX(Constants.EncoderArm.armMotor);
   private WPI_TalonSRX intakeMotor = new WPI_TalonSRX(Constants.EncoderArm.intakeMotor);
-  private NetworkTableEntry ntEncoderValue = NetworkTableInstance.getDefault().getEntry("Ball Pickup Value");
-  private NetworkTableEntry ntEncoderReset = NetworkTableInstance.getDefault().getEntry("Ball Pickup Reset");
+  private NetworkTableEntry ntEncoderValue = NetworkTableInstance.getDefault().getEntry("Ball Lift Encoder Value");
+  private NetworkTableEntry ntEncoderReset = NetworkTableInstance.getDefault().getEntry("Ball Lift Encoder Reset");
 
   public Intake() {
-    // Configure the Default Command for the Intake to go up
-    IntakeUp intakeCommand = new IntakeUp(this);
-    setDefaultCommand(intakeCommand);
 
+    /**
+     * Register the default value for the network tables
+     */
     this.ntEncoderReset.setDefaultBoolean(false);
+    this.ntEncoderValue.setDouble(0.0);
 
     /**
      * Setup the encoder setting
@@ -48,7 +48,7 @@ public class Intake extends SubsystemBase {
 
   // Get the offset of the low target and  current position
   public double getEncoderFromLowValue(){
-    return this.getEncoderValue() - Constants.EncoderArm.highTarget;
+    return this.getEncoderValue() - Constants.EncoderArm.lowTarget;
   }
 
   // Get the offset of the high target and  current position

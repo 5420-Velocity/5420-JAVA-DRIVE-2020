@@ -9,10 +9,6 @@ package frc.robot;
 
 import com.revrobotics.ColorMatch;
 
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
-
 import edu.wpi.first.wpilibj.util.Color;
 
 /**

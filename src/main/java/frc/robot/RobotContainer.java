@@ -8,11 +8,8 @@
 package frc.robot;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Constants.ButtonMapConstants;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.Constants.EncoderArm;
@@ -69,77 +66,99 @@ public class RobotContainer {
 
   private final ChuteSubsystem chute = new ChuteSubsystem();
 
-  private final Shoot shoot = new Shoot(shooter, 
+  private final Shoot shoot = new Shoot(shooter,
     () -> {return operatorJoystick.getRawButton(Constants.ButtonMapConstants.Yellow_Button_ID); },
     () -> {return operatorJoystick.getRawButton(5);},
     () -> {return operatorJoystick.getRawButton(4);});
+
+  // Encoder PID
+  private PIDController pidController = new PIDController(
+        EncoderArm.Proportional, 
+        EncoderArm.Integral, 
+        EncoderArm.Derivative);
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    // Configure the button bindings
+
+    // Call of the configuration helper functions.
+    configurePIDControllers();
     configureNetworkTableBindings();
     configureButtonBindings();
     configureDefaultCommands();
   }
 
-  private void configureNetworkTableBindings(){
+  /**
+   * Configure PID Controlelrs that are stored in the current
+   *  RobotContainer instance.
+   * 
+   */
+  private void configurePIDControllers() {
+    
+    this.pidController.setTolerance(.05);
+    this.pidController.setIntegratorRange(-0.7, 0.7);
+
+  }
+
+  /**
+   * Configure network table entries with the default values.
+   * 
+   */
+  private void configureNetworkTableBindings() {
 
   }
   
   /**
-   * Use this method to define your button->command mappings.  Buttons can be created by
-   * instantiating a {@link GenericHID} or one of its subclasses ({@link
-   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a
-   * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
+   * Define button to command mappings.
+   * 
    */
   private void configureButtonBindings() {
 
     /**
-     * 
-     */
-    new JoystickButton(driverJoystick, Constants.ButtonMapConstants.Green_Button_ID)
-      .whileHeld(intakeRun);
-
-    /**
      * Setup Button Events for the Shooter on the Driver Controller
      */
-    new JoystickButton(driverJoystick, Constants.ButtonMapConstants.Blue_Button_ID)
-      .whenPressed(() -> shooter.setSpeed(-0.8, -0.7))
-      .whenPressed(() -> chute.setSpeed(0.5))
-      .whenReleased(() -> chute.setSpeed(0))
-      .whenReleased(() -> shooter.setSpeed(0,0));
+    new JoystickButton(this.driverJoystick, Constants.ButtonMapConstants.Blue_Button_ID)
+      .whenPressed(() -> this.shooter.setSpeed(-0.8, -0.7))
+      .whenPressed(() -> this.chute.setSpeed(0.5))
+      .whenReleased(() -> this.chute.setSpeed(0))
+      .whenReleased(() -> this.shooter.setSpeed(0,0));
 
-    // Encoder PID
-    PIDController pidController = new PIDController(
-        EncoderArm.Proportional, 
-        EncoderArm.Integral, 
-        EncoderArm.Derivative);
-
-    pidController.setTolerance(.05);
-    pidController.setIntegratorRange(-0.7, 0.7);
-
-    new JoystickButton(operatorJoystick, ButtonMapConstants.Green_Button_ID)
-      // Go Down
+    /**
+     * Setup the button event for the Intake on the Operator Controller
+     */
+    new JoystickButton(this.operatorJoystick, ButtonMapConstants.Green_Button_ID)
+      // Go Down on Button Press
       .whenHeld(
         new PIDCommand(
-          pidController,
-          () -> intake.getEncoderFromLowValue(),
+          this.pidController,
+          () -> this.intake.getEncoderFromLowValue(),
           0.0,
-          output -> intake.armRun(output),
-          intake
+          output -> this.intake.armRun(output),
+          this.intake
         )
       );
 
   }
 
-
+  /**
+   * Configure Default Commands for the Subsystems
+   * 
+   */
   private void configureDefaultCommands() {
     CommandScheduler scheduler = CommandScheduler.getInstance();
 
-    scheduler.setDefaultCommand(driveTrain, joystickDrive);
-    //scheduler.registerSubsystem(driveTrain);
+    scheduler.setDefaultCommand(this.driveTrain, this.joystickDrive);
+
+    // Go Up By Default
+    scheduler.setDefaultCommand(this.intake, new PIDCommand(
+      this.pidController,
+      () -> this.intake.getEncoderFromHighValue(),
+      0.0,
+      output -> intake.armRun(output),
+      this.intake
+    ));
+    
   }
 
   /**

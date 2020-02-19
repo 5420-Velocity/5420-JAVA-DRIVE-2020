@@ -17,7 +17,6 @@ import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ColorTargets;
 import frc.robot.Constants.ControlPanelConstants;
-import frc.robot.Constants.NetworkTableEntries;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.DriverStation;
 
