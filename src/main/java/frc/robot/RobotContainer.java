@@ -96,7 +96,7 @@ public class RobotContainer {
    */
   private void configurePIDControllers() {
     
-    this.pidController.setTolerance(.05);
+    this.pidController.setTolerance(0.05);
     this.pidController.setIntegratorRange(-0.7, 0.7);
 
   }

@@ -32,8 +32,8 @@ public final class Constants {
 		public static final int intakeMotor = 9;
 
 		public static final double Proportional = 0.3;
-		public static final double Integral = 0.025;
-		public static final double Derivative = 0.005;
+		public static final double Integral = 0.06;
+		public static final double Derivative = 0.008;
 
 	}
 
