@@ -37,6 +37,10 @@ deploy {
     }
 }
 
+repositories {
+    maven { url 'https://nexus.otake.pw/repository/maven-public/' }
+}
+
 // Set this to true to enable desktop support.
 def includeDesktopSupport = false
 
@@ -47,6 +51,7 @@ dependencies {
     nativeZip wpi.deps.wpilibJni(wpi.platforms.roborio)
     nativeDesktopZip wpi.deps.wpilibJni(wpi.platforms.desktop)
 
+    implementation 'pw.otake.pseudoresonance:pixy2-java-api:1.3.5'
 
     implementation wpi.deps.vendor.java()
     nativeZip wpi.deps.vendor.jni(wpi.platforms.roborio)
