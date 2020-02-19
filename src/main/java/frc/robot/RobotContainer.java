@@ -49,8 +49,8 @@ public class RobotContainer {
   private static int index;
 
   private final AutoPanel AutoPanel = new AutoPanel(controlPanelController, 
-    () -> {return driverJoystick.getRawButton(ButtonMapConstants.Yellow_Button_ID);}
-    , index);
+    () -> {return driverJoystick.getRawButton(ButtonMapConstants.Yellow_Button_ID);},
+    index);
 
   private final JoystickDrive joystickDrive = new JoystickDrive(driveTrain, 
     () -> {return driverJoystick.getRawAxis(1);}, 
@@ -73,9 +73,9 @@ public class RobotContainer {
 
   // Encoder PID
   private PIDController pidController = new PIDController(
-        EncoderArm.Proportional, 
-        EncoderArm.Integral, 
-        EncoderArm.Derivative);
+    EncoderArm.Proportional, 
+    EncoderArm.Integral, 
+    EncoderArm.Derivative);
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
