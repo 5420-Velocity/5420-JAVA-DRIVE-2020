@@ -96,8 +96,6 @@ public final class Constants {
 
 		public static final String COLOR_VALUE = "Color Sensor Value";
 		public static final String ENCODER_VALUE = "Encoder";
-		//public static NetworkTable table;
-		//public static NetworkTableEntry reset;
 
 	}
 
@@ -123,8 +121,6 @@ public final class Constants {
 		
 		public static final int Left_Bumper = 5;
 		public static final int Right_Bumper = 6;
-
-
 
 	}
 
