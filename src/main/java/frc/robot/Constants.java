@@ -12,10 +12,6 @@ import com.revrobotics.ColorMatch;
 import edu.wpi.first.wpilibj.util.Color;
 import io.github.pseudoresonance.pixy2api.Pixy2;
 import io.github.pseudoresonance.pixy2api.Pixy2.LinkType;
-import io.github.pseudoresonance.pixy2api.links.I2CLink;
-import io.github.pseudoresonance.pixy2api.links.Link;
-import io.github.pseudoresonance.pixy2api.links.SPILink;
-import io.github.pseudoresonance.pixy2api.links.UARTLink;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -53,6 +49,7 @@ public final class Constants {
 		public static final int motor2 = 8;
 		
 		public static final int aimerMotor = 13;
+
 	}
 
 	public static final class ControlPanelConstants {

@@ -18,20 +18,20 @@ public class Limelight extends SubsystemBase {
 	private double knownArea = 0;
 	private double knownDistance = 0;
 
+	private NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+
+	public Limelight() {
+		this(0.0, 0.0);
+	}
+
 	/**
 	 * Creates a new Limelight.
 	 */
-	private NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
-
 	public Limelight(double knownArea, double knownDistance) {
 		
 		this.knownArea = knownArea;
 		this.knownDistance = knownDistance;
 
-		CameraServer.getInstance().startAutomaticCapture();
-	}
-
-	public Limelight() {
 		CameraServer.getInstance().startAutomaticCapture();
 	}
 
@@ -93,7 +93,7 @@ public class Limelight extends SubsystemBase {
 
 	public void setPipeline(double value){
 		table.getEntry("pipeline").setDouble(value);
-	}	
+	}
 
 	@Override
 	public void periodic() {

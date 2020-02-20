@@ -78,11 +78,7 @@ public class Intake extends SubsystemBase {
 	 * @return All Blocks Found in the FOV
 	 */
 	public ArrayList<Block> getPixyBlocks() {
-		ArrayList<Block> blocks = this.pixy.getCCC().getBlocks();
-
-		ntPixyBlocks.setDouble(blocks.size());
-
-		return blocks;
+		return this.pixy.getCCC().getBlocks();
 	}
 
 	/**
@@ -147,17 +143,20 @@ public class Intake extends SubsystemBase {
 		/**
 		 * Read response from the Pixy Class to update the network tables
 		 *  of the current status.
-		 * 
+		 * The getBlocks Function returns either an error code or the total
+		 *  amount of blocks detected.
 		 */
 		switch(pixyStatus) {
 			case Pixy2.PIXY_RESULT_BUSY:
+				this.ntPixyBlocks.setDouble(0.0);
 				this.ntPixyStatus.setString("Busy");
 				break;
 			case Pixy2.PIXY_RESULT_ERROR:
+			this.ntPixyBlocks.setDouble(0.0);
 				this.ntPixyStatus.setString("Error");
 				break;
-			case Pixy2.PIXY_RESULT_OK:
 			default:
+				this.ntPixyBlocks.setDouble(pixyStatus);
 				this.ntPixyStatus.setString("Operational");
 		}
 
