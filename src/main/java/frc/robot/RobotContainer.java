@@ -12,7 +12,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Joystick;
 import frc.robot.Constants.ButtonMapConstants;
 import frc.robot.Constants.ControllerConstants;
-import frc.robot.Constants.EncoderArm;
+import frc.robot.Constants.IntakeConstants;
 import frc.robot.commands.AutoPanel;
 import frc.robot.commands.IntakeDown;
 import frc.robot.commands.JoystickDrive;
@@ -41,7 +41,7 @@ public class RobotContainer {
 
   private final NetworkTableInstance tableInstance = NetworkTableInstance.getDefault();
   private final NetworkTableEntry entryColorSensor = tableInstance.getEntry(Constants.NetworkTableEntries.COLOR_VALUE);
-  private final NetworkTableEntry encoder = tableInstance.getEntry(Constants.NetworkTableEntries.ENCODER_VALUE);
+  private final NetworkTableEntry ntEncoderValue = tableInstance.getEntry(Constants.NetworkTableEntries.ENCODER_VALUE);
 
   private final DriveTrain driveTrain = new DriveTrain();
   private final ControlPanelController controlPanelController = new ControlPanelController(entryColorSensor);
@@ -73,9 +73,9 @@ public class RobotContainer {
 
   // Encoder PID
   private PIDController pidController = new PIDController(
-    EncoderArm.Proportional, 
-    EncoderArm.Integral, 
-    EncoderArm.Derivative);
+    IntakeConstants.Proportional, 
+    IntakeConstants.Integral, 
+    IntakeConstants.Derivative);
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.

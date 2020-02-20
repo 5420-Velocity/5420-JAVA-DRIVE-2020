@@ -10,6 +10,12 @@ package frc.robot;
 import com.revrobotics.ColorMatch;
 
 import edu.wpi.first.wpilibj.util.Color;
+import io.github.pseudoresonance.pixy2api.Pixy2;
+import io.github.pseudoresonance.pixy2api.Pixy2.LinkType;
+import io.github.pseudoresonance.pixy2api.links.I2CLink;
+import io.github.pseudoresonance.pixy2api.links.Link;
+import io.github.pseudoresonance.pixy2api.links.SPILink;
+import io.github.pseudoresonance.pixy2api.links.UARTLink;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -21,31 +27,36 @@ import edu.wpi.first.wpilibj.util.Color;
  */
 public final class Constants {
 
-	public static final class EncoderArm{
-		public static final int encoderPort1 = 0;
-		public static final int encoderPort2 = 1;
+	public static final class IntakeConstants {
+		public static final int encoderPort1 = 0; // Channel A
+		public static final int encoderPort2 = 1; // Channel B
 
-		public static final int highTarget = 0;
-		public static final int lowTarget = 5;
+		public static final int highTarget = 0; // Encoder Position
+		public static final int lowTarget = 5; // Encoder Position
 
-		public static final int armMotor = 11;
-		public static final int intakeMotor = 9;
+		public static final int armMotor = 11; // PID Port
+		public static final int intakeMotor = 9; // PID Port
 
+		// PID Control Values
 		public static final double Proportional = 0.3;
 		public static final double Integral = 0.06;
 		public static final double Derivative = 0.008;
 
+		// Define the way to communicate with the Pixy2 Device
+		public static final LinkType pixyLinkType = LinkType.I2C;
+		public static final int pixyLinkPort = Pixy2.PIXY_DEFAULT_ARGVAL;
+
 	}
 
-	public static final class ShooterConstants{
+	public static final class ShooterConstants {
 		public static final int motor1 = 6;
 		public static final int motor2 = 8;
 		
 		public static final int aimerMotor = 13;
 	}
 
-	public static final class ControlPanelConstants{
-		//number of changes in color
+	public static final class ControlPanelConstants {
+		// Number of changes in color
 		public static final int targetRotations = 24;
 
 		public static final int ControlPanelDriver = 5;

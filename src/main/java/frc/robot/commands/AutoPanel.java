@@ -17,13 +17,13 @@ import frc.robot.subsystems.ControlPanelController;
 public class AutoPanel extends CommandBase {
 
 	private ControlPanelController controlPanelController;
-	private BooleanSupplier Activate;
+	private BooleanSupplier activate;
 	private Color previous;
 	private int index;
 
 
 	public AutoPanel(ControlPanelController controlPanelController, BooleanSupplier activate, int index) {
-		this.Activate = activate;
+		this.activate = activate;
 		this.index = index;
 		this.controlPanelController = controlPanelController;   
 		addRequirements(controlPanelController);
@@ -40,7 +40,7 @@ public class AutoPanel extends CommandBase {
 	@Override
 	public void execute() {
 		//turns the control panel based on the current situation
-		if(Activate.getAsBoolean()){
+		if(activate.getAsBoolean()){
 			if(controlPanelController.isPannelComplete() == false){
 				// Start turning the Motor to turn the control pannel
 				controlPanelController.turnSpeed(0.5);
