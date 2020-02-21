@@ -24,8 +24,7 @@ import io.github.pseudoresonance.pixy2api.Pixy2.LinkType;
 public final class Constants {
 
 	public static final class IntakeConstants {
-		public static final int encoderPort1 = 0; // Channel A
-		public static final int encoderPort2 = 1; // Channel B
+		public static final int encoderPort = 0; // Encoder port
 
 		public static final int highTarget = 0; // Encoder Position
 		public static final int lowTarget = 5; // Encoder Position

@@ -14,9 +14,9 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.IntakeConstants;
@@ -25,12 +25,11 @@ import io.github.pseudoresonance.pixy2api.Pixy2CCC.Block;
 
 public class Intake extends SubsystemBase {
 
-	private Encoder encoder = new Encoder(Constants.IntakeConstants.encoderPort1,
-			Constants.IntakeConstants.encoderPort2, false, Encoder.EncodingType.k2X);
+
+	private DutyCycleEncoder encoder = new DutyCycleEncoder(Constants.IntakeConstants.encoderPort);
 	private WPI_TalonSRX armMotor = new WPI_TalonSRX(Constants.IntakeConstants.armMotor);
 	private WPI_TalonSRX intakeMotor = new WPI_TalonSRX(Constants.IntakeConstants.intakeMotor);
 	private NetworkTableEntry ntEncoderValue = NetworkTableInstance.getDefault().getEntry("Ball Lift Encoder Value");
-	private NetworkTableEntry ntEncoderReset = NetworkTableInstance.getDefault().getEntry("Ball Lift Encoder Reset");
 	private NetworkTableEntry ntPixyStatus = NetworkTableInstance.getDefault().getEntry("Pixy Status");
 	private NetworkTableEntry ntPixyBlocks = NetworkTableInstance.getDefault().getEntry("Pixy Blocks");
 	private Pixy2 pixy = Pixy2.createInstance(IntakeConstants.pixyLinkType);;
@@ -40,19 +39,13 @@ public class Intake extends SubsystemBase {
 		/**
 		 * Register the default value for the network tables
 		 */
-		this.ntEncoderReset.setDefaultBoolean(false);
 		this.ntEncoderValue.setDouble(0.0);
 		this.ntPixyStatus.setDefaultString("");
 
 		/**
 		 * Setup the encoder setting
 		 */
-		encoder.reset();
-		encoder.setDistancePerPulse(4. / 256.);
-		encoder.setMaxPeriod(.1);
-		encoder.setMinRate(10);
-		encoder.setReverseDirection(true);
-		encoder.setSamplesToAverage(5);
+		encoder.setConnectedFrequencyThreshold(975);
 
 		// Tries to Communicate with the Pixy at this moment
 		this.pixy.init(IntakeConstants.pixyLinkPort);
@@ -129,7 +122,7 @@ public class Intake extends SubsystemBase {
 		/**
 		 * Push Encoder Value to the Dashbaord via NetworkTables.
 		 */
-		this.ntEncoderValue.setDouble(this.getEncoderValue());
+		this.ntEncoderValue.setDouble(this.getEncoderValue()*100);
 
 		/**
 		 * Must be called in order for the subsystem to request
@@ -160,13 +153,6 @@ public class Intake extends SubsystemBase {
 				this.ntPixyStatus.setString("Operational");
 		}
 
-		/**
-		 * Reset the Encoder from the Dashboard
-		 */
-		if (this.ntEncoderReset.getBoolean(false) == true) {
-			this.encoderReset();
-			this.ntEncoderReset.setBoolean(false);
-		}
-
+	
 	}
 }
