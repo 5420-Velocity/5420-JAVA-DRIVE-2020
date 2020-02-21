@@ -103,8 +103,6 @@ public class Intake extends SubsystemBase {
 	}
 
 
-	public void encoderReset() {
-		encoder.reset();
 	}
 
 	public void armRun(double power) {
@@ -153,6 +151,5 @@ public class Intake extends SubsystemBase {
 				this.ntPixyStatus.setString("Operational");
 		}
 
-	
 	}
 }
