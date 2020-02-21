@@ -8,9 +8,6 @@
 package frc.robot.subsystems;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
@@ -19,12 +16,12 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.PixyAlgo;
 import frc.robot.Constants.IntakeConstants;
 import io.github.pseudoresonance.pixy2api.Pixy2;
 import io.github.pseudoresonance.pixy2api.Pixy2CCC.Block;
 
 public class Intake extends SubsystemBase {
-
 
 	private DutyCycleEncoder encoder = new DutyCycleEncoder(Constants.IntakeConstants.encoderPort);
 	private WPI_TalonSRX armMotor = new WPI_TalonSRX(Constants.IntakeConstants.armMotor);
@@ -32,7 +29,8 @@ public class Intake extends SubsystemBase {
 	private NetworkTableEntry ntEncoderValue = NetworkTableInstance.getDefault().getEntry("Ball Lift Encoder Value");
 	private NetworkTableEntry ntPixyStatus = NetworkTableInstance.getDefault().getEntry("Pixy Status");
 	private NetworkTableEntry ntPixyBlocks = NetworkTableInstance.getDefault().getEntry("Pixy Blocks");
-	private Pixy2 pixy = Pixy2.createInstance(IntakeConstants.pixyLinkType);;
+	private Pixy2 pixy = Pixy2.createInstance(IntakeConstants.pixyLinkType);
+	private PixyAlgo pixyAlgo = new PixyAlgo(pixy);
 
 	public Intake() {
 
@@ -74,37 +72,6 @@ public class Intake extends SubsystemBase {
 		return this.pixy.getCCC().getBlocks();
 	}
 
-	/**
-	 * This function will get the largest (inherently the closest) object
-	 *  from the list of the blocks in the detected FOV.
-	 * 
-	 * @return Block that is the closest
-	 */
-	public Block getPixyLargest() {
-		AtomicReference<Block> largestBlock = new AtomicReference<>();
-		AtomicInteger largestArea = new AtomicInteger(0);
-
-		/**
-		 * AtomicRefrnce and AtomicInteger is used to
-		 *  access and store variables between the different loops
-		 *  within the forEach Consumer Lambda Function.
-		 */
-		this.getPixyBlocks().forEach((block) -> {
-			int area = block.getWidth() * block.getHeight();
-
-			if(area > largestArea.get()) {
-				// Found a larger block!
-				largestBlock.set(block);
-				largestArea.set(area);
-			}
-		});
-
-		return largestBlock.get();
-	}
-
-
-	}
-
 	public void armRun(double power) {
 		armMotor.set(power);
 	}
@@ -143,7 +110,7 @@ public class Intake extends SubsystemBase {
 				this.ntPixyStatus.setString("Busy");
 				break;
 			case Pixy2.PIXY_RESULT_ERROR:
-			this.ntPixyBlocks.setDouble(0.0);
+				this.ntPixyBlocks.setDouble(0.0);
 				this.ntPixyStatus.setString("Error");
 				break;
 			default:
@@ -152,4 +119,5 @@ public class Intake extends SubsystemBase {
 		}
 
 	}
+
 }
