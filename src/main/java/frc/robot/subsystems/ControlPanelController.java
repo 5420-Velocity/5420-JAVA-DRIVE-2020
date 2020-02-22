@@ -57,6 +57,10 @@ public class ControlPanelController extends SubsystemBase {
 		panelCompleted = val;
 	}
 
+	public void liftSpeed(double power){
+		panelLift.set(power);
+	}
+
 	public void turnSpeed(double power){
 		panelDriver.set(power * 0.75);
 	}

@@ -17,11 +17,13 @@ import frc.robot.commands.AutoPanel;
 import frc.robot.commands.IntakeDown;
 import frc.robot.commands.JoystickDrive;
 import frc.robot.commands.Shoot;
+import frc.robot.commands.liftControl;
 import frc.robot.subsystems.ChuteSubsystem;
 import frc.robot.subsystems.ControlPanelController;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.LiftSubsystem;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.controller.PIDController;
@@ -48,9 +50,7 @@ public class RobotContainer {
 
   private static int index;
 
-  private final AutoPanel AutoPanel = new AutoPanel(controlPanelController, 
-    () -> {return driverJoystick.getRawButton(ButtonMapConstants.Yellow_Button_ID);},
-    index);
+  private final AutoPanel AutoPanel = new AutoPanel(controlPanelController, index);
 
   private final JoystickDrive joystickDrive = new JoystickDrive(driveTrain, 
     () -> {return driverJoystick.getRawAxis(1);}, 
@@ -60,9 +60,17 @@ public class RobotContainer {
    * Setup Intake Subsystm and the Extra Commands to Contorl It
    */
   private final Intake intake = new Intake();
+
   private final IntakeDown intakeRun = new IntakeDown(intake);
 
   private final ShooterSubsystem shooter = new ShooterSubsystem();
+
+  private final LiftSubsystem lift = new LiftSubsystem();
+
+  private final liftControl liftCommand = new liftControl(lift, 
+  () -> {return operatorJoystick.getRawButton(Constants.ButtonMapConstants.Left_Bumper);},
+  () -> {return operatorJoystick.getRawButton(Constants.ButtonMapConstants.Right_Bumper);}
+  );
 
   private final ChuteSubsystem chute = new ChuteSubsystem();
 
@@ -114,22 +122,30 @@ public class RobotContainer {
    * 
    */
   private void configureButtonBindings() {
+    
 
     /**
      * Setup Button Events for the Shooter on the Driver Controller
      */
     new JoystickButton(this.driverJoystick, Constants.ButtonMapConstants.Blue_Button_ID)
-      .whenPressed(() -> this.shooter.setSpeed(-0.8, -0.7))
-      .whenPressed(() -> this.chute.setSpeed(0.5))
-      .whenReleased(() -> this.chute.setSpeed(0))
+      .whenPressed(() -> this.shooter.setSpeed(1, -1))
       .whenReleased(() -> this.shooter.setSpeed(0,0));
+
+      new JoystickButton(this.driverJoystick, Constants.ButtonMapConstants.Left_Bumper)
+      .whenPressed(() -> this.chute.setLeft(-0.75))
+      .whenReleased(() -> this.chute.setLeft(0));
+
+      new JoystickButton(this.driverJoystick, Constants.ButtonMapConstants.Right_Bumper)
+      .whenPressed(() -> this.chute.setRight(0.75))
+      .whenReleased(() -> this.chute.setRight(0));
+    
 
     /**
      * Setup the button event for the Intake on the Operator Controller
      */
     new JoystickButton(this.operatorJoystick, ButtonMapConstants.Green_Button_ID)
       // Go Down on Button Press
-      .whenPressed(() -> this.intake.intakeMove(1.0))
+      .whenPressed(() -> this.intake.intakeMove(-1.0))
       .whenHeld(
         new PIDCommand(
           this.pidController,
@@ -153,6 +169,8 @@ public class RobotContainer {
     CommandScheduler scheduler = CommandScheduler.getInstance();
 
     scheduler.setDefaultCommand(this.driveTrain, this.joystickDrive);
+
+    scheduler.setDefaultCommand(this.lift, this.liftCommand);
 
     // Go Up By Default
     scheduler.setDefaultCommand(this.intake, new PIDCommand(

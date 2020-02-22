@@ -17,14 +17,11 @@ import frc.robot.subsystems.ControlPanelController;
 public class AutoPanel extends CommandBase {
 
 	private ControlPanelController controlPanelController;
-	private BooleanSupplier activate;
 	private Color previous;
 	private int index;
 
 
-	public AutoPanel(ControlPanelController controlPanelController, BooleanSupplier activate, int index) {
-		this.activate = activate;
-		this.index = index;
+	public AutoPanel(ControlPanelController controlPanelController, int Index) {
 		this.controlPanelController = controlPanelController;   
 		addRequirements(controlPanelController);
 	}
@@ -38,9 +35,7 @@ public class AutoPanel extends CommandBase {
 
 	// Called every time the scheduler runs while the command is scheduled.
 	@Override
-	public void execute() {
-		//turns the control panel based on the current situation
-		if(activate.getAsBoolean()){
+	public void execute() {		
 			if(controlPanelController.isPannelComplete() == false){
 				// Start turning the Motor to turn the control pannel
 				controlPanelController.turnSpeed(0.5);
@@ -58,7 +53,6 @@ public class AutoPanel extends CommandBase {
 			else{
 				controlPanelController.turnSpeed(0);
 			}
-		}
 	}
 
 	public void Rotate(){

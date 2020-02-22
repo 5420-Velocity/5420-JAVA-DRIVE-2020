@@ -7,33 +7,22 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-
+import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-public class ChuteSubsystem extends SubsystemBase {
+public class LiftSubsystem extends SubsystemBase {
   /**
-   * Creates a new Chute.
+   * Creates a new LiftSubsystem.
    */
-  public WPI_TalonSRX chuteLeft = new WPI_TalonSRX(Constants.ChuteConstanst.LeftChute);
-  public WPI_TalonSRX chuteRight = new WPI_TalonSRX(Constants.ChuteConstanst.RightChute);
+  private VictorSP liftMotor = new VictorSP(Constants.LiftConstants.liftMotor);
 
-  public ChuteSubsystem() {
+  public LiftSubsystem() {
 
   }
 
-  public void setSpeed(double power){
-    chuteLeft.set(power);
-    chuteRight.set(-power);
-  }
-
-  public void setLeft(double power){
-    chuteLeft.set(power);
-  }
-
-  public void setRight(double power){
-    chuteRight.set(power);
+  public void liftSpeed(double power){
+    liftMotor.set(power);
   }
 
   @Override

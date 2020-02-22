@@ -8,6 +8,8 @@
 package frc.robot.subsystems;
 
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
@@ -71,6 +73,37 @@ public class Intake extends SubsystemBase {
 	public ArrayList<Block> getPixyBlocks() {
 		return this.pixy.getCCC().getBlocks();
 	}
+
+	/**
+	 * This function will get the largest (inherently the closest) object
+	 *  from the list of the blocks in the detected FOV.
+	 * 
+	 * @return Block that is the closest
+	 */
+	public Block getPixyLargest() {
+		AtomicReference<Block> largestBlock = new AtomicReference<>();
+		AtomicInteger largestArea = new AtomicInteger(0);
+
+		/**
+		 * AtomicRefrnce and AtomicInteger is used to
+		 *  access and store variables between the different loops
+		 *  within the forEach Consumer Lambda Function.
+		 */
+		this.getPixyBlocks().forEach((block) -> {
+			int area = block.getWidth() * block.getHeight();
+
+			if(area > largestArea.get()) {
+				// Found a larger block!
+				largestBlock.set(block);
+				largestArea.set(area);
+			}
+		});
+
+		return largestBlock.get();
+	}
+
+
+	
 
 	public void armRun(double power) {
 		armMotor.set(power);

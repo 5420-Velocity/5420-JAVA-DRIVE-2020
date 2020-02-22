@@ -26,8 +26,8 @@ public final class Constants {
 	public static final class IntakeConstants {
 		public static final int encoderPort = 0; // Encoder port
 
-		public static final int highTarget = 0; // Encoder Position
-		public static final int lowTarget = 5; // Encoder Position
+		public static final int highTarget = 60; // Encoder Position
+		public static final int lowTarget = 75; // Encoder Position
 
 		public static final int armMotor = 11; // PID Port
 		public static final int intakeMotor = 9; // PID Port
@@ -57,6 +57,10 @@ public final class Constants {
 
 		public static final int ControlPanelDriver = 5;
 		public static final int ControlPanelLift = 7;
+	}
+
+	public static final class LiftConstants {
+		public static final int liftMotor = 1;
 	}
 
     public static final class DriveTrainConstants {
@@ -95,8 +99,8 @@ public final class Constants {
 	}
 
 	public static final class ChuteConstanst {
-		public static final int LeftChute = 10;
-		public static final int RightChute = 12;
+		public static final int LeftChute = 12;
+		public static final int RightChute = 10;
 	}
 
 	public static final class NetworkTableEntries {
