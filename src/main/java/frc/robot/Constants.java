@@ -26,16 +26,16 @@ public final class Constants {
 	public static final class IntakeConstants {
 		public static final int encoderPort = 0; // Encoder port
 
-		public static final int highTarget = 60; // Encoder Position
-		public static final int lowTarget = 75; // Encoder Position
+		public static final double highTarget = 57.5; // Encoder Position
+		public static final double lowTarget = 75.0; // Encoder Position
 
 		public static final int armMotor = 11; // PID Port
 		public static final int intakeMotor = 9; // PID Port
 
 		// PID Control Values
-		public static final double Proportional = 0.3;
+		public static final double Proportional = 0.1;
 		public static final double Integral = 0.06;
-		public static final double Derivative = 0.008;
+		public static final double Derivative = 0.006;
 
 		// Define the way to communicate with the Pixy2 Device
 		public static final LinkType pixyLinkType = LinkType.I2C;
