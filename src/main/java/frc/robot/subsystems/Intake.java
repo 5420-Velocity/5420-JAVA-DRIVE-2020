@@ -52,7 +52,7 @@ public class Intake extends SubsystemBase {
 	}
 
 	public double getEncoderValue() {
-		return encoder.getDistance();
+		return encoder.get()*100;
 	}
 
 	// Get the offset of the low target and current position
@@ -102,10 +102,8 @@ public class Intake extends SubsystemBase {
 		return largestBlock.get();
 	}
 
-
-	
-
 	public void armRun(double power) {
+		System.out.println("Arm Run Speed " + power);
 		armMotor.set(power);
 	}
 
@@ -120,7 +118,7 @@ public class Intake extends SubsystemBase {
 		/**
 		 * Push Encoder Value to the Dashbaord via NetworkTables.
 		 */
-		this.ntEncoderValue.setDouble(this.getEncoderValue()*100);
+		this.ntEncoderValue.setDouble(this.getEncoderValue());
 
 		/**
 		 * Must be called in order for the subsystem to request

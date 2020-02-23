@@ -61,15 +61,13 @@ public class RobotContainer {
    */
   private final Intake intake = new Intake();
 
-  private final IntakeDown intakeRun = new IntakeDown(intake);
-
   private final ShooterSubsystem shooter = new ShooterSubsystem();
 
   private final LiftSubsystem lift = new LiftSubsystem();
 
   private final liftControl liftCommand = new liftControl(lift, 
-  () -> {return operatorJoystick.getRawButton(Constants.ButtonMapConstants.Left_Bumper);},
-  () -> {return operatorJoystick.getRawButton(Constants.ButtonMapConstants.Right_Bumper);}
+    () -> {return operatorJoystick.getRawButton(Constants.ButtonMapConstants.Left_Bumper);},
+    () -> {return operatorJoystick.getRawButton(Constants.ButtonMapConstants.Right_Bumper);}
   );
 
   private final ChuteSubsystem chute = new ChuteSubsystem();
@@ -77,7 +75,8 @@ public class RobotContainer {
   private final Shoot shoot = new Shoot(shooter,
     () -> {return operatorJoystick.getRawButton(Constants.ButtonMapConstants.Yellow_Button_ID); },
     () -> {return operatorJoystick.getRawButton(5);},
-    () -> {return operatorJoystick.getRawButton(4);});
+    () -> {return operatorJoystick.getRawButton(4);}
+  );
 
   // Encoder PID
   private PIDController pidController = new PIDController(
