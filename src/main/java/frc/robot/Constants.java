@@ -35,7 +35,7 @@ public final class Constants {
 		// PID Control Values
 		public static final double Proportional = 0.1;
 		public static final double Integral = 0.06;
-		public static final double Derivative = 0.006;
+		public static final double Derivative = 0.005;
 
 		// Define the way to communicate with the Pixy2 Device
 		public static final LinkType pixyLinkType = LinkType.I2C;

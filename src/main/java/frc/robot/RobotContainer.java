@@ -66,8 +66,8 @@ public class RobotContainer {
   private final LiftSubsystem lift = new LiftSubsystem();
 
   private final liftControl liftCommand = new liftControl(lift, 
-    () -> {return operatorJoystick.getRawButton(Constants.ButtonMapConstants.Left_Bumper);},
-    () -> {return operatorJoystick.getRawButton(Constants.ButtonMapConstants.Right_Bumper);}
+    () -> {return driverJoystick.getRawButton(Constants.ButtonMapConstants.Left_Bumper);},
+    () -> {return driverJoystick.getRawButton(Constants.ButtonMapConstants.Right_Bumper);}
   );
 
   private final ChuteSubsystem chute = new ChuteSubsystem();
@@ -126,15 +126,15 @@ public class RobotContainer {
     /**
      * Setup Button Events for the Shooter on the Driver Controller
      */
-    new JoystickButton(this.driverJoystick, Constants.ButtonMapConstants.Blue_Button_ID)
+    new JoystickButton(this.operatorJoystick, Constants.ButtonMapConstants.Blue_Button_ID)
       .whenPressed(() -> this.shooter.setSpeed(1, -1))
       .whenReleased(() -> this.shooter.setSpeed(0,0));
 
-      new JoystickButton(this.driverJoystick, Constants.ButtonMapConstants.Left_Bumper)
+      new JoystickButton(this.operatorJoystick, Constants.ButtonMapConstants.Left_Bumper)
       .whenPressed(() -> this.chute.setLeft(-0.75))
       .whenReleased(() -> this.chute.setLeft(0));
 
-      new JoystickButton(this.driverJoystick, Constants.ButtonMapConstants.Right_Bumper)
+      new JoystickButton(this.operatorJoystick, Constants.ButtonMapConstants.Right_Bumper)
       .whenPressed(() -> this.chute.setRight(0.75))
       .whenReleased(() -> this.chute.setRight(0));
     
