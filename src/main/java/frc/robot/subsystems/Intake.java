@@ -103,7 +103,6 @@ public class Intake extends SubsystemBase {
 	}
 
 	public void armRun(double power) {
-		System.out.println("Arm Run Speed " + power);
 		armMotor.set(power);
 	}
 
