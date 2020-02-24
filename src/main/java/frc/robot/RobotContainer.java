@@ -52,8 +52,8 @@ public class RobotContainer {
 	private final AutoPanel AutoPanel = new AutoPanel(controlPanelController, index);
 
 	private final JoystickDrive joystickDrive = new JoystickDrive(driveTrain, 
-		() -> {return driverJoystick.getRawAxis(1);}, 
-		() -> { return driverJoystick.getRawAxis(4);}
+		() -> driverJoystick.getRawAxis(1), 
+		() -> driverJoystick.getRawAxis(4)
 	);
 
 	/**
@@ -66,16 +66,16 @@ public class RobotContainer {
 	private final LiftSubsystem lift = new LiftSubsystem();
 
 	private final liftControl liftCommand = new liftControl(lift, 
-		() -> {return driverJoystick.getRawButton(Constants.ButtonMapConstants.Left_Bumper);},
-		() -> {return driverJoystick.getRawButton(Constants.ButtonMapConstants.Right_Bumper);}
+		() -> driverJoystick.getRawButton(Constants.ButtonMapConstants.Left_Bumper),
+		() -> driverJoystick.getRawButton(Constants.ButtonMapConstants.Right_Bumper)
 	);
 
 	private final ChuteSubsystem chute = new ChuteSubsystem();
 
 	private final Shoot shoot = new Shoot(shooter,
-		() -> {return operatorJoystick.getRawButton(Constants.ButtonMapConstants.Yellow_Button_ID); },
-		() -> {return operatorJoystick.getRawButton(5);},
-		() -> {return operatorJoystick.getRawButton(4);}
+		() -> operatorJoystick.getRawButton(Constants.ButtonMapConstants.Yellow_Button_ID),
+		() -> operatorJoystick.getRawButton(5),
+		() -> operatorJoystick.getRawButton(4)
 	);
 
 	// Encoder PID
@@ -147,11 +147,11 @@ public class RobotContainer {
 		.whenPressed(() -> this.intake.intakeMove(-1.0))
 		.whenHeld(
 			new PIDCommand(
-			this.pidController,
-			() -> this.intake.getEncoderFromLowValue(),
-			0.0,
-			output -> this.intake.armRun(output),
-			this.intake
+				this.pidController,
+				() -> this.intake.getEncoderFromLowValue(),
+				0.0,
+				output -> this.intake.armRun(output),
+				this.intake
 			)
 		)
 
@@ -173,11 +173,11 @@ public class RobotContainer {
 
 		// Go Up By Default
 		scheduler.setDefaultCommand(this.intake, new PIDCommand(
-		this.pidController,
-		() -> this.intake.getEncoderFromHighValue(),
-		0.0,
-		output -> intake.armRun(output),
-		this.intake
+			this.pidController,
+			() -> this.intake.getEncoderFromHighValue(),
+			0.0,
+			output -> intake.armRun(output),
+			this.intake
 		));
 		
 	}
