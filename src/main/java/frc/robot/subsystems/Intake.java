@@ -71,7 +71,7 @@ public class Intake extends SubsystemBase {
 	 * @return All Blocks Found in the FOV
 	 */
 	public ArrayList<Block> getPixyBlocks() {
-		return this.pixy.getCCC().getBlocks();
+		return this.pixy.getCCC().getBlockCache();
 	}
 
 	/**

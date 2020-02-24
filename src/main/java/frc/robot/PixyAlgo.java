@@ -38,7 +38,7 @@ public class PixyAlgo {
 	 * @return All Blocks Found in the FOV
 	 */
 	public ArrayList<Block> getPixyBlocks() {
-		return this.pixy.getCCC().getBlocks();
+		return this.pixy.getCCC().getBlockCache();
 	}
 
 	/**
@@ -80,32 +80,29 @@ public class PixyAlgo {
 	 * @return Block X Offset from the Nearest based on Area (distance away) and
 	 *   offset from 0 on the X target.
 	 */
-	public Block getPixyBest() {
+	public BlockExtra getPixyBest() {
 		TreeSet<Integer> areaRank = new TreeSet<Integer>();
 		TreeSet<Integer> zeroRank = new TreeSet<Integer>();
-		ArrayList<Block> blocks = this.getPixyBlocks();
-
-		// Convert the X Y cords to be the offset from the center of the screen.
-		blocks = this.convertToCenterBlock(blocks);
+		ArrayList<BlockExtra> blocks = this.convertToBlockExtra(this.getPixyBlocks());
 
 		// Add Blocks to the TreeSets for the Area and the Distance from Zero
-		for(Block block : blocks){
-			areaRank.add(block.getWidth() * block.getHeight());
+		for(BlockExtra block : blocks){
+			areaRank.add(block.getArea());
 			zeroRank.add(Math.abs(block.getX()));
 		}
 
 		// Sort the list by the weight of area and the offset from
 		//  zero!
-		Collections.sort(blocks, new Comparator<Block>(){
+		Collections.sort(blocks, new Comparator<BlockExtra>(){
 			/**
 			 * Setup sorting to rank the blocks by the following conditions:
 			 *  - Block has a Larger Area
 			 *  - Block is Close to Zero (Center of the target area)
 			 */
 			@Override
-			public int compare(Block block1, Block block2) {
-				int block1Area = block1.getWidth() * block1.getHeight();
-				int block2Area = block2.getWidth() * block2.getHeight();
+			public int compare(BlockExtra block1, BlockExtra block2) {
+				int block1Area = block1.getArea();
+				int block2Area = block2.getArea();
 
 				// Using tailSet to get the rankings from the top of the list, get the
 				//  area (gets the positiion with the larger area as a good point)
@@ -144,68 +141,35 @@ public class PixyAlgo {
 	}
 
 	/**
-	 * See `convertToCenterBlock` for more details on what this function does.
+	 * See `convertToBlockExtra` for more details on what this function does.
 	 * 
-	 * @see convertToCenterBlock
+	 * @see convertToBlockExtra
 	 * @param blocks
-	 * @return Blocks relative to the Center of the frame
+	 * @return Blocks that are extended to BlockExtra
 	 */
-	private ArrayList<Block> convertToCenterBlock(ArrayList<Block> blocks) {
-		// Convert All Blocks Given to be from the center of the given frame.
-		blocks.forEach(b -> this.convertToCenterBlock(b));
+	private ArrayList<BlockExtra> convertToBlockExtra(ArrayList<Block> blocks) {
+		// Convert All Blocks Given to BlockExtra
+		ArrayList<BlockExtra> blocksOutput = new ArrayList<BlockExtra>();
+		
+		for(Block block : blocks) {
+			blocksOutput.add(this.convertToBlockExtra(block));
+		}
 
-		return blocks;
+		return blocksOutput;
 	}
 
 	/**
-	 * Converts the Block X and Y coordinates to be
-	 *  relative to the center of the image frame.
+	 * Creates a block extra element with the extra function to help.
 	 * 
-	 * @return Block relative to the Center of the screen.
+	 * @return Creates a new BlockExtra Element that extends Block
 	 */
-	private Block convertToCenterBlock(Block block) {
-		Block newElement = this.pixy.getCCC().new Block(
-			block.getSignature(),
-			this.getXFromOrigin(block),
-			this.getYFromOrigin(block),
-			block.getWidth(),
-			block.getHeight(),
-			block.getAngle(),
-			block.getIndex(),
-			block.getAge()
+	private BlockExtra convertToBlockExtra(Block block) {
+		BlockExtra newElement = new BlockExtra(
+			this.pixy,
+			block
 		);
 
 		return newElement;
-	}
-
-	/**
-	 * Get the X Offset from Center of the Frame to the
-	 *  center of the given block.
-	 * 
-	 * @see https://stackoverflow.com/a/14880815/5779200
-	 * @param block
-	 * @return X Offset from the Center of the frame
-	 */
-	private Integer getXFromOrigin(Block block) {
-		double frameHeight = this.pixy.getFrameHeight();
-		double blockY = block.getY();
-
-		return (int)(frameHeight / 2 + blockY);
-	}
-
-	/**
-	 * Get the Y Offset from Center of the Frame to the
-	 *  center of the given block.
-	 * 
-	 * @see https://stackoverflow.com/a/14880815/5779200
-	 * @param block
-	 * @return Y Offset from the Center of the frame
-	 */
-	private Integer getYFromOrigin(Block block) {
-		double frameWidth = this.pixy.getFrameWidth() / 2;
-		double blockX = block.getX();
-
-		return (int)(blockX + frameWidth / 2);
 	}
 
 }
