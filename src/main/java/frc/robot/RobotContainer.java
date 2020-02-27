@@ -127,36 +127,36 @@ public class RobotContainer {
 		 * Setup Button Events for the Shooter on the Driver Controller
 		 */
 		new JoystickButton(this.operatorJoystick, Constants.ButtonMapConstants.Blue_Button_ID)
-		.whenPressed(() -> this.shooter.setSpeed(1, -1))
-		.whenReleased(() -> this.shooter.setSpeed(0,0));
+			.whenPressed(() -> this.shooter.setSpeed(1, -1))
+			.whenReleased(() -> this.shooter.setSpeed(0,0));
 
 		new JoystickButton(this.operatorJoystick, Constants.ButtonMapConstants.Left_Bumper)
-		.whenPressed(() -> this.chute.setLeft(-0.75))
-		.whenReleased(() -> this.chute.setLeft(0));
+			.whenPressed(() -> this.chute.setLeft(-0.75))
+			.whenReleased(() -> this.chute.setLeft(0));
 
 		new JoystickButton(this.operatorJoystick, Constants.ButtonMapConstants.Right_Bumper)
-		.whenPressed(() -> this.chute.setRight(0.75))
-		.whenReleased(() -> this.chute.setRight(0));
+			.whenPressed(() -> this.chute.setRight(0.75))
+			.whenReleased(() -> this.chute.setRight(0));
 		
 
 		/**
 		 * Setup the button event for the Intake on the Operator Controller
 		 */
 		new JoystickButton(this.operatorJoystick, ButtonMapConstants.Green_Button_ID)
-		// Go Down on Button Press
-		.whenPressed(() -> this.intake.intakeMove(-1.0))
-		.whenHeld(
-			new PIDCommand(
-				this.pidController,
-				() -> this.intake.getEncoderFromLowValue(),
-				0.0,
-				output -> this.intake.armRun(output),
-				this.intake
+			// Go Down on Button Press
+			.whenPressed(() -> this.intake.intakeMove(-1.0))
+			.whenHeld(
+				new PIDCommand(
+					this.pidController,
+					() -> this.intake.getEncoderFromLowValue(),
+					0.0,
+					output -> this.intake.armRun(output),
+					this.intake
+				)
 			)
-		)
 
-		// Turn off Motor
-		.whenReleased(() -> this.intake.intakeMove(0));
+			// Turn off Motor
+			.whenReleased(() -> this.intake.intakeMove(0));
 
 	}
 
