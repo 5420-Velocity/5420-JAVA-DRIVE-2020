@@ -33,8 +33,8 @@ public class JoystickDrive extends CommandBase  {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	public void execute() {
-		if (Math.abs(speed.getAsDouble()) > 0.15 || Math.abs(rotation.getAsDouble()) > 0.15) {
-			driveTrain.arcadeDrive((speed.getAsDouble()), rotation.getAsDouble());
+		if (Math.abs(speed.getAsDouble()) > 0.05 || Math.abs(rotation.getAsDouble()) > 0.05) {
+			driveTrain.arcadeDrive((speed.getAsDouble()*0.5), rotation.getAsDouble()*0.5);
 		} else {
 			driveTrain.arcadeDrive(0, 0);
 		}
