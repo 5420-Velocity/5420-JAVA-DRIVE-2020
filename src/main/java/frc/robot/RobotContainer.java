@@ -15,6 +15,7 @@ import frc.robot.Constants.ControllerConstants;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.commands.AutoPanel;
 import frc.robot.commands.JoystickDrive;
+import edu.wpi.first.wpilibj.Compressor;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.liftControl;
 import frc.robot.subsystems.ChuteSubsystem;
@@ -48,6 +49,8 @@ public class RobotContainer {
 	private final ControlPanelController controlPanelController = new ControlPanelController(entryColorSensor);
 
 	private static int index;
+
+	public Compressor compressor = new Compressor(0);
 
 	private final AutoPanel AutoPanel = new AutoPanel(controlPanelController, index);
 
@@ -124,8 +127,15 @@ public class RobotContainer {
 		/**
 		 * Setup Button Events for the Shooter on the Driver Controller
 		 */
+		new JoystickButton(this.driverJoystick, Constants.ButtonMapConstants.Yellow_Button_ID)
+			.whenPressed(() -> this.driveTrain.shift(true))
+			.whenReleased(() -> this.driveTrain.shift(false));
+
+		/**
+		 * Setup Button Events for the Shooter on the Operator Controller
+		 */
 		new JoystickButton(this.operatorJoystick, Constants.ButtonMapConstants.Blue_Button_ID)
-			.whenPressed(() -> this.shooter.setSpeed(1, -1))
+			.whenPressed(() -> this.shooter.setSpeed(-1, 1))
 			.whenReleased(() -> this.shooter.setSpeed(0,0));
 
 		new JoystickButton(this.operatorJoystick, Constants.ButtonMapConstants.Left_Bumper)

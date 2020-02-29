@@ -9,8 +9,10 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.Constants.DriveTrainConstants;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
@@ -27,9 +29,13 @@ public class DriveTrain extends SubsystemBase {
 	private WPI_TalonFX RightAT = new WPI_TalonFX(DriveTrainConstants.Right_A_ID);
 	private WPI_TalonFX RightBT = new WPI_TalonFX(DriveTrainConstants.Right_B_ID);
 
+	private Solenoid trans = new Solenoid(Constants.DriveTrainConstants.transmission);
+
 	private DifferentialDrive drive;
 
 	public DriveTrain(){
+		this.shift(Constants.DriveTrainConstants.defaultGear);
+
 		LeftAT.configFactoryDefault();
 		LeftBT.configFactoryDefault();
 		RightAT.configFactoryDefault();
@@ -54,6 +60,10 @@ public class DriveTrain extends SubsystemBase {
 
 	public void arcadeDrive(double speed, double rotation){
 		drive.arcadeDrive(speed, rotation);
-    }
+	}
+	
+	public void shift(boolean state){
+		trans.set(state);
+	}
     
 }

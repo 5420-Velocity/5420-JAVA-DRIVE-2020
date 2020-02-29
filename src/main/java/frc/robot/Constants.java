@@ -73,6 +73,10 @@ public final class Constants {
 		public static final int Right_A_ID = 3;
 		public static final int Right_B_ID = 4;
 
+		//trans solenoid
+		public static final int transmission = 0;
+		public static final boolean defaultGear = false;
+
 	}
 
 	public static final class ColorTargets {
