@@ -11,18 +11,21 @@ import java.util.function.BooleanSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.LiftSubsystem;
+import frc.robot.subsystems.Intake;
 
 public class liftControl extends CommandBase {
 	/**
 	 * Creates a new liftControl.
 	 */
 	private LiftSubsystem liftS;
+	private Intake intakeSubsystem;
 	private BooleanSupplier upButton;
 	private BooleanSupplier downButton;
 
 
-	public liftControl(LiftSubsystem subsystem, BooleanSupplier UpButton, BooleanSupplier DownButton) {
+	public liftControl(LiftSubsystem subsystem, Intake intakeSubsystem , BooleanSupplier UpButton, BooleanSupplier DownButton) {
 		this.liftS = subsystem;
+		this.intakeSubsystem = intakeSubsystem;
 		this.upButton = UpButton;
 		this.downButton = DownButton;
 		addRequirements(subsystem);
@@ -38,13 +41,14 @@ public class liftControl extends CommandBase {
 	@Override
 	public void execute() {
 		if(upButton.getAsBoolean()){
-		liftS.liftSpeed(0.95);
+			liftS.liftSpeed(-0.95);
+			this.intakeSubsystem.forceArmDown(true);
 		}
 		else if(downButton.getAsBoolean()){
-		liftS.liftSpeed(-0.95);
+			liftS.liftSpeed(0.95);
 		}
 		else{
-		liftS.liftSpeed(0);
+			liftS.liftSpeed(0);
 		}
 		
 	}

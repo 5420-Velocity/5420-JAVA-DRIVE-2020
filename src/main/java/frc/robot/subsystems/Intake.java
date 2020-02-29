@@ -33,6 +33,7 @@ public class Intake extends SubsystemBase {
 	private NetworkTableEntry ntPixyBlocks = NetworkTableInstance.getDefault().getEntry("Pixy Blocks");
 	private Pixy2 pixy = Pixy2.createInstance(IntakeConstants.pixyLinkType);
 	private PixyAlgo pixyAlgo = new PixyAlgo(pixy);
+	private boolean forceUpperlimitDown = false;
 
 	public Intake() {
 
@@ -55,13 +56,29 @@ public class Intake extends SubsystemBase {
 		return encoder.get()*100;
 	}
 
-	// Get the offset of the low target and current position
+	/**
+	 * Get the offset of the low target and current position
+	 * 
+	 * @return Offset from Low Target
+	 */
 	public double getEncoderFromLowValue() {
 		return this.getEncoderValue() - Constants.IntakeConstants.lowTarget;
 	}
 
-	// Get the offset of the high target and current position
+	/**
+	 * Get the offset of the high target and current position
+	 * If the flag `forceUpperlimitDown` is true then it returns
+	 *   the low offset to force the arm down.
+	 * 
+	 * @return Offset from the Hight Target
+	 */
 	public double getEncoderFromHighValue() {
+		
+		// When the Override flag is enabled to force the arm in the Middle position
+		if(this.forceUpperlimitDown == true) {
+			return this.getEncoderValue() - Constants.IntakeConstants.middleTarget;
+		}
+
 		return this.getEncoderValue() - Constants.IntakeConstants.highTarget;
 	}
 
@@ -148,6 +165,15 @@ public class Intake extends SubsystemBase {
 				this.ntPixyStatus.setString("Operational");
 		}
 
+	}
+
+	/**
+	 * This function will set a flag for force the arm target down.
+	 * 
+	 * @param boolean Force High Offset to the Down Offset
+	 */
+	public void forceArmDown(boolean force) {
+		this.forceUpperlimitDown = force;
 	}
 
 }

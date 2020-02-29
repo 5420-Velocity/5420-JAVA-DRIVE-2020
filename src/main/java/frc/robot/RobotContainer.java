@@ -59,13 +59,13 @@ public class RobotContainer {
 	/**
 	 * Setup Intake Subsystm and the Extra Commands to Contorl It
 	 */
-	private final Intake intake = new Intake();
+	final Intake intake = new Intake();
 
 	private final ShooterSubsystem shooter = new ShooterSubsystem();
 
 	private final LiftSubsystem lift = new LiftSubsystem();
 
-	private final liftControl liftCommand = new liftControl(lift, 
+	private final liftControl liftCommand = new liftControl(lift, intake,
 		() -> driverJoystick.getRawButton(Constants.ButtonMapConstants.Left_Bumper),
 		() -> driverJoystick.getRawButton(Constants.ButtonMapConstants.Right_Bumper)
 	);
@@ -121,8 +121,6 @@ public class RobotContainer {
 	 * 
 	 */
 	private void configureButtonBindings() {
-		
-
 		/**
 		 * Setup Button Events for the Shooter on the Driver Controller
 		 */

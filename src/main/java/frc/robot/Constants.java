@@ -26,8 +26,9 @@ public final class Constants {
 	public static final class IntakeConstants {
 		public static final int encoderPort = 0; // Encoder port
 
-		public static final double highTarget = 57.5; // Encoder Position
-		public static final double lowTarget = 75.0; // Encoder Position
+		public static final double highTarget = 57.5; // Encoder Position for high position
+		public static final double middleTarget = 66; // Encoder position for middle position
+		public static final double lowTarget = 75.0; // Encoder Position for low position
 
 		public static final int armMotor = 11; // PID Port
 		public static final int intakeMotor = 9; // PID Port
@@ -54,13 +55,12 @@ public final class Constants {
 	public static final class ControlPanelConstants {
 		// Number of changes in color
 		public static final int targetRotations = 24;
-
 		public static final int ControlPanelDriver = 5;
 		public static final int ControlPanelLift = 7;
 	}
 
 	public static final class LiftConstants {
-		public static final int liftMotor = 1;
+		public static final int liftMotor = 3;
 	}
 
     public static final class DriveTrainConstants {
