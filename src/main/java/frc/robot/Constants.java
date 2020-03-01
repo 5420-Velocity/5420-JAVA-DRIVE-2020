@@ -114,7 +114,7 @@ public final class Constants {
 	public static final class NetworkTableEntries {
 
 		public static final String COLOR_VALUE = "Color Sensor Value";
-		public static final String COLOR_ENCODER_VALUE = "COlor Encoder Value";
+		public static final String COLOR_ENCODER_VALUE = "Color Encoder Value";
 		public static final String ENCODER_VALUE = "Encoder";
 
 	}

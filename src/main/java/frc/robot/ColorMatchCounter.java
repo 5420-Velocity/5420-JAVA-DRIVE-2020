@@ -7,6 +7,7 @@ import com.revrobotics.ColorSensorV3;
 import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SendableRegistry;
+import edu.wpi.first.wpilibj.util.Color;
 
 /**
  * Converts a Color Sensor into a simple Encoder Interface
@@ -18,7 +19,7 @@ public class ColorMatchCounter implements Sendable, AutoCloseable {
 
 	private ColorSensorV3 colorSensor;
 	private ColorMatch colorMatch;
-	private ColorMatchResult lastResult;
+	private Color lastColorResult;
 	private int count = 0;
 	private String tagId;
 
@@ -37,9 +38,9 @@ public class ColorMatchCounter implements Sendable, AutoCloseable {
 		// if it has changed then add one for the counter.
 		ColorMatchResult result = this.colorMatch.matchClosestColor(colorSensor.getColor());
 
-		if (lastResult == null || !lastResult.equals(result)) {
+		if (lastColorResult == null || !lastColorResult.equals(result.color)) {
 			// Objects are not hte same, This a new Object
-			this.lastResult = result;
+			this.lastColorResult = result.color;
 			this.count++;
 		}
 
