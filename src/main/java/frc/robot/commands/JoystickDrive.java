@@ -17,6 +17,23 @@ public class JoystickDrive extends CommandBase  {
 	private final DoubleSupplier speed;
 	private final DoubleSupplier rotation;
 
+	/**
+	 * This function will get the input value on a scale of
+	 *  a curve using the Square Root Function
+	 * 
+	 * @param double
+	 * @return Curved Value
+	 */
+	public static double getCurve(double input)
+	{
+		double sign = Math.signum(input);
+
+		double value = Math.abs(input);
+		value = Math.sqrt(value);
+
+		return sign * value;
+	}
+
 	public JoystickDrive(DriveTrain driveTrain, DoubleSupplier speed, DoubleSupplier rotation) {
 		// Use addRequirements() here to declare subsystem dependencies.
 		this.driveTrain = driveTrain;
@@ -33,9 +50,19 @@ public class JoystickDrive extends CommandBase  {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	public void execute() {
+		// Apply a Deadband to the Input mapped at 0.05
 		if (Math.abs(speed.getAsDouble()) > 0.05 || Math.abs(rotation.getAsDouble()) > 0.05) {
-			driveTrain.arcadeDrive((-speed.getAsDouble()*0.9), -rotation.getAsDouble()*0.6);
+
+			double controllerY = (-speed.getAsDouble()*0.9);
+			double controllerX = -rotation.getAsDouble()*0.6;
+
+			// Apply a curve to the given input controls.
+			controllerY = JoystickDrive.getCurve(controllerY);
+			controllerX = JoystickDrive.getCurve(controllerX);
+
+			driveTrain.arcadeDrive(controllerY, controllerX);
 		} else {
+			// Set the motor to zero, Its not out of the deadband
 			driveTrain.arcadeDrive(0, 0);
 		}
 	}

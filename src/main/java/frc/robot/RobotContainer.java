@@ -17,7 +17,7 @@ import frc.robot.commands.AutoPanel;
 import frc.robot.commands.JoystickDrive;
 import edu.wpi.first.wpilibj.Compressor;
 import frc.robot.commands.Shoot;
-import frc.robot.commands.liftControl;
+import frc.robot.commands.LiftControl;
 import frc.robot.subsystems.ChuteSubsystem;
 import frc.robot.subsystems.ControlPanelController;
 import frc.robot.subsystems.DriveTrain;
@@ -58,7 +58,7 @@ public class RobotContainer {
 	);
 
 	private final JoystickDrive joystickDrive = new JoystickDrive(driveTrain, 
-		() -> driverJoystick.getRawAxis(1), 
+		() -> driverJoystick.getRawAxis(1),
 		() -> driverJoystick.getRawAxis(4)
 	);
 
@@ -71,7 +71,7 @@ public class RobotContainer {
 
 	private final LiftSubsystem lift = new LiftSubsystem();
 
-	private final liftControl liftCommand = new liftControl(lift, intake,
+	private final LiftControl liftCommand = new LiftControl(lift, intake,
 		() -> driverJoystick.getRawButton(Constants.ButtonMapConstants.Left_Bumper),
 		() -> driverJoystick.getRawButton(Constants.ButtonMapConstants.Right_Bumper)
 	);
