@@ -37,7 +37,7 @@ public class ColorMatchCounter implements Sendable, AutoCloseable {
 		// if it has changed then add one for the counter.
 		ColorMatchResult result = this.colorMatch.matchClosestColor(colorSensor.getColor());
 
-		if (!lastResult.equals(result)) {
+		if (lastResult == null || !lastResult.equals(result)) {
 			// Objects are not hte same, This a new Object
 			this.lastResult = result;
 			this.count++;
