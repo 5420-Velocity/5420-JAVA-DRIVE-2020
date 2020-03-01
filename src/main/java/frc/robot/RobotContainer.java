@@ -42,11 +42,9 @@ public class RobotContainer {
 
 
 	private final NetworkTableInstance tableInstance = NetworkTableInstance.getDefault();
-	private final NetworkTableEntry entryColorSensor = tableInstance.getEntry(Constants.NetworkTableEntries.COLOR_VALUE);
-	private final NetworkTableEntry ntEncoderValue = tableInstance.getEntry(Constants.NetworkTableEntries.ENCODER_VALUE);
 
 	private final DriveTrain driveTrain = new DriveTrain();
-	private final ControlPanelController controlPanelController = new ControlPanelController(entryColorSensor);
+	private final ControlPanelController controlPanelController = new ControlPanelController();
 
 	private static int index;
 

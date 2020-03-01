@@ -15,10 +15,12 @@ import com.revrobotics.ColorSensorV3;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.ColorMatchCounter;
 import frc.robot.Constants;
 import frc.robot.Constants.ColorTargets;
 import frc.robot.Constants.ControlPanelConstants;
 import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 
@@ -29,15 +31,17 @@ public class ControlPanelController extends SubsystemBase {
 	private I2C.Port ColorSensor = I2C.Port.kOnboard;
 	private ColorSensorV3 colorSensor = new ColorSensorV3(ColorSensor);
 	private ColorMatch colorMatch = new ColorMatch();
-	private NetworkTableEntry colorSensorEntry;
+	private ColorMatchCounter colorMatchCounter = new ColorMatchCounter(colorSensor, colorMatch);
+	private NetworkTableEntry colorEncoderEntry = NetworkTableInstance.getDefault().getEntry(Constants.NetworkTableEntries.COLOR_ENCODER_VALUE);
+	private NetworkTableEntry colorSensorEntry = NetworkTableInstance.getDefault().getEntry(Constants.NetworkTableEntries.COLOR_VALUE);
 	private boolean rotationsCompleted;
 	private boolean panelCompleted;
 	private DigitalInput upperLimit = new DigitalInput(Constants.ControlPanelConstants.upperLimit);
 	private DigitalInput lowerLimit = new DigitalInput(Constants.ControlPanelConstants.lowerLimit);
 
-	public ControlPanelController(NetworkTableEntry networkTableEntry) {
-		this.colorSensorEntry = networkTableEntry;
-		this.colorSensorEntry.setString("");
+	public ControlPanelController() {
+		this.colorSensorEntry.setDefaultString("");
+		this.colorEncoderEntry.setDefaultDouble(0.0);
 
 		this.colorMatch.addColorMatch(ColorTargets.COLOR_BLUE);
 		this.colorMatch.addColorMatch(ColorTargets.COLOR_GREEN);
@@ -80,10 +84,6 @@ public class ControlPanelController extends SubsystemBase {
 	public Color getColor(){
 		ColorMatchResult returnColor = this.colorMatch.matchClosestColor(colorSensor.getColor());
 
-		// Save the Color to the Dashboard
-		String colorTag = ColorTargets.resolveColor(returnColor.color);
-		this.colorSensorEntry.setString(colorTag);
-
 		return returnColor.color;
 	}
 
@@ -120,8 +120,13 @@ public class ControlPanelController extends SubsystemBase {
 
 	@Override
 	public void periodic() {
+		
+		// Save the Color to the Dashboard
+		String colorTag = ColorTargets.resolveColor(this.getColor());
+		this.colorSensorEntry.setString(colorTag);
 
-		this.getColor();
+		// Save the Encoder Value to the Dashboard
+		this.colorEncoderEntry.setDouble(this.colorMatchCounter.get());
 
 	}
 }
