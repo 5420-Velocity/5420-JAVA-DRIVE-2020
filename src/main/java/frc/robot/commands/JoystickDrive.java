@@ -33,7 +33,8 @@ public class JoystickDrive extends CommandBase  {
 		double sign = Math.signum(input);
 
 		double value = Math.abs(input);
-		value = Math.sqrt(value);
+		value = Math.pow(value, 2);
+		value += 0.02;
 
 		return sign * value;
 	}
