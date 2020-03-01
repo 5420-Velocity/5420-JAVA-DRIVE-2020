@@ -18,16 +18,21 @@ public class ShooterSubsystem extends SubsystemBase {
    */
   private WPI_TalonSRX aimerMotor = new WPI_TalonSRX(Constants.ShooterConstants.aimerMotor);
 
-  private WPI_TalonSRX shooter1 = new WPI_TalonSRX(Constants.ShooterConstants.motor1);
-  private WPI_TalonSRX shooter2 = new WPI_TalonSRX(Constants.ShooterConstants.motor2);
+  private WPI_TalonSRX shooterOutMotor = new WPI_TalonSRX(Constants.ShooterConstants.shooterOut);
+  private WPI_TalonSRX shooterInMotor = new WPI_TalonSRX(Constants.ShooterConstants.shooterIn);
 
   public ShooterSubsystem() {
 
   }
 
+  /**
+   * 
+   * @param power1
+   * @param power2
+   */
   public void setSpeed(double power1, double power2){
-    shooter1.set(power1);
-    shooter2.set(power2);
+    shooterOutMotor.set(power1);
+    shooterInMotor.set(power2);
   }
 
   public void turnSpeed(double power){

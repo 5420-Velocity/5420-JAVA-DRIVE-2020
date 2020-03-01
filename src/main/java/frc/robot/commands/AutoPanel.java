@@ -7,6 +7,10 @@
 
 package frc.robot.commands;
 
+import java.util.function.BooleanSupplier;
+import java.util.function.DoubleSupplier;
+
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
@@ -16,11 +20,16 @@ import frc.robot.subsystems.ControlPanelController;
 public class AutoPanel extends CommandBase {
 
 	private ControlPanelController controlPanelController;
+	private DoubleSupplier liftInput;
 	private Color previous;
+	private BooleanSupplier activate;
+	private Boolean runRotate = false;
 	private int index;
 
 
-	public AutoPanel(ControlPanelController controlPanelController, int Index) {
+	public AutoPanel(ControlPanelController controlPanelController, int Index, BooleanSupplier activate, DoubleSupplier liftInput) {
+		this.activate = activate;
+		this.liftInput = liftInput;
 		this.controlPanelController = controlPanelController;   
 		addRequirements(controlPanelController);
 	}
@@ -35,26 +44,45 @@ public class AutoPanel extends CommandBase {
 	// Called every time the scheduler runs while the command is scheduled.
 	@Override
 	public void execute() {		
-			if(controlPanelController.isPannelComplete() == false){
-				// Start turning the Motor to turn the control pannel
-				controlPanelController.turnSpeed(0.5);
+		// Lift Control
+		if(controlPanelController.getUpper() == false && liftInput.getAsDouble() > 0) {
+			controlPanelController.liftSpeed(0);
+		}
+		else if(controlPanelController.getlower() == false && liftInput.getAsDouble() < 0) {
+			controlPanelController.liftSpeed(0);
+		}
+		else {
+			controlPanelController.liftSpeed(liftInput.getAsDouble());
+		}
 
-				if(controlPanelController.getRotCompletion() == false){
-					Rotate();
-				}
-				else{
-					// Rotations Complete
-					if(controlPanelController.getColor() == controlPanelController.GameColor()){
-						controlPanelController.panelCompleted(true);
-					}
-				}  
+		// Turning control
+		if(activate.getAsBoolean()){
+			this.runRotate = true;
+		}
+		else{
+			this.runRotate = false;
+		}
+
+		if(controlPanelController.isPannelComplete() == false && this.runRotate == true){
+			// Start turning the Motor to turn the control pannel
+			controlPanelController.turnSpeed(0.5);
+
+			if(controlPanelController.getRotCompletion() == false){
+				this.rotate();
 			}
 			else{
-				controlPanelController.turnSpeed(0);
-			}
+				// Rotations Complete
+				if(controlPanelController.getColor() == controlPanelController.GameColor()){
+					controlPanelController.panelCompleted(true);
+				}
+			}  
+		}
+		else{
+			controlPanelController.turnSpeed(0);
+		}
 	}
 
-	public void Rotate(){
+	public void rotate(){
 
 		// Update changed color
 		if(controlPanelController.getColor() != previous){

@@ -52,7 +52,10 @@ public class RobotContainer {
 
 	public Compressor compressor = new Compressor(0);
 
-	private final AutoPanel AutoPanel = new AutoPanel(controlPanelController, index);
+	private final AutoPanel autoPanel = new AutoPanel(controlPanelController, index, 
+		() -> operatorJoystick.getRawButton(Constants.ButtonMapConstants.Yellow_Button_ID),
+		() -> -operatorJoystick.getRawAxis(Constants.ButtonMapConstants.JOYSTICK_LEFT_Y_AXIS)
+	);
 
 	private final JoystickDrive joystickDrive = new JoystickDrive(driveTrain, 
 		() -> driverJoystick.getRawAxis(1), 
@@ -76,7 +79,7 @@ public class RobotContainer {
 	private final ChuteSubsystem chute = new ChuteSubsystem();
 
 	private final Shoot shoot = new Shoot(shooter,
-		() -> operatorJoystick.getRawButton(Constants.ButtonMapConstants.Yellow_Button_ID),
+		() -> operatorJoystick.getRawButton(Constants.ButtonMapConstants.Blue_Button_ID),
 		() -> operatorJoystick.getRawButton(5),
 		() -> operatorJoystick.getRawButton(4)
 	);
@@ -124,6 +127,7 @@ public class RobotContainer {
 	 * 
 	 */
 	private void configureButtonBindings() {
+
 		/**
 		 * Setup Button Events for the Shooter on the Driver Controller
 		 */
@@ -135,7 +139,7 @@ public class RobotContainer {
 		 * Setup Button Events for the Shooter on the Operator Controller
 		 */
 		new JoystickButton(this.operatorJoystick, Constants.ButtonMapConstants.Blue_Button_ID)
-			.whenPressed(() -> this.shooter.setSpeed(-1, 1))
+			.whenPressed(() -> this.shooter.setSpeed(1, 0.7))
 			.whenReleased(() -> this.shooter.setSpeed(0,0));
 
 		new JoystickButton(this.operatorJoystick, Constants.ButtonMapConstants.Left_Bumper)
@@ -174,6 +178,8 @@ public class RobotContainer {
 	 */
 	private void configureDefaultCommands() {
 		CommandScheduler scheduler = CommandScheduler.getInstance();
+
+		scheduler.setDefaultCommand(this.controlPanelController, this.autoPanel);
 
 		scheduler.setDefaultCommand(this.driveTrain, this.joystickDrive);
 

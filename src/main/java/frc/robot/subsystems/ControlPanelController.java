@@ -15,9 +15,11 @@ import com.revrobotics.ColorSensorV3;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.Constants.ColorTargets;
 import frc.robot.Constants.ControlPanelConstants;
 import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 
 public class ControlPanelController extends SubsystemBase {
@@ -30,6 +32,8 @@ public class ControlPanelController extends SubsystemBase {
 	private NetworkTableEntry colorSensorEntry;
 	private boolean rotationsCompleted;
 	private boolean panelCompleted;
+	private DigitalInput upperLimit = new DigitalInput(Constants.ControlPanelConstants.upperLimit);
+	private DigitalInput lowerLimit = new DigitalInput(Constants.ControlPanelConstants.lowerLimit);
 
 	public ControlPanelController(NetworkTableEntry networkTableEntry) {
 		this.colorSensorEntry = networkTableEntry;
@@ -47,6 +51,14 @@ public class ControlPanelController extends SubsystemBase {
 
 	public void rotationsCompleted(boolean val){
 		rotationsCompleted = val;
+	}
+
+	public boolean getUpper(){
+		return upperLimit.get();
+	}
+
+	public boolean getlower(){
+		return lowerLimit.get();
 	}
 
 	public boolean isPannelComplete(){

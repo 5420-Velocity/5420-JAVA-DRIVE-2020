@@ -26,9 +26,9 @@ public final class Constants {
 	public static final class IntakeConstants {
 		public static final int encoderPort = 0; // Encoder port
 
-		public static final double highTarget = 57.5; // Encoder Position for high position
-		public static final double middleTarget = 66; // Encoder position for middle position
-		public static final double lowTarget = 75.0; // Encoder Position for low position
+		public static final double highTarget = 6; // Encoder Position for high position
+		public static final double middleTarget = 13.5; // Encoder position for middle position
+		public static final double lowTarget = 25.5; // Encoder Position for low position
 
 		public static final int armMotor = 11; // PID Port
 		public static final int intakeMotor = 9; // PID Port
@@ -45,8 +45,8 @@ public final class Constants {
 	}
 
 	public static final class ShooterConstants {
-		public static final int motor1 = 6;
-		public static final int motor2 = 8;
+		public static final int shooterOut = 6;
+		public static final int shooterIn = 8;
 		
 		public static final int aimerMotor = 13;
 
@@ -57,6 +57,10 @@ public final class Constants {
 		public static final int targetRotations = 24;
 		public static final int ControlPanelDriver = 5;
 		public static final int ControlPanelLift = 7;
+
+		//upper and lower limits for the panel controller lift
+		public static final int upperLimit = 2;
+		public static final int lowerLimit = 1;
 	}
 
 	public static final class LiftConstants {
