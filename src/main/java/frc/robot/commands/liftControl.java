@@ -8,26 +8,28 @@
 package frc.robot.commands;
 
 import java.util.function.BooleanSupplier;
+import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.LiftSubsystem;
 import frc.robot.subsystems.Intake;
 
-public class LiftControl extends CommandBase {
+public class liftControl extends CommandBase {
 	/**
 	 * Creates a new liftControl.
 	 */
 	private LiftSubsystem liftS;
 	private Intake intakeSubsystem;
-	private BooleanSupplier upButton;
-	private BooleanSupplier downButton;
+	private DoubleSupplier inputUp;
+	private DoubleSupplier inputDown;
 
 
-	public LiftControl(LiftSubsystem subsystem, Intake intakeSubsystem , BooleanSupplier UpButton, BooleanSupplier DownButton) {
+
+	public liftControl(LiftSubsystem subsystem, Intake intakeSubsystem , DoubleSupplier inputUp, DoubleSupplier inputDown) {
 		this.liftS = subsystem;
 		this.intakeSubsystem = intakeSubsystem;
-		this.upButton = UpButton;
-		this.downButton = DownButton;
+		this.inputDown = inputDown;
+		this.inputUp = inputUp;
 		addRequirements(subsystem);
 		// Use addRequirements() here to declare subsystem dependencies.
 	}
@@ -40,12 +42,12 @@ public class LiftControl extends CommandBase {
 	// Called every time the scheduler runs while the command is scheduled.
 	@Override
 	public void execute() {
-		if(upButton.getAsBoolean()){
-			liftS.liftSpeed(-0.95);
+		if(inputUp.getAsDouble() >= 0.1){
+			liftS.liftSpeed(inputUp.getAsDouble()*0.5);
 			this.intakeSubsystem.forceArmDown(true);
 		}
-		else if(downButton.getAsBoolean()){
-			liftS.liftSpeed(0.95);
+		else if(inputDown.getAsDouble() >= 0.1){
+			liftS.liftSpeed(-inputDown.getAsDouble()*0.5);
 		}
 		else{
 			liftS.liftSpeed(0);

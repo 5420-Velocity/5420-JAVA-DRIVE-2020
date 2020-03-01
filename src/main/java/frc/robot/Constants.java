@@ -141,6 +141,8 @@ public final class Constants {
 		
 		public static final int Left_Bumper = 5;
 		public static final int Right_Bumper = 6;
+		public static final int Right_Trigger = 3;
+		public static final int Left_Trigger = 2;
 
 	}
 

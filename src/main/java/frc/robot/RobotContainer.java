@@ -17,7 +17,7 @@ import frc.robot.commands.AutoPanel;
 import frc.robot.commands.JoystickDrive;
 import edu.wpi.first.wpilibj.Compressor;
 import frc.robot.commands.Shoot;
-import frc.robot.commands.LiftControl;
+import frc.robot.commands.liftControl;
 import frc.robot.subsystems.ChuteSubsystem;
 import frc.robot.subsystems.ControlPanelController;
 import frc.robot.subsystems.DriveTrain;
@@ -57,7 +57,8 @@ public class RobotContainer {
 
 	private final JoystickDrive joystickDrive = new JoystickDrive(driveTrain, 
 		() -> driverJoystick.getRawAxis(1),
-		() -> driverJoystick.getRawAxis(4)
+		() -> driverJoystick.getRawAxis(4),
+		driverJoystick
 	);
 
 	/**
@@ -69,9 +70,9 @@ public class RobotContainer {
 
 	private final LiftSubsystem lift = new LiftSubsystem();
 
-	private final LiftControl liftCommand = new LiftControl(lift, intake,
-		() -> driverJoystick.getRawButton(Constants.ButtonMapConstants.Left_Bumper),
-		() -> driverJoystick.getRawButton(Constants.ButtonMapConstants.Right_Bumper)
+	private final liftControl liftCommand = new liftControl(lift, intake,
+		() -> driverJoystick.getRawAxis(Constants.ButtonMapConstants.Right_Trigger),
+		() -> driverJoystick.getRawAxis(Constants.ButtonMapConstants.Left_Trigger)
 	);
 
 	private final ChuteSubsystem chute = new ChuteSubsystem();
@@ -129,7 +130,7 @@ public class RobotContainer {
 		/**
 		 * Setup Button Events for the Shooter on the Driver Controller
 		 */
-		new JoystickButton(this.driverJoystick, Constants.ButtonMapConstants.Yellow_Button_ID)
+		new JoystickButton(this.driverJoystick, Constants.ButtonMapConstants.Right_Bumper)
 			.whenPressed(() -> this.driveTrain.shift(true))
 			.whenReleased(() -> this.driveTrain.shift(false));
 
@@ -137,7 +138,7 @@ public class RobotContainer {
 		 * Setup Button Events for the Shooter on the Operator Controller
 		 */
 		new JoystickButton(this.operatorJoystick, Constants.ButtonMapConstants.Blue_Button_ID)
-			.whenPressed(() -> this.shooter.setSpeed(1, 0.7))
+			.whenPressed(() -> this.shooter.setSpeed(1, 1))
 			.whenReleased(() -> this.shooter.setSpeed(0,0));
 
 		new JoystickButton(this.operatorJoystick, Constants.ButtonMapConstants.Left_Bumper)
@@ -154,7 +155,7 @@ public class RobotContainer {
 		 */
 		new JoystickButton(this.operatorJoystick, ButtonMapConstants.Green_Button_ID)
 			// Go Down on Button Press
-			.whenPressed(() -> this.intake.intakeMove(-1.0))
+			.whenPressed(() -> this.intake.intakeMove(-0.8))
 			.whenHeld(
 				new PIDCommand(
 					this.pidController,

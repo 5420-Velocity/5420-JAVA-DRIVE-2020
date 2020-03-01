@@ -7,8 +7,11 @@
 
 package frc.robot.commands;
 
+import frc.robot.DPad;
 import frc.robot.subsystems.DriveTrain;
 import java.util.function.DoubleSupplier;
+
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class JoystickDrive extends CommandBase  {
@@ -16,6 +19,7 @@ public class JoystickDrive extends CommandBase  {
 	private final DriveTrain driveTrain;
 	private final DoubleSupplier speed;
 	private final DoubleSupplier rotation;
+	private final Joystick DPADController;
 
 	/**
 	 * This function will get the input value on a scale of
@@ -34,9 +38,10 @@ public class JoystickDrive extends CommandBase  {
 		return sign * value;
 	}
 
-	public JoystickDrive(DriveTrain driveTrain, DoubleSupplier speed, DoubleSupplier rotation) {
+	public JoystickDrive(DriveTrain driveTrain, DoubleSupplier speed, DoubleSupplier rotation, Joystick DPADController) {
 		// Use addRequirements() here to declare subsystem dependencies.
 		this.driveTrain = driveTrain;
+		this.DPADController = DPADController;
 		this.speed = speed;
 		this.rotation = rotation;
 		addRequirements(driveTrain);
@@ -61,10 +66,24 @@ public class JoystickDrive extends CommandBase  {
 			controllerX = JoystickDrive.getCurve(controllerX);
 
 			driveTrain.arcadeDrive(controllerY, controllerX);
-		} else {
+		} 
+		else if(DPad.up(DPADController)){
+			driveTrain.arcadeDrive(0.1, 0);
+		}
+		else if(DPad.down(DPADController)){
+			driveTrain.arcadeDrive(-0.1, 0);
+		}
+		else if(DPad.right(DPADController)){
+			driveTrain.arcadeDrive(0, 0.1);
+		}
+		else if(DPad.left(DPADController)){
+			driveTrain.arcadeDrive(0, -0.1);
+		}
+		else {
 			// Set the motor to zero, Its not out of the deadband
 			driveTrain.arcadeDrive(0, 0);
 		}
+
 	}
 
 	// Called once after isFinished returns true
