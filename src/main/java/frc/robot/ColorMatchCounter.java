@@ -31,7 +31,12 @@ public class ColorMatchCounter implements Sendable, AutoCloseable {
 		SendableRegistry.addLW(this, "Color Match Counter", this.tagId);
 	}
 
-	public int get() {
+	/**
+	 * Should only be called by the SendableBase
+	 * 
+	 * @return
+	 */
+	public int getRefresh() {
 
 		// Check the value of the given color,
 		// if it has changed then add one for the counter.
@@ -43,6 +48,10 @@ public class ColorMatchCounter implements Sendable, AutoCloseable {
 			this.count++;
 		}
 
+		return this.count;
+	}
+
+	public int get() {
 		return this.count;
 	}
 
@@ -72,7 +81,7 @@ public class ColorMatchCounter implements Sendable, AutoCloseable {
 	@Override
 	public void initSendable(SendableBuilder builder) {
 		builder.setSmartDashboardType("ColorMatchCounter");
-		builder.addDoubleProperty("Count", this::get, null);
+		builder.addDoubleProperty("Count", this::getRefresh, null);
 		builder.addBooleanProperty("Is Connected", this::isConnected, null);
 	}
 
