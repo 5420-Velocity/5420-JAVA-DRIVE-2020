@@ -26,7 +26,7 @@ public final class Constants {
 	public static final class IntakeConstants {
 		public static final int encoderPort = 0; // Encoder port
 
-		public static final double highTarget = 6; // Encoder Position for high position
+		public static final double highTarget = 13.5; // Encoder Position for high position
 		public static final double middleTarget = 13.5; // Encoder position for middle position
 		public static final double lowTarget = 25.5; // Encoder Position for low position
 
@@ -34,8 +34,8 @@ public final class Constants {
 		public static final int intakeMotor = 9; // PID Port
 
 		// PID Control Values
-		public static final double Proportional = 0.1;
-		public static final double Integral = 0.06;
+		public static final double Proportional = 0.08;
+		public static final double Integral = 0.04;
 		public static final double Derivative = 0.005;
 
 		// Define the way to communicate with the Pixy2 Device
@@ -46,7 +46,7 @@ public final class Constants {
 
 	public static final class ShooterConstants {
 		public static final int shooterOut = 6;
-		public static final int shooterIn = 8;
+		public static final int shooterIn = 0;
 		
 		public static final int aimerMotor = 13;
 
@@ -116,6 +116,7 @@ public final class Constants {
 		public static final String COLOR_VALUE = "Color Sensor Value";
 		public static final String COLOR_ENCODER_VALUE = "Color Encoder Value";
 		public static final String ENCODER_VALUE = "Encoder";
+		public static final String FMSCOLOR_VALUE = "FMS Goal Color";
 
 	}
 

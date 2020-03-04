@@ -34,13 +34,16 @@ public class ControlPanelController extends SubsystemBase {
 	private ColorMatchCounter colorMatchCounter = new ColorMatchCounter(colorSensor, colorMatch);
 	private NetworkTableEntry colorEncoderEntry = NetworkTableInstance.getDefault().getEntry(Constants.NetworkTableEntries.COLOR_ENCODER_VALUE);
 	private NetworkTableEntry colorSensorEntry = NetworkTableInstance.getDefault().getEntry(Constants.NetworkTableEntries.COLOR_VALUE);
+	private NetworkTableEntry FMSColorEntry = NetworkTableInstance.getDefault().getEntry(Constants.NetworkTableEntries.FMSCOLOR_VALUE);
 	private boolean rotationsCompleted;
 	private boolean panelCompleted;
 	private DigitalInput upperLimit = new DigitalInput(Constants.ControlPanelConstants.upperLimit);
 	private DigitalInput lowerLimit = new DigitalInput(Constants.ControlPanelConstants.lowerLimit);
+	private String gameData = "";
 
 	public ControlPanelController() {
 		this.colorSensorEntry.setDefaultString("");
+		this.FMSColorEntry.setDefaultString("");
 		this.colorEncoderEntry.setDefaultDouble(0.0);
 
 		this.colorMatch.addColorMatch(ColorTargets.COLOR_BLUE);
@@ -89,8 +92,6 @@ public class ControlPanelController extends SubsystemBase {
 
 	public Color GameColor(){
 		Color value = null;
-		String gameData;
-		gameData = DriverStation.getInstance().getGameSpecificMessage();
 
 		if(gameData.length() > 0){
 			switch (gameData.charAt(0)) {
@@ -120,10 +121,12 @@ public class ControlPanelController extends SubsystemBase {
 
 	@Override
 	public void periodic() {
+		this.gameData = DriverStation.getInstance().getGameSpecificMessage();
 		
 		// Save the Color to the Dashboard
 		String colorTag = ColorTargets.resolveColor(this.getColor());
 		this.colorSensorEntry.setString(colorTag);
+		this.FMSColorEntry.setString(this.gameData);
 
 		// Save the Encoder Value to the Dashboard
 		this.colorEncoderEntry.setDouble(this.colorMatchCounter.get());
