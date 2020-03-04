@@ -7,32 +7,40 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class ShooterSubsystem extends SubsystemBase {
-  /**
-   * Creates a new Shooter.
-   */
+
+  // Used to move the tunnel up or down to aim tward the goal from the LL values.
   private WPI_TalonSRX aimerMotor = new WPI_TalonSRX(Constants.ShooterConstants.aimerMotor);
 
-  private WPI_TalonSRX shooterOutMotor = new WPI_TalonSRX(Constants.ShooterConstants.shooterOut);
-  private WPI_TalonSRX shooterInMotor = new WPI_TalonSRX(Constants.ShooterConstants.shooterIn);
+  // This motor is taking the balls from Charlie (the hopper) and pushes to the Front Motor
+  private WPI_TalonSRX shooterMotorBack = new WPI_TalonSRX(Constants.ShooterConstants.shooterOut);
+
+  // This Motor is used to give the ball extra power to throw it.
+  private WPI_TalonFX shooterMotorFront = new WPI_TalonFX(Constants.ShooterConstants.shooterIn);
 
   public ShooterSubsystem() {
+
+    // Dont't allow the power to be X instantly, make it
+    //  slowly adjust to the target speed over time.
+    shooterMotorFront.configOpenloopRamp(5);
 
   }
 
   /**
+   * Set the Speed for the motors
    * 
-   * @param power1
-   * @param power2
+   * @param rearMotor
+   * @param frontMotor
    */
-  public void setSpeed(double power1, double power2){
-    shooterOutMotor.set(power1);
-    shooterInMotor.set(power2);
+  public void setSpeed(double rearMotor, double frontMotor){
+    shooterMotorBack.set(rearMotor);
+    shooterMotorFront.set(frontMotor);
   }
 
   public void turnSpeed(double power){
@@ -43,4 +51,5 @@ public class ShooterSubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
   }
+
 }
