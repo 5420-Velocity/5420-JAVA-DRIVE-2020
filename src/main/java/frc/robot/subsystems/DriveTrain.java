@@ -47,10 +47,10 @@ public class DriveTrain extends SubsystemBase {
 		RightAT.setNeutralMode(NeutralMode.Coast);
 		RightBT.setNeutralMode(NeutralMode.Coast);
 
-		LeftAT.configOpenloopRamp(0.5);
-		LeftBT.configOpenloopRamp(0.5);
-		RightAT.configOpenloopRamp(0.5);
-		RightBT.configOpenloopRamp(0.5);
+		LeftAT.configOpenloopRamp(1);
+		LeftBT.configOpenloopRamp(1);
+		RightAT.configOpenloopRamp(1);
+		RightBT.configOpenloopRamp(1);
 
 		LeftBT.follow(LeftAT);
 		RightBT.follow(RightAT);
