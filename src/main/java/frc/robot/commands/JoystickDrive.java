@@ -64,21 +64,20 @@ public class JoystickDrive extends CommandBase  {
 
 			// Apply a curve to the given input controls.
 			controllerY = JoystickDrive.getCurve(controllerY);
-			controllerX = JoystickDrive.getCurve(controllerX);
 
 			driveTrain.arcadeDrive(controllerY, controllerX);
 		} 
 		else if(DPad.up(DPADController)){
-			driveTrain.arcadeDrive(0.1, 0);
+			driveTrain.arcadeDrive(0.4, 0);
 		}
 		else if(DPad.down(DPADController)){
-			driveTrain.arcadeDrive(-0.1, 0);
+			driveTrain.arcadeDrive(-0.4, 0);
 		}
 		else if(DPad.right(DPADController)){
-			driveTrain.arcadeDrive(0, 0.1);
+			driveTrain.arcadeDrive(0, -0.4);
 		}
 		else if(DPad.left(DPADController)){
-			driveTrain.arcadeDrive(0, -0.1);
+			driveTrain.arcadeDrive(0, 0.4);
 		}
 		else {
 			// Set the motor to zero, Its not out of the deadband
