@@ -143,7 +143,8 @@ public class Intake extends SubsystemBase {
 		 *  return the previous resutls received in this request.
 		 * 
 		 */
-		int pixyStatus = this.pixy.getCCC().getBlocks(false, 0, 8);
+		// int pixyStatus = this.pixy.getCCC().getBlocks(false, 0, 8);
+		int pixyStatus = Pixy2.PIXY_RESULT_ERROR;
 
 		/**
 		 * Read response from the Pixy Class to update the network tables
