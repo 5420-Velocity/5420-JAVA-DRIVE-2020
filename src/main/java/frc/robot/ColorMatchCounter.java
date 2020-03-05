@@ -34,10 +34,11 @@ public class ColorMatchCounter implements Sendable, AutoCloseable {
 
 	/**
 	 * Should only be called by the SendableBase
+	 * This is a private function to update the sensor values.
 	 * 
-	 * @return
+	 * @return The Current Count of the Color Sensor
 	 */
-	public int getRefresh() {
+	private int refreshData() {
 
 		// Check the value of the given color,
 		// if it has changed then add one for the counter.
@@ -82,7 +83,7 @@ public class ColorMatchCounter implements Sendable, AutoCloseable {
 	@Override
 	public void initSendable(SendableBuilder builder) {
 		builder.setSmartDashboardType("ColorMatchCounter");
-		builder.addDoubleProperty("Count", this::getRefresh, null);
+		builder.addDoubleProperty("Count", this::refreshData, null);
 		builder.addBooleanProperty("Is Connected", this::isConnected, null);
 	}
 
