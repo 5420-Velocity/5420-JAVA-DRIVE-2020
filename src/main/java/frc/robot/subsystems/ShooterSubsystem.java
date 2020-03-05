@@ -25,11 +25,9 @@ public class ShooterSubsystem extends SubsystemBase {
   private WPI_TalonFX shooterMotorFront = new WPI_TalonFX(Constants.ShooterConstants.shooterIn);
 
   public ShooterSubsystem() {
-
     // Dont't allow the power to be X instantly, make it
     //  slowly adjust to the target speed over time.
     shooterMotorFront.configOpenloopRamp(5);
-
   }
 
   /**

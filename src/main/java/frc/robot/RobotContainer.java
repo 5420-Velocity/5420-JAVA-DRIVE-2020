@@ -7,8 +7,6 @@
 
 package frc.robot;
 
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Joystick;
 import frc.robot.Constants.ButtonMapConstants;
 import frc.robot.Constants.ControllerConstants;
@@ -39,9 +37,6 @@ public class RobotContainer {
 	// The robot's subsystems and commands are defined here..
 	private final Joystick driverJoystick = new Joystick(ControllerConstants.JOYSTICK_USB_DRIVER);
 	private final Joystick operatorJoystick = new Joystick(ControllerConstants.JOYSTICK_USB_OPERATOR);
-
-
-	private final NetworkTableInstance tableInstance = NetworkTableInstance.getDefault();
 
 	private final DriveTrain driveTrain = new DriveTrain();
 	private final ControlPanelController controlPanelController = new ControlPanelController();
