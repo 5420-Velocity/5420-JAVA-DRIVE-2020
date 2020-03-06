@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.LiftSubsystem;
 import frc.robot.subsystems.Intake;
 
-public class liftControl extends CommandBase {
+public class LiftControl extends CommandBase {
 	/**
 	 * Creates a new liftControl.
 	 */
@@ -24,7 +24,7 @@ public class liftControl extends CommandBase {
 
 
 
-	public liftControl(LiftSubsystem subsystem, Intake intakeSubsystem , DoubleSupplier inputUp, DoubleSupplier inputDown) {
+	public LiftControl(LiftSubsystem subsystem, Intake intakeSubsystem , DoubleSupplier inputUp, DoubleSupplier inputDown) {
 		this.liftS = subsystem;
 		this.intakeSubsystem = intakeSubsystem;
 		this.inputDown = inputDown;
@@ -42,11 +42,11 @@ public class liftControl extends CommandBase {
 	@Override
 	public void execute() {
 		if(inputUp.getAsDouble() >= 0.1){
-			liftS.liftSpeed(inputUp.getAsDouble()*0.5);
+			liftS.liftSpeed(-inputUp.getAsDouble());
 			this.intakeSubsystem.forceArmDown(true);
 		}
 		else if(inputDown.getAsDouble() >= 0.1){
-			liftS.liftSpeed(-inputDown.getAsDouble()*0.5);
+			liftS.liftSpeed(inputDown.getAsDouble());
 		}
 		else{
 			liftS.liftSpeed(0);

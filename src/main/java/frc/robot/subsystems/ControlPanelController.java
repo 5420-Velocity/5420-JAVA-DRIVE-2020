@@ -35,8 +35,6 @@ public class ControlPanelController extends SubsystemBase {
 	private NetworkTableEntry colorEncoderEntry = NetworkTableInstance.getDefault().getEntry(Constants.NetworkTableEntries.COLOR_ENCODER_VALUE);
 	private NetworkTableEntry colorSensorEntry = NetworkTableInstance.getDefault().getEntry(Constants.NetworkTableEntries.COLOR_VALUE);
 	private NetworkTableEntry FMSColorEntry = NetworkTableInstance.getDefault().getEntry(Constants.NetworkTableEntries.FMSCOLOR_VALUE);
-	private boolean rotationsCompleted;
-	private boolean panelCompleted;
 	private DigitalInput upperLimit = new DigitalInput(Constants.ControlPanelConstants.upperLimit);
 	private DigitalInput lowerLimit = new DigitalInput(Constants.ControlPanelConstants.lowerLimit);
 	private String gameData = "";
@@ -52,38 +50,27 @@ public class ControlPanelController extends SubsystemBase {
 		this.colorMatch.addColorMatch(ColorTargets.COLOR_YELLOW);
 	}
 
-	public boolean getRotCompletion(){
-		return rotationsCompleted;
-	}
-
-	public void rotationsCompleted(boolean val){
-		rotationsCompleted = val;
-	}
-
 	public boolean getUpper(){
-		return upperLimit.get();
+		return this.upperLimit.get();
 	}
 
 	public boolean getlower(){
-		return lowerLimit.get();
-	}
-
-	public boolean isPannelComplete(){
-		return panelCompleted;
-	}
-
-	public void panelCompleted(boolean val){
-		panelCompleted = val;
+		return this.lowerLimit.get();
 	}
 
 	public void liftSpeed(double power){
-		panelLift.set(power);
+		this.panelLift.set(power);
 	}
 
 	public void turnSpeed(double power){
-		panelDriver.set(power * 0.75);
+		this.panelDriver.set(power * 0.75);
 	}
 
+	/**
+	 * Get the Color from the ColorMatchResult Class
+	 * 
+	 * @return Closest Color
+	 */
 	public Color getColor(){
 		ColorMatchResult returnColor = this.colorMatch.matchClosestColor(colorSensor.getColor());
 
@@ -132,4 +119,5 @@ public class ControlPanelController extends SubsystemBase {
 		this.colorEncoderEntry.setDouble(this.colorMatchCounter.get());
 
 	}
+
 }

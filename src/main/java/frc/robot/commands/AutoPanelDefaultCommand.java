@@ -7,28 +7,20 @@
 
 package frc.robot.commands;
 
-import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
-import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-import frc.robot.Constants;
 import frc.robot.subsystems.ControlPanelController;
 
-public class AutoPanel extends CommandBase {
+public class AutoPanelDefaultCommand extends CommandBase {
 
 	private ControlPanelController controlPanelController;
 	private DoubleSupplier liftInput;
-	private Color previous;
-	private BooleanSupplier activate;
-	private Boolean runRotate = false;
-	private int index;
 
 
-	public AutoPanel(ControlPanelController controlPanelController, BooleanSupplier activate, DoubleSupplier liftInput) {
-		this.controlPanelController = controlPanelController;   
-		this.activate = activate;
+	public AutoPanelDefaultCommand(ControlPanelController controlPanelController, DoubleSupplier liftInput) {
+		this.controlPanelController = controlPanelController;
 		this.liftInput = liftInput;
 
 		addRequirements(controlPanelController);
@@ -38,13 +30,13 @@ public class AutoPanel extends CommandBase {
 	@Override
 	public void initialize() {
 		// Set Inital Color
-		this.previous = controlPanelController.getColor();
 	}
 
 	// Called every time the scheduler runs while the command is scheduled.
 	@Override
-	public void execute() {		
+	public void execute() {
 		// Lift Control
+
 		if(controlPanelController.getUpper() == false && liftInput.getAsDouble() > 0) {
 			controlPanelController.liftSpeed(0);
 		}
@@ -54,49 +46,7 @@ public class AutoPanel extends CommandBase {
 		else {
 			controlPanelController.liftSpeed(liftInput.getAsDouble());
 		}
-
-		// Turning control
-		if(activate.getAsBoolean()){
-			this.runRotate = true;
-		}
-		else{
-			this.runRotate = false;
-		}
-
-		if(controlPanelController.isPannelComplete() == false && this.runRotate == true){
-			// Start turning the Motor to turn the control pannel
-			controlPanelController.turnSpeed(0.5);
-
-			if(controlPanelController.getRotCompletion() == false){
-				this.rotate();
-			}
-			else{
-				// Rotations Complete
-				if(controlPanelController.getColor() == controlPanelController.GameColor()){
-					controlPanelController.panelCompleted(true);
-				}
-			}  
-		}
-		else{
-			controlPanelController.turnSpeed(0);
-		}
 	}
-
-	public void rotate(){
-
-		// Update changed color
-		if(controlPanelController.getColor() != previous){
-			index += 1;
-			previous = controlPanelController.getColor();
-		}
-
-		// Completed rotations
-		if(index >= Constants.ControlPanelConstants.targetRotations){
-			controlPanelController.rotationsCompleted(true);
-		}
-	}
-
-
 
 	// Called once the command ends or is interrupted.
 	@Override

@@ -11,11 +11,12 @@ import edu.wpi.first.wpilibj.Joystick;
 import frc.robot.Constants.ButtonMapConstants;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.Constants.IntakeConstants;
-import frc.robot.commands.AutoPanel;
+import frc.robot.commands.AutoPanelColorTickTurn;
+import frc.robot.commands.AutoPanelDefaultCommand;
 import frc.robot.commands.JoystickDrive;
 import edu.wpi.first.wpilibj.Compressor;
 import frc.robot.commands.Shoot;
-import frc.robot.commands.liftControl;
+import frc.robot.commands.LiftControl;
 import frc.robot.subsystems.ChuteSubsystem;
 import frc.robot.subsystems.ControlPanelController;
 import frc.robot.subsystems.DriveTrain;
@@ -43,8 +44,8 @@ public class RobotContainer {
 
 	public Compressor compressor = new Compressor(0);
 
-	private final AutoPanel autoPanel = new AutoPanel(controlPanelController, 
-		() -> operatorJoystick.getRawButton(Constants.ButtonMapConstants.Yellow_Button_ID),
+	private final AutoPanelDefaultCommand autoPanel = new AutoPanelDefaultCommand(
+		controlPanelController,
 		() -> -operatorJoystick.getRawAxis(Constants.ButtonMapConstants.JOYSTICK_LEFT_Y_AXIS)
 	);
 
@@ -63,7 +64,7 @@ public class RobotContainer {
 
 	private final LiftSubsystem lift = new LiftSubsystem();
 
-	private final liftControl liftCommand = new liftControl(lift, intake,
+	private final LiftControl liftCommand = new LiftControl(lift, intake,
 		() -> driverJoystick.getRawAxis(Constants.ButtonMapConstants.Right_Trigger),
 		() -> driverJoystick.getRawAxis(Constants.ButtonMapConstants.Left_Trigger)
 	);
@@ -158,9 +159,15 @@ public class RobotContainer {
 					this.intake
 				)
 			)
-
 			// Turn off Motor
 			.whenReleased(() -> this.intake.intakeMove(0));
+
+		/**
+		 * Setup the button event for the Control Panel Turning with
+		 *  the auto turn using the color sensor as a tick sensor.
+		 */
+		new JoystickButton(this.operatorJoystick, ButtonMapConstants.Yellow_Button_ID)
+			.whileHeld(new AutoPanelColorTickTurn(controlPanelController));
 
 	}
 
