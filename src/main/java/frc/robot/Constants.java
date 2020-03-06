@@ -26,7 +26,7 @@ public final class Constants {
 	public static final class IntakeConstants {
 		public static final int encoderPort = 0; // Encoder port
 
-		public static final double highTarget = 13.5; // Encoder Position for high position
+		public static final double highTarget = 9; // Encoder Position for high position
 		public static final double middleTarget = 13.5; // Encoder position for middle position
 		public static final double lowTarget = 25.5; // Encoder Position for low position
 
