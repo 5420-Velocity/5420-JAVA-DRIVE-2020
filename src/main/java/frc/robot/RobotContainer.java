@@ -167,7 +167,7 @@ public class RobotContainer {
 		 *  the auto turn using the color sensor as a tick sensor.
 		 */
 		new JoystickButton(this.operatorJoystick, ButtonMapConstants.Yellow_Button_ID)
-			.whileHeld(new AutoPanelColorTickTurn(controlPanelController));
+			.whenHeld(new AutoPanelColorTickTurn(controlPanelController));
 
 	}
 
