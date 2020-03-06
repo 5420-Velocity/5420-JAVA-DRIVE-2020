@@ -26,10 +26,11 @@ public class AutoPanel extends CommandBase {
 	private int index;
 
 
-	public AutoPanel(ControlPanelController controlPanelController, int Index, BooleanSupplier activate, DoubleSupplier liftInput) {
+	public AutoPanel(ControlPanelController controlPanelController, BooleanSupplier activate, DoubleSupplier liftInput) {
+		this.controlPanelController = controlPanelController;   
 		this.activate = activate;
 		this.liftInput = liftInput;
-		this.controlPanelController = controlPanelController;   
+
 		addRequirements(controlPanelController);
 	}
 

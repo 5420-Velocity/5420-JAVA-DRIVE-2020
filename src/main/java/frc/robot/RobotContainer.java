@@ -41,11 +41,9 @@ public class RobotContainer {
 	private final DriveTrain driveTrain = new DriveTrain();
 	private final ControlPanelController controlPanelController = new ControlPanelController();
 
-	private static int index;
-
 	public Compressor compressor = new Compressor(0);
 
-	private final AutoPanel autoPanel = new AutoPanel(controlPanelController, index, 
+	private final AutoPanel autoPanel = new AutoPanel(controlPanelController, 
 		() -> operatorJoystick.getRawButton(Constants.ButtonMapConstants.Yellow_Button_ID),
 		() -> -operatorJoystick.getRawAxis(Constants.ButtonMapConstants.JOYSTICK_LEFT_Y_AXIS)
 	);
