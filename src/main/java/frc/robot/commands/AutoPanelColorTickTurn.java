@@ -25,7 +25,7 @@ public class AutoPanelColorTickTurn extends CommandBase {
 	private boolean isFinished = false;
 	
 	public AutoPanelColorTickTurn(ControlPanelController controlPanelController) {
-		this.controlPanelController = controlPanelController;   
+		this.controlPanelController = controlPanelController;
 
 		addRequirements(controlPanelController);
 	}
@@ -35,10 +35,12 @@ public class AutoPanelColorTickTurn extends CommandBase {
 	public void initialize() {
 
 		Calendar calculateDate = GregorianCalendar.getInstance();
-		calculateDate.add(GregorianCalendar.MILLISECOND, 2000); // Time to Check the Encoder Distance is not Zero
+		calculateDate.add(GregorianCalendar.MILLISECOND, 2000);
 		this.EStopCheckTime = calculateDate.getTime();
 
 		this.previous = controlPanelController.getColor();
+		this.index = 0;
+		this.isFinished = false;
 	}
 
 	// Called every time the scheduler runs while the command is scheduled.
@@ -47,6 +49,8 @@ public class AutoPanelColorTickTurn extends CommandBase {
 		
 		if(new Date().after(EStopCheckTime) && this.index == 0) {
 			// Quit Early, Must not be connected.
+			System.err.println("E-Stop >> Code Detected the Color wheel has not chagned color. Check Sensor!");
+
 			this.isFinished = true;
 		}
 
