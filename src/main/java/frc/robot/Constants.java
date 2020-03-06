@@ -54,7 +54,7 @@ public final class Constants {
 
 	public static final class ControlPanelConstants {
 		// Number of changes in color
-		public static final int targetRotations = 24;
+		public static final int targetRotations = 32;
 		public static final int ControlPanelDriver = 5;
 		public static final int ControlPanelLift = 7;
 

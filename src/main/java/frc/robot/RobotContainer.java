@@ -132,15 +132,15 @@ public class RobotContainer {
 		 * Setup Button Events for the Shooter on the Operator Controller
 		 */
 		new JoystickButton(this.operatorJoystick, Constants.ButtonMapConstants.Blue_Button_ID)
-			.whenPressed(() -> this.shooter.setSpeed(-0.7, -0.85))
+			.whenPressed(() -> this.shooter.setSpeed(-0.7, -0.90))
 			.whenReleased(() -> this.shooter.setSpeed(0,0));
 
 		new JoystickButton(this.operatorJoystick, Constants.ButtonMapConstants.Left_Bumper)
-			.whenPressed(() -> this.chute.setLeft(-0.35))
+			.whenPressed(() -> this.chute.setLeft(-0.25))
 			.whenReleased(() -> this.chute.setLeft(0));
 
 		new JoystickButton(this.operatorJoystick, Constants.ButtonMapConstants.Right_Bumper)
-			.whenPressed(() -> this.chute.setRight(0.35))
+			.whenPressed(() -> this.chute.setRight(0.25))
 			.whenReleased(() -> this.chute.setRight(0));
 		
 
