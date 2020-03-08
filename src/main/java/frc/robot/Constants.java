@@ -26,8 +26,8 @@ public final class Constants {
 	public static final class IntakeConstants {
 		public static final int encoderPort = 0; // Encoder port
 
-		public static final double highTarget = 13.5; // Encoder Position for high position
-		public static final double middleTarget = 13.5; // Encoder position for middle position
+		public static final double highTarget = 15; // Encoder Position for high position
+		public static final double middleTarget = 15; // Encoder position for middle position
 		public static final double lowTarget = 25.5; // Encoder Position for low position
 
 		public static final int armMotor = 11; // PID Port
@@ -86,9 +86,13 @@ public final class Constants {
 		public static final int Right_B_ID = 4;
 
 		//PID values
-		public static final double DriveP = 0.04;
-		public static final double DriveI = 0.02;
-		public static final double DriveD = 0.003;
+		public static final double RangeP = 0.03;
+		public static final double RangeI = 0.035;
+		public static final double RangeD = 0.002;
+
+		public static final double TurnP = 0.04;
+		public static final double TurnI = 0.01;
+		public static final double TurnD = 0.002;
 
 		//trans solenoid
 		public static final int transmission = 0;
