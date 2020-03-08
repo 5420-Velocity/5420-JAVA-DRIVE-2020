@@ -26,7 +26,7 @@ public final class Constants {
 	public static final class IntakeConstants {
 		public static final int encoderPort = 0; // Encoder port
 
-		public static final double highTarget = 9; // Encoder Position for high position
+		public static final double highTarget = 13.5; // Encoder Position for high position
 		public static final double middleTarget = 13.5; // Encoder position for middle position
 		public static final double lowTarget = 25.5; // Encoder Position for low position
 
@@ -47,6 +47,11 @@ public final class Constants {
 	public static final class ShooterConstants {
 		public static final int shooterOut = 6;
 		public static final int shooterIn = 0;
+
+		//target range for the limelight to drive the bot
+		public static final double rangeGoal = 20;
+		public static final double knownDistance = 99;
+		public static final double knownArea = 2.5;
 		
 		public static final int aimerMotor = 13;
 
@@ -61,6 +66,9 @@ public final class Constants {
 		//upper and lower limits for the panel controller lift
 		public static final int upperLimit = 2;
 		public static final int lowerLimit = 1;
+
+		//Timeout wait in milliseconds
+		public static final int timeOutTime = 3500;
 	}
 
 	public static final class LiftConstants {
@@ -76,6 +84,11 @@ public final class Constants {
 		// Right Motor Controller Map for the Talon CAN IDs
 		public static final int Right_A_ID = 3;
 		public static final int Right_B_ID = 4;
+
+		//PID values
+		public static final double DriveP = 0.05;
+		public static final double DriveI = 0.01;
+		public static final double DriveD = 0.003;
 
 		//trans solenoid
 		public static final int transmission = 0;

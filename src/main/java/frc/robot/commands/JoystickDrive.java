@@ -65,7 +65,7 @@ public class JoystickDrive extends CommandBase  {
 			// Apply a curve to the given input controls.
 			controllerY = JoystickDrive.getCurve(controllerY);
 
-			driveTrain.arcadeDrive(controllerY, controllerX);
+			driveTrain.arcadeDrive(-controllerY, controllerX);
 		} 
 		else if(DPad.up(DPADController)){
 			driveTrain.arcadeDrive(0.4, 0);

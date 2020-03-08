@@ -13,6 +13,7 @@ import java.util.GregorianCalendar;
 
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.Constants.ControlPanelConstants;
 import frc.robot.subsystems.ControlPanelController;
 
@@ -35,7 +36,7 @@ public class AutoPanelColorTickTurn extends CommandBase {
 	public void initialize() {
 
 		Calendar calculateDate = GregorianCalendar.getInstance();
-		calculateDate.add(GregorianCalendar.MILLISECOND, 2000);
+		calculateDate.add(GregorianCalendar.MILLISECOND, Constants.ControlPanelConstants.timeOutTime);
 		this.EStopCheckTime = calculateDate.getTime();
 
 		this.previous = controlPanelController.getColor();
