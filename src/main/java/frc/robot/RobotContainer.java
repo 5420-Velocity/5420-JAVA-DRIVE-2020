@@ -168,6 +168,10 @@ public class RobotContainer {
 			.whenPressed(() -> this.driveTrain.shift(true))
 			.whenReleased(() -> this.driveTrain.shift(false));
 
+		// Update the command settings to flip the controls
+		new JoystickButton(this.driverJoystick, Constants.ButtonMapConstants.Red_Button_ID)
+			.whenPressed(() -> this.joystickDrive.toggleFlipped());
+
 		/**
 		 * Setup Button Events for the Shooter on the Operator Controller
 		 */

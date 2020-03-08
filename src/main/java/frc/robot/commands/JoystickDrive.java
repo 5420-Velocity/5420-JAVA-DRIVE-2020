@@ -20,6 +20,7 @@ public class JoystickDrive extends CommandBase  {
 	private final DoubleSupplier speed;
 	private final DoubleSupplier rotation;
 	private final Joystick DPADController;
+	private boolean isControlFlipped = false;
 
 	/**
 	 * This function will get the input value on a scale of
@@ -53,6 +54,19 @@ public class JoystickDrive extends CommandBase  {
 	public void initialize() {
 	}
 
+	public void setFlipped(boolean isFlipped) {
+		this.isControlFlipped = isFlipped;
+	}
+
+	public void toggleFlipped() {
+		if(this.isControlFlipped == true) {
+			this.setFlipped(false);
+		}
+		else {
+			this.setFlipped(true);
+		}
+	}
+
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	public void execute() {
@@ -62,11 +76,14 @@ public class JoystickDrive extends CommandBase  {
 			double controllerY = (-speed.getAsDouble()*0.9);
 			double controllerX = -rotation.getAsDouble()*0.6;
 
+			// Flip the controls of the drive forward and reverse code
+			if(this.isControlFlipped == true) controllerY = controllerY * -1;
+
 			// Apply a curve to the given input controls.
 			controllerY = JoystickDrive.getCurve(controllerY);
 
 			driveTrain.arcadeDrive(-controllerY, controllerX);
-		} 
+		}
 		else if(DPad.up(DPADController)){
 			driveTrain.arcadeDrive(0.4, 0);
 		}
