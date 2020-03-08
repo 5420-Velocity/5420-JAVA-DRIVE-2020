@@ -73,10 +73,6 @@ public class Limelight extends SubsystemBase {
         double v = k / Math.sqrt(this.getArea());
         return (double) Math.round(v * 100) / 100;
 	}
-	
-	public double getDistanceError(){
-		return getDistance() - Constants.ShooterConstants.rangeGoal;
-	}
 
 	public double getTX(){
 		return this.table.getEntry("tx").getDouble(0.0);
@@ -90,7 +86,7 @@ public class Limelight extends SubsystemBase {
 		return this.table.getEntry("ta").getDouble(0.0);
 	}
 
-	public boolean isValidTarget(){
+	public boolean hasTarget(){
 		double check = this.table.getEntry("tv").getDouble(0.0);
 
 		return (check == 1.0) ? true : false;
