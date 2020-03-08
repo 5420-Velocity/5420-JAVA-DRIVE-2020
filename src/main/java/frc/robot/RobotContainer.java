@@ -188,7 +188,7 @@ public class RobotContainer {
 						// If no target is found, Offset is Zero
 						if(this.limeLight.hasTarget() == false) return 0.0;
 						return this.limeLight.getDistance() - Constants.ShooterConstants.rangeGoal;
-					}),
+					},
 					0.0, 
 					output -> {
 						System.out.println("Motor Value: Y" + turnOutput.get() + " X" + output);
