@@ -88,7 +88,7 @@ public class RobotContainer {
 		IntakeConstants.Integral, 
 		IntakeConstants.Derivative);
 
-	private final Limelight limeLight = new Limelight("one", ShooterConstants.knownArea, ShooterConstants.knownDistance);
+	public final Limelight limeLight = new Limelight("one", ShooterConstants.knownArea, ShooterConstants.knownDistance);
 
 	/**
 	 * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -97,6 +97,9 @@ public class RobotContainer {
 		// Initializing camera server for usb cameras atached to the rio
 		// CameraServer.getInstance().startAutomaticCapture();
 
+		// Initalize the Limelight to turn it off.
+		this.limeLight.setLedMode(1);
+
 		// Call of the configuration helper functions.
 		configurePIDControllers();
 		configureNetworkTableBindings();
@@ -104,10 +107,10 @@ public class RobotContainer {
 		configureDefaultCommands();
 		configureAuto();
 	}
+
 	/**
 	 * Configure the auto commands
 	 */
-
 	private void configureAuto(){
 		SequentialCommandGroup shootingAuto = new SequentialCommandGroup(
 		
@@ -145,7 +148,11 @@ public class RobotContainer {
           DriveTrainConstants.DriveP, 
           DriveTrainConstants.DriveI, 
           DriveTrainConstants.DriveD);
-		/*new JoystickButton(this.driverJoystick, ButtonMapConstants.Green_Button_ID)
+		new JoystickButton(this.driverJoystick, ButtonMapConstants.Green_Button_ID)
+			// Enable the Limelight LED
+			.whenPressed(() -> this.limeLight.setLedMode(0))
+			// Disable the Limelight LED
+			.whenReleased(() -> this.limeLight.setLedMode(1))
 			// Turning
 			.whenHeld(new PIDCommand(
            		drivePIDController,
@@ -159,7 +166,7 @@ public class RobotContainer {
 				limeLight::getDistanceError, 
 				0.0, 
 				output -> driveTrain.arcadeDrive(output, 0.0), 
-				driveTrain));*/
+				driveTrain));
 
 		/**
 		 * Setup Button Events for the Shooter on the Driver Controller
