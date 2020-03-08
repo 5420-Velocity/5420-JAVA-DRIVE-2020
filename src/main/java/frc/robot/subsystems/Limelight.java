@@ -8,31 +8,46 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.cameraserver.CameraServer;
-
+import edu.wpi.first.networktables.NetworkTableEntry;
 
 public class Limelight extends SubsystemBase {
 
 	private double knownArea = 0;
 	private double knownDistance = 0;
+	private NetworkTableEntry limelightDistance;
 
-	private NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+	private NetworkTable table;
 
 	public Limelight() {
-		this(0.0, 0.0);
+		this(null, 0.0, 0.0);
+	}
+
+	public Limelight(String limelightSuffix) {
+		this(limelightSuffix, 0.0, 0.0);
 	}
 
 	/**
-	 * Creates a new Limelight.
+	 * Creates a new Limelight Subsystem
+	 * 
+	 * @param limelightSuffix When you setup the limelight you can given it a custom name.
+	 *   All setup with limelight-{name}
+	 * @param knownArea Used in combination with knownDistance to calculate the distance
+	 * @param knownDistance
 	 */
-	public Limelight(double knownArea, double knownDistance) {
+	public Limelight(String limelightSuffix, double knownArea, double knownDistance) {
 		
+		String tableName = limelightSuffix.isEmpty() ? "" : ("-" + limelightSuffix.toLowerCase());
+
+		this.table = NetworkTableInstance.getDefault().getTable("limelight" + tableName);
+		this.limelightDistance = NetworkTableInstance.getDefault().getEntry("Limelight Distance" + tableName);
+
 		this.knownArea = knownArea;
 		this.knownDistance = knownDistance;
 
-		CameraServer.getInstance().startAutomaticCapture();
+		this.limelightDistance.setDefaultDouble(0.0);
 	}
 
 	/**
@@ -57,22 +72,26 @@ public class Limelight extends SubsystemBase {
         double k = this.knownDistance * Math.sqrt(this.knownArea);
         double v = k / Math.sqrt(this.getArea());
         return (double) Math.round(v * 100) / 100;
-    }
+	}
+	
+	public double getDistanceError(){
+		return getDistance() - Constants.ShooterConstants.rangeGoal;
+	}
 
 	public double getTX(){
-		return table.getEntry("tx").getDouble(0.0);
+		return this.table.getEntry("tx").getDouble(0.0);
 	}
 
 	public double getTY(){
-		return table.getEntry("ty").getDouble(0.0);
+		return this.table.getEntry("ty").getDouble(0.0);
 	}
 
 	public double getArea(){
-		return table.getEntry("ta").getDouble(0.0);
+		return this.table.getEntry("ta").getDouble(0.0);
 	}
 
 	public boolean isValidTarget(){
-		double check = table.getEntry("tv").getDouble(0.0);
+		double check = this.table.getEntry("tv").getDouble(0.0);
 
 		if(check == 1.0){
 			return true;
@@ -84,19 +103,22 @@ public class Limelight extends SubsystemBase {
 	}
 
 	public void setCamMode(double value){
-		table.getEntry("camMode").setDouble(value);
+		this.table.getEntry("camMode").setDouble(value);
 	}
 
 	public void setStreamMode(double value){
-		table.getEntry("stream").setDouble(value);
+		this.table.getEntry("stream").setDouble(value);
 	}
 
 	public void setPipeline(double value){
-		table.getEntry("pipeline").setDouble(value);
+		this.table.getEntry("pipeline").setDouble(value);
 	}
 
 	@Override
 	public void periodic() {
-		// This method will be called once per scheduler run
+
+		// Set the Limelight Distance Value from the calculated Value
+		this.limelightDistance.setDouble(this.getDistance());
+
 	}
 }
