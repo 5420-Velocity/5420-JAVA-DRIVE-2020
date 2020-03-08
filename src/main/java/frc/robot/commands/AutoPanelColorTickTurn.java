@@ -67,7 +67,7 @@ public class AutoPanelColorTickTurn extends CommandBase {
 		}
 		else {
 			// Start turning the Motor to turn the control pannel
-			this.controlPanelController.turnSpeed(0.5);
+			this.controlPanelController.turnSpeed(1);
 		}
 	}
 

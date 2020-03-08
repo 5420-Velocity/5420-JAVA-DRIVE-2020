@@ -49,7 +49,7 @@ public final class Constants {
 		public static final int shooterIn = 0;
 
 		//target range for the limelight to drive the bot
-		public static final double rangeGoal = 20;
+		public static final double rangeGoal = 110;
 		public static final double knownDistance = 99;
 		public static final double knownArea = 2.5;
 		
@@ -86,8 +86,8 @@ public final class Constants {
 		public static final int Right_B_ID = 4;
 
 		//PID values
-		public static final double DriveP = 0.05;
-		public static final double DriveI = 0.01;
+		public static final double DriveP = 0.04;
+		public static final double DriveI = 0.02;
 		public static final double DriveD = 0.003;
 
 		//trans solenoid
