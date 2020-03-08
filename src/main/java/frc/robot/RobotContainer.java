@@ -14,7 +14,11 @@ import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.AutoPanelColorTickTurn;
 import frc.robot.commands.AutoPanelDefaultCommand;
+import frc.robot.commands.ParallelCommandGroup;
 import frc.robot.commands.JoystickDrive;
+
+import java.util.concurrent.atomic.AtomicReference;
+
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.Compressor;
 import frc.robot.commands.Shoot;
@@ -144,29 +148,55 @@ public class RobotContainer {
 	private void configureButtonBindings() {
 
 		// Limelight ctrl
-		PIDController drivePIDController = new PIDController(
-          DriveTrainConstants.DriveP, 
-          DriveTrainConstants.DriveI, 
-          DriveTrainConstants.DriveD);
+		PIDController rangePIDController = new PIDController(
+          DriveTrainConstants.RangeP, 
+          DriveTrainConstants.RangeI, 
+		  DriveTrainConstants.RangeD);
+		PIDController turnPIDController = new PIDController(
+		  DriveTrainConstants.TurnP,
+		  DriveTrainConstants.TurnI,
+		  DriveTrainConstants.TurnD
+		);
+
+		/**
+		 * Using AtomicReference we are using two PID Commands at the same time
+		 *  allowing one PID Command to actually set the motor value and use
+		 * the AtomicReference<Double> to hold the turn value.
+		 * Lambda functions only allow refrences not variables of direct types like doubles.
+		 * 
+		 */
+		AtomicReference<Double> turnOutput = new AtomicReference<Double>();
+		
 		new JoystickButton(this.driverJoystick, ButtonMapConstants.Green_Button_ID)
 			// Enable the Limelight LED
 			.whenPressed(() -> this.limeLight.setLedMode(0))
 			// Disable the Limelight LED
 			.whenReleased(() -> this.limeLight.setLedMode(1))
-			// Turning
-			.whenHeld(new PIDCommand(
-           		drivePIDController,
-           		limeLight::getTX, 
-           		0.0, 
-           		output -> driveTrain.arcadeDrive(0.0, -output), 
-				driveTrain))
-		    // Range
-		    .whenHeld(new PIDCommand(
-				drivePIDController,
-				limeLight::getDistanceError, 
-				0.0, 
-				output -> driveTrain.arcadeDrive(output, 0.0), 
-				driveTrain));
+			.whenHeld(new ParallelCommandGroup(
+				// Turning
+				new PIDCommand(
+					turnPIDController,
+					limeLight::getTX, 
+					0.0, 
+					output -> turnOutput.set(output),
+					driveTrain
+				),
+				// Range
+				new PIDCommand(
+					rangePIDController,
+					() -> {
+						// If no target is found, Offset is Zero
+						if(this.limeLight.hasTarget() == false) return 0.0;
+						return this.limeLight.getDistance() - Constants.ShooterConstants.rangeGoal;
+					}),
+					0.0, 
+					output -> {
+						System.out.println("Motor Value: Y" + turnOutput.get() + " X" + output);
+						driveTrain.arcadeDrive(output, turnOutput.get());
+					}, 
+					driveTrain
+				)
+			));
 
 		/**
 		 * Setup Button Events for the Shooter on the Driver Controller
