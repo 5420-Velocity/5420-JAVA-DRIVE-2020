@@ -92,14 +92,8 @@ public class Limelight extends SubsystemBase {
 
 	public boolean isValidTarget(){
 		double check = this.table.getEntry("tv").getDouble(0.0);
-
-		if(check == 1.0){
-			return true;
-		} else if(check == 0.0){
-			return false;
-		} else{
-			return false;
-		}
+		
+		return (check == 1.0) ? true : false;
 	}
 
 	public void setCamMode(double value){
