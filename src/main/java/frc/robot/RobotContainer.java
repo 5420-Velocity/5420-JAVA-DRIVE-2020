@@ -11,13 +11,17 @@ import edu.wpi.first.wpilibj.Joystick;
 import frc.robot.Constants.ButtonMapConstants;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.Constants.IntakeConstants;
+import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.AutoPanelColorTickTurn;
 import frc.robot.commands.AutoPanelDefaultCommand;
 import frc.robot.commands.JoystickDrive;
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.Compressor;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.LiftControl;
+import frc.robot.Constants.DriveTrainConstants;
 import frc.robot.subsystems.ChuteSubsystem;
+import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.ControlPanelController;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.ShooterSubsystem;
@@ -27,6 +31,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -83,16 +88,30 @@ public class RobotContainer {
 		IntakeConstants.Integral, 
 		IntakeConstants.Derivative);
 
+	private final Limelight limeLight = new Limelight("one", ShooterConstants.knownArea, ShooterConstants.knownDistance);
+
 	/**
 	 * The container for the robot.  Contains subsystems, OI devices, and commands.
 	 */
 	public RobotContainer() {
+		// Initializing camera server for usb cameras atached to the rio
+		// CameraServer.getInstance().startAutomaticCapture();
 
 		// Call of the configuration helper functions.
 		configurePIDControllers();
 		configureNetworkTableBindings();
 		configureButtonBindings();
 		configureDefaultCommands();
+		configureAuto();
+	}
+	/**
+	 * Configure the auto commands
+	 */
+
+	private void configureAuto(){
+		SequentialCommandGroup shootingAuto = new SequentialCommandGroup(
+		
+		);
 	}
 
 	/**
@@ -120,6 +139,27 @@ public class RobotContainer {
 	 * 
 	 */
 	private void configureButtonBindings() {
+
+		// Limelight ctrl
+		PIDController drivePIDController = new PIDController(
+          DriveTrainConstants.DriveP, 
+          DriveTrainConstants.DriveI, 
+          DriveTrainConstants.DriveD);
+		/*new JoystickButton(this.driverJoystick, ButtonMapConstants.Green_Button_ID)
+			// Turning
+			.whenHeld(new PIDCommand(
+           		drivePIDController,
+           		limeLight::getTX, 
+           		0.0, 
+           		output -> driveTrain.arcadeDrive(0.0, -output), 
+				driveTrain))
+		    // Range
+		    .whenHeld(new PIDCommand(
+				drivePIDController,
+				limeLight::getDistanceError, 
+				0.0, 
+				output -> driveTrain.arcadeDrive(output, 0.0), 
+				driveTrain));*/
 
 		/**
 		 * Setup Button Events for the Shooter on the Driver Controller
