@@ -258,11 +258,6 @@ public class RobotContainer {
 	private void configureDefaultCommands() {
 		CommandScheduler scheduler = CommandScheduler.getInstance();
 
-		scheduler.setDefaultCommand(this.controlPanelController, new AutoPanelDefaultCommand(
-			controlPanelController,
-			() -> -operatorJoystick.getRawAxis(Constants.ControllerMapConstants.JOYSTICK_LEFT_Y_AXIS)
-		));
-
 		scheduler.setDefaultCommand(this.driveTrain, this.joystickDrive);
 
 		scheduler.setDefaultCommand(this.lift, new LiftControl(lift, intake,
