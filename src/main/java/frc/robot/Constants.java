@@ -145,7 +145,7 @@ public final class Constants {
 	}
 	
 	
-	public static final class ButtonMapConstants {
+	public static final class ControllerMapConstants {
 
 		public static final int JOYSTICK_RIGHT_X_AXIS = 4;
 		public static final int JOYSTICK_RIGHT_Y_AXIS = 5;
@@ -162,6 +162,8 @@ public final class Constants {
 		public static final int Right_Trigger = 3;
 		public static final int Left_Trigger = 2;
 
+		public static final int Joystick_Left_Button = 9;
+		public static final int Joystick_Right_Button = 10;
 	}
 
 }

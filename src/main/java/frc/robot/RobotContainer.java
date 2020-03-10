@@ -8,7 +8,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
-import frc.robot.Constants.ButtonMapConstants;
+import frc.robot.Constants.ControllerMapConstants;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.ShooterConstants;
@@ -23,6 +23,8 @@ import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.Compressor;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.LiftControl;
+import frc.robot.commands.PanelLiftDown;
+import frc.robot.commands.PanelLiftUp;
 import frc.robot.Constants.DriveTrainConstants;
 import frc.robot.subsystems.ChuteSubsystem;
 import frc.robot.subsystems.Limelight;
@@ -81,7 +83,7 @@ public class RobotContainer {
 	private final ChuteSubsystem chute = new ChuteSubsystem();
 
 	private final Shoot shoot = new Shoot(shooter,
-		() -> operatorJoystick.getRawButton(Constants.ButtonMapConstants.Blue_Button_ID),
+		() -> operatorJoystick.getRawButton(Constants.ControllerMapConstants.Blue_Button_ID),
 		() -> operatorJoystick.getRawButton(5),
 		() -> operatorJoystick.getRawButton(4)
 	);
@@ -167,7 +169,7 @@ public class RobotContainer {
 		 */
 		AtomicReference<Double> turnOutput = new AtomicReference<Double>();
 		
-		new JoystickButton(this.driverJoystick, ButtonMapConstants.Green_Button_ID)
+		new JoystickButton(this.driverJoystick, ControllerMapConstants.Green_Button_ID)
 			// Enable the Limelight LED
 			.whenPressed(() -> this.limeLight.setLedMode(0))
 			// Disable the Limelight LED
@@ -201,26 +203,26 @@ public class RobotContainer {
 		/**
 		 * Setup Button Events for the Shooter on the Driver Controller
 		 */
-		new JoystickButton(this.driverJoystick, Constants.ButtonMapConstants.Right_Bumper)
+		new JoystickButton(this.driverJoystick, Constants.ControllerMapConstants.Right_Bumper)
 			.whenPressed(() -> this.driveTrain.shift(true))
 			.whenReleased(() -> this.driveTrain.shift(false));
 
 		// Update the command settings to flip the controls
-		new JoystickButton(this.driverJoystick, Constants.ButtonMapConstants.Red_Button_ID)
+		new JoystickButton(this.driverJoystick, Constants.ControllerMapConstants.Red_Button_ID)
 			.whenPressed(() -> this.joystickDrive.toggleFlipped());
 
 		/**
 		 * Setup Button Events for the Shooter on the Operator Controller
 		 */
-		new JoystickButton(this.operatorJoystick, Constants.ButtonMapConstants.Blue_Button_ID)
+		new JoystickButton(this.operatorJoystick, Constants.ControllerMapConstants.Blue_Button_ID)
 			.whenPressed(() -> this.shooter.setSpeed(-0.65, -0.95))
 			.whenReleased(() -> this.shooter.setSpeed(0,0));
 
-		new JoystickButton(this.operatorJoystick, Constants.ButtonMapConstants.Left_Bumper)
+		new JoystickButton(this.operatorJoystick, Constants.ControllerMapConstants.Left_Bumper)
 			.whenPressed(() -> this.chute.setLeft(-0.7))
 			.whenReleased(() -> this.chute.setLeft(0));
 
-		new JoystickButton(this.operatorJoystick, Constants.ButtonMapConstants.Right_Bumper)
+		new JoystickButton(this.operatorJoystick, Constants.ControllerMapConstants.Right_Bumper)
 			.whenPressed(() -> this.chute.setRight(0.7))
 			.whenReleased(() -> this.chute.setRight(0));
 		
@@ -228,7 +230,7 @@ public class RobotContainer {
 		/**
 		 * Setup the button event for the Intake on the Operator Controller
 		 */
-		new JoystickButton(this.operatorJoystick, ButtonMapConstants.Green_Button_ID)
+		new JoystickButton(this.operatorJoystick, ControllerMapConstants.Green_Button_ID)
 			// Go Down on Button Press
 			.whenPressed(() -> this.intake.intakeMove(-1.0))
 			.whenHeld(
@@ -247,8 +249,8 @@ public class RobotContainer {
 		 * Setup the button event for the Control Panel Turning with
 		 *  the auto turn using the color sensor as a tick sensor.
 		 */
-		new JoystickButton(this.operatorJoystick, ButtonMapConstants.Yellow_Button_ID)
-			.whenHeld(new AutoPanelColorTickTurn(controlPanelController));
+		new JoystickButton(this.operatorJoystick, ControllerMapConstants.Yellow_Button_ID)
+			.whenPressed(new AutoPanelColorTickTurn(controlPanelController));
 
 	}
 
