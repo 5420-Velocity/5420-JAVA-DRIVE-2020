@@ -34,6 +34,7 @@ public class Intake extends SubsystemBase {
 	private Pixy2 pixy = Pixy2.createInstance(IntakeConstants.pixyLinkType);
 	private PixyAlgo pixyAlgo = new PixyAlgo(pixy);
 	private boolean forceUpperlimitDown = false;
+	private int pixyCachedLoop = 0;
 
 	public Intake() {
 
@@ -136,34 +137,43 @@ public class Intake extends SubsystemBase {
 		 */
 		this.ntEncoderValue.setDouble(this.getEncoderValue());
 
-		/**
-		 * Must be called in order for the subsystem to request
-		 *  blocks from the pixy.
-		 * Calling this function without the given params will
-		 *  return the previous resutls received in this request.
-		 * 
-		 */
-		// int pixyStatus = this.pixy.getCCC().getBlocks(false, 0, 8);
-		int pixyStatus = Pixy2.PIXY_RESULT_ERROR;
+		if(this.pixyCachedLoop == 0) {
+			/**
+			 * Must be called in order for the subsystem to request
+			 *  blocks from the pixy.
+			 * Calling this function without the given params will
+			 *  return the previous resutls received in this request.
+			 * 
+			 */
+			int pixyStatus = this.pixy.getCCC().getBlocks(false, 0, 8);
 
-		/**
-		 * Read response from the Pixy Class to update the network tables
-		 *  of the current status.
-		 * The getBlocks Function returns either an error code or the total
-		 *  amount of blocks detected.
-		 */
-		switch(pixyStatus) {
-			case Pixy2.PIXY_RESULT_BUSY:
-				this.ntPixyBlocks.setDouble(0.0);
-				this.ntPixyStatus.setString("Busy");
-				break;
-			case Pixy2.PIXY_RESULT_ERROR:
-				this.ntPixyBlocks.setDouble(0.0);
-				this.ntPixyStatus.setString("Error");
-				break;
-			default:
-				this.ntPixyBlocks.setDouble(pixyStatus);
-				this.ntPixyStatus.setString("Operational");
+			/**
+			 * Read response from the Pixy Class to update the network tables
+			 *  of the current status.
+			 * The getBlocks Function returns either an error code or the total
+			 *  amount of blocks detected.
+			 */
+			switch(pixyStatus) {
+				case Pixy2.PIXY_RESULT_BUSY:
+					this.ntPixyBlocks.setDouble(0.0);
+					this.ntPixyStatus.setString("Busy");
+					break;
+				case Pixy2.PIXY_RESULT_ERROR:
+					this.ntPixyBlocks.setDouble(0.0);
+					this.ntPixyStatus.setString("Error");
+					break;
+				default:
+					this.ntPixyBlocks.setDouble(pixyStatus);
+					this.ntPixyStatus.setString("Operational");
+			}
+		}
+		else if(this.pixyCachedLoop == 120) {
+			// Reset the Counter one 120 has been hit
+			this.pixyCachedLoop = 0;
+		}
+		else {
+			// Update the loop that allowed a skip of updating the Pixy Data
+			this.pixyCachedLoop++;
 		}
 
 	}
