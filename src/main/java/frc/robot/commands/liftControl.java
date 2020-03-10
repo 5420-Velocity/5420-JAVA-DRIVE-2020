@@ -22,8 +22,6 @@ public class LiftControl extends CommandBase {
 	private DoubleSupplier inputUp;
 	private DoubleSupplier inputDown;
 
-
-
 	public LiftControl(LiftSubsystem subsystem, Intake intakeSubsystem , DoubleSupplier inputUp, DoubleSupplier inputDown) {
 		this.liftS = subsystem;
 		this.intakeSubsystem = intakeSubsystem;
