@@ -31,6 +31,8 @@ public class PanelLiftDown extends CommandBase {
 		Calendar calculateDate = GregorianCalendar.getInstance();
 		calculateDate.add(GregorianCalendar.MILLISECOND, Constants.ControlPanelConstants.timeOutTime);
 		this.EStopCheckTime = calculateDate.getTime();
+
+		this.isFinished = false;
 	}
 
 	// Called every time the scheduler runs while the command is scheduled.
