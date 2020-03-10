@@ -55,11 +55,6 @@ public class RobotContainer {
 
 	public Compressor compressor = new Compressor(0);
 
-	private final AutoPanelDefaultCommand autoPanel = new AutoPanelDefaultCommand(
-		controlPanelController,
-		() -> -operatorJoystick.getRawAxis(Constants.ButtonMapConstants.JOYSTICK_LEFT_Y_AXIS)
-	);
-
 	private final JoystickDrive joystickDrive = new JoystickDrive(driveTrain, 
 		() -> driverJoystick.getRawAxis(1),
 		() -> driverJoystick.getRawAxis(4),
@@ -74,11 +69,6 @@ public class RobotContainer {
 	private final ShooterSubsystem shooter = new ShooterSubsystem();
 
 	private final LiftSubsystem lift = new LiftSubsystem();
-
-	private final LiftControl liftCommand = new LiftControl(lift, intake,
-		() -> driverJoystick.getRawAxis(Constants.ButtonMapConstants.Right_Trigger),
-		() -> driverJoystick.getRawAxis(Constants.ButtonMapConstants.Left_Trigger)
-	);
 
 	private final ChuteSubsystem chute = new ChuteSubsystem();
 
@@ -200,6 +190,13 @@ public class RobotContainer {
 				)
 			));
 
+		new JoystickButton(this.operatorJoystick, Constants.ControllerMapConstants.Joystick_Left_Button)
+			.whenPressed(new PanelLiftDown(controlPanelController));
+
+		new JoystickButton(this.operatorJoystick, Constants.ControllerMapConstants.Joystick_Right_Button)
+			.whenPressed(new PanelLiftUp(controlPanelController));
+			
+
 		/**
 		 * Setup Button Events for the Shooter on the Driver Controller
 		 */
@@ -261,11 +258,17 @@ public class RobotContainer {
 	private void configureDefaultCommands() {
 		CommandScheduler scheduler = CommandScheduler.getInstance();
 
-		scheduler.setDefaultCommand(this.controlPanelController, this.autoPanel);
+		scheduler.setDefaultCommand(this.controlPanelController, new AutoPanelDefaultCommand(
+			controlPanelController,
+			() -> -operatorJoystick.getRawAxis(Constants.ControllerMapConstants.JOYSTICK_LEFT_Y_AXIS)
+		));
 
 		scheduler.setDefaultCommand(this.driveTrain, this.joystickDrive);
 
-		scheduler.setDefaultCommand(this.lift, this.liftCommand);
+		scheduler.setDefaultCommand(this.lift, new LiftControl(lift, intake,
+			() -> driverJoystick.getRawAxis(Constants.ControllerMapConstants.Right_Trigger),
+			() -> driverJoystick.getRawAxis(Constants.ControllerMapConstants.Left_Trigger)
+		));
 
 		// Go Up By Default
 		scheduler.setDefaultCommand(this.intake, new PIDCommand(
