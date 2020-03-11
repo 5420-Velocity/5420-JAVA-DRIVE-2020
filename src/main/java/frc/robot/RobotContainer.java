@@ -32,9 +32,12 @@ import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LiftSubsystem;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
@@ -48,11 +51,10 @@ public class RobotContainer {
 	// The robot's subsystems and commands are defined here..
 	private final Joystick driverJoystick = new Joystick(ControllerConstants.JOYSTICK_USB_DRIVER);
 	private final Joystick operatorJoystick = new Joystick(ControllerConstants.JOYSTICK_USB_OPERATOR);
-
 	private final DriveTrain driveTrain = new DriveTrain();
 	private final ControlPanelController controlPanelController = new ControlPanelController();
-
 	public Compressor compressor = new Compressor(0);
+  	private final SendableChooser<Command> autoChooser = new SendableChooser<>();
 
 	private final JoystickDrive joystickDrive = new JoystickDrive(driveTrain, 
 		() -> driverJoystick.getRawAxis(1),
@@ -63,12 +65,9 @@ public class RobotContainer {
 	/**
 	 * Setup Intake Subsystm and the Extra Commands to Contorl It
 	 */
-	final Intake intake = new Intake();
-
+	public final Intake intake = new Intake();
 	private final ShooterSubsystem shooter = new ShooterSubsystem();
-
 	private final LiftSubsystem lift = new LiftSubsystem();
-
 	private final ChuteSubsystem chute = new ChuteSubsystem();
 
 	private final Shoot shoot = new Shoot(shooter,
@@ -100,16 +99,15 @@ public class RobotContainer {
 		configureNetworkTableBindings();
 		configureButtonBindings();
 		configureDefaultCommands();
-		configureAuto();
+		configureAutoChooser();
 	}
 
 	/**
 	 * Configure the auto commands
 	 */
-	private void configureAuto(){
-		SequentialCommandGroup shootingAuto = new SequentialCommandGroup(
-		
-		);
+	private void configureAutoChooser(){
+
+    	SmartDashboard.putData("Auto Chooser", autoChooser);
 	}
 
 	/**
@@ -265,6 +263,15 @@ public class RobotContainer {
 			this.intake
 		));
 		
+	}
+
+	/**
+	 * Use this to pass the autonomous command to the main {@link Robot} class.
+	 *
+	 * @return the command to run in autonomous
+	 */
+	public Command getAutonomousCommand() {
+		return this.autoChooser.getSelected();
 	}
 
 }
