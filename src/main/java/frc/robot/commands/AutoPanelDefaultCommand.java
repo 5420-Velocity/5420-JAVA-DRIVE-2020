@@ -35,10 +35,6 @@ public class AutoPanelDefaultCommand extends CommandBase {
 	// Called every time the scheduler runs while the command is scheduled.
 	@Override
 	public void execute() {
-		//when the lift is up create a new autopanel command
-		if(controlPanelController.getUpper()){
-			new AutoPanelColorTickTurn(controlPanelController);
-		}
 
 		// Lift Control
 		if(controlPanelController.getUpper() == false && liftInput.getAsDouble() > 0) {
