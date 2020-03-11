@@ -44,7 +44,7 @@ public class AutoPanelDefaultCommand extends CommandBase {
 		if(controlPanelController.getUpper() == false && liftInput.getAsDouble() > 0) {
 			controlPanelController.liftSpeed(0);
 		}
-		else if(controlPanelController.getlower() == false && liftInput.getAsDouble() < 0) {
+		else if(controlPanelController.getLower() == false && liftInput.getAsDouble() < 0) {
 			controlPanelController.liftSpeed(0);
 		}
 		else {

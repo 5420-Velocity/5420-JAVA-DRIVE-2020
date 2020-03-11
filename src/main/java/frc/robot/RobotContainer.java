@@ -13,7 +13,6 @@ import frc.robot.Constants.ControllerConstants;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.AutoPanelColorTickTurn;
-import frc.robot.commands.AutoPanelDefaultCommand;
 import frc.robot.commands.ParallelCommandGroup;
 import frc.robot.commands.JoystickDrive;
 

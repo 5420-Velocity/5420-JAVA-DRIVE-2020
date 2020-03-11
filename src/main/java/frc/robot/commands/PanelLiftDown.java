@@ -48,7 +48,7 @@ public class PanelLiftDown extends CommandBase {
 
 		// Run till lower limit
 		// The sensor value is true when there is no magnet detected
-		if(this.panelControllerSubsystem.getlower() == true){
+		if(this.panelControllerSubsystem.getLower() == true){
 			this.panelControllerSubsystem.liftSpeed(-1);
 		}
 		else{
