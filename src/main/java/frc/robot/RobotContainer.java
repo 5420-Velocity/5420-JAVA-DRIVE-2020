@@ -194,7 +194,6 @@ public class RobotContainer {
 
 		new JoystickButton(this.operatorJoystick, Constants.ControllerMapConstants.Joystick_Right_Button)
 			.whenPressed(new PanelLiftUp(controlPanelController));
-			
 
 		/**
 		 * Setup Button Events for the Shooter on the Driver Controller
@@ -240,13 +239,6 @@ public class RobotContainer {
 			)
 			// Turn off Motor
 			.whenReleased(() -> this.intake.intakeMove(0));
-
-		/**
-		 * Setup the button event for the Control Panel Turning with
-		 *  the auto turn using the color sensor as a tick sensor.
-		 */
-		new JoystickButton(this.operatorJoystick, ControllerMapConstants.Yellow_Button_ID)
-			.whenPressed(new AutoPanelColorTickTurn(controlPanelController));
 
 	}
 
