@@ -7,6 +7,8 @@
 
 package frc.robot.subsystems;
 
+import java.util.concurrent.atomic.AtomicReference;
+
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.ColorMatch;
 import com.revrobotics.ColorMatchResult;
@@ -40,6 +42,7 @@ public class ControlPanelController extends SubsystemBase {
 	private DigitalInput lowerLimit = new DigitalInput(Constants.ControlPanelConstants.lowerLimit);
 	private String gameData = "";
 	private AutoPanelColorTickTurn colorCommand;
+	private AtomicReference<Boolean> colorCommandComplete = new AtomicReference<Boolean>();
 
 
 	public ControlPanelController() {
@@ -52,7 +55,9 @@ public class ControlPanelController extends SubsystemBase {
 		this.colorMatch.addColorMatch(ColorTargets.COLOR_RED);
 		this.colorMatch.addColorMatch(ColorTargets.COLOR_YELLOW);
 
-		this.colorCommand = new AutoPanelColorTickTurn(this);
+		this.colorCommandComplete.set(false);
+
+		this.colorCommand = new AutoPanelColorTickTurn(this, colorCommandComplete);
 	}
 
 	public boolean getUpper(){
@@ -124,13 +129,18 @@ public class ControlPanelController extends SubsystemBase {
 		this.colorEncoderEntry.setDouble(this.colorMatchCounter.get());
 
 		// The sensor value is true when there is no magnet detected
-		if(this.getUpper() == true && this.colorCommand.isScheduled() == false) {
+		if(this.getUpper() == false && this.colorCommand.isScheduled() == false && this.colorCommandComplete.get() == false) {
 			// Magnet is detected and the command is not running
 			this.colorCommand.schedule();
 		}
-		else if(this.getUpper() == false && this.colorCommand.isScheduled() == true) {
+		else if(this.getUpper() == true && this.colorCommand.isScheduled() == true) {
 			// Magnet is not detected and the command is running
 			this.colorCommand.cancel();
+		}
+
+		if(this.getLower() == false && this.colorCommandComplete.get() == true) {
+			// Reset the Is Completed Commmand
+			this.colorCommandComplete.set(false);
 		}
 
 	}

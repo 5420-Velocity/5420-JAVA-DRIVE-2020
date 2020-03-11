@@ -10,6 +10,7 @@ package frc.robot.commands;
 import java.util.Date;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.concurrent.atomic.AtomicReference;
 
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -24,11 +25,13 @@ public class AutoPanelColorTickTurn extends CommandBase {
 	private Color previous;
 	private int index = 0;
 	private boolean isFinished = false;
+	private AtomicReference<Boolean> commandCompleted;
 	
-	public AutoPanelColorTickTurn(ControlPanelController controlPanelController) {
+	public AutoPanelColorTickTurn(ControlPanelController controlPanelController, AtomicReference<Boolean> commandCompleted) {
 		this.controlPanelController = controlPanelController;
 
 		addRequirements(controlPanelController);
+		this.commandCompleted = commandCompleted;
 	}
 
 	// Called when the command is initially scheduled.
@@ -64,6 +67,7 @@ public class AutoPanelColorTickTurn extends CommandBase {
 		// Completed rotations
 		if(this.index >= ControlPanelConstants.targetRotations){
 			this.isFinished = true;
+			this.commandCompleted.set(true);
 		}
 		else {
 			// Start turning the Motor to turn the control pannel
