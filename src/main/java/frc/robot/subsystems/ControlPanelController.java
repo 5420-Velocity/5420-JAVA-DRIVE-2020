@@ -19,6 +19,7 @@ import frc.robot.ColorMatchCounter;
 import frc.robot.Constants;
 import frc.robot.Constants.ColorTargets;
 import frc.robot.Constants.ControlPanelConstants;
+import frc.robot.commands.AutoPanelColorTickTurn;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -38,6 +39,8 @@ public class ControlPanelController extends SubsystemBase {
 	private DigitalInput upperLimit = new DigitalInput(Constants.ControlPanelConstants.upperLimit);
 	private DigitalInput lowerLimit = new DigitalInput(Constants.ControlPanelConstants.lowerLimit);
 	private String gameData = "";
+	private AutoPanelColorTickTurn colorCommand;
+
 
 	public ControlPanelController() {
 		this.colorSensorEntry.setDefaultString("");
@@ -48,13 +51,15 @@ public class ControlPanelController extends SubsystemBase {
 		this.colorMatch.addColorMatch(ColorTargets.COLOR_GREEN);
 		this.colorMatch.addColorMatch(ColorTargets.COLOR_RED);
 		this.colorMatch.addColorMatch(ColorTargets.COLOR_YELLOW);
+
+		this.colorCommand = new AutoPanelColorTickTurn(this);
 	}
 
 	public boolean getUpper(){
 		return this.upperLimit.get();
 	}
 
-	public boolean getlower(){
+	public boolean getLower(){
 		return this.lowerLimit.get();
 	}
 
@@ -117,6 +122,16 @@ public class ControlPanelController extends SubsystemBase {
 
 		// Save the Encoder Value to the Dashboard
 		this.colorEncoderEntry.setDouble(this.colorMatchCounter.get());
+
+		// The sensor value is true when there is no magnet detected
+		if(this.getUpper() == true && this.colorCommand.isScheduled() == false) {
+			// Magnet is detected and the command is not running
+			this.colorCommand.schedule();
+		}
+		else if(this.getUpper() == false && this.colorCommand.isScheduled() == true) {
+			// Magnet is not detected and the command is running
+			this.colorCommand.cancel();
+		}
 
 	}
 
