@@ -13,6 +13,7 @@ import frc.robot.Constants.ControllerConstants;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.AutoPanelColorTickTurn;
+import frc.robot.commands.DoNothingAutoCommand;
 import frc.robot.commands.ParallelCommandGroup;
 import frc.robot.commands.JoystickDrive;
 
@@ -106,6 +107,12 @@ public class RobotContainer {
 	 * Configure the auto commands
 	 */
 	private void configureAutoChooser(){
+
+		this.autoChooser.setDefaultOption("Do Nothing", new DoNothingAutoCommand());
+		this.autoChooser.addOption("Color Wheel Test", new SequentialCommandGroup(
+			new PanelLiftUp(this.controlPanelController),
+			new AutoPanelColorTickTurn(this.controlPanelController, new AtomicReference<Boolean>())
+		));
 
     	SmartDashboard.putData("Auto Chooser", autoChooser);
 	}
