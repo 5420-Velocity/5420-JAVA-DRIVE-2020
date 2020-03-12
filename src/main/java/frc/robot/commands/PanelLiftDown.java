@@ -39,7 +39,7 @@ public class PanelLiftDown extends CommandBase {
 	@Override
 	public void execute() {
 		// Safety time out
-		if(new Date().after(EStopCheckTime) && this.panelControllerSubsystem.getUpper() == false) {
+		if(new Date().after(EStopCheckTime) && this.panelControllerSubsystem.getLower() == false) {
 			// Quit Early, Must not be connected.
 			System.err.println("E-Stop >> Code Detected the lower limit on the control pannel isn't detected.");
 

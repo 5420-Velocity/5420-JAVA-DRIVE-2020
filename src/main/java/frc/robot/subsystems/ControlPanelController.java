@@ -145,7 +145,7 @@ public class ControlPanelController extends SubsystemBase {
 			this.colorCommand.cancel();
 		}
 
-		if(this.getLower() == false && this.colorCommandComplete.get() == true) {
+		if(this.getLower() == true && this.colorCommandComplete.get() == true) {
 			// Reset the Is Completed Commmand
 			this.colorCommandComplete.set(false);
 		}

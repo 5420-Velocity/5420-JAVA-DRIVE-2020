@@ -37,10 +37,10 @@ public class AutoPanelDefaultCommand extends CommandBase {
 	public void execute() {
 
 		// Lift Control
-		if(controlPanelController.getUpper() == false && liftInput.getAsDouble() > 0) {
+		if(controlPanelController.getUpper() == true && liftInput.getAsDouble() > 0) {
 			controlPanelController.liftSpeed(0);
 		}
-		else if(controlPanelController.getLower() == false && liftInput.getAsDouble() < 0) {
+		else if(controlPanelController.getLower() == true && liftInput.getAsDouble() < 0) {
 			controlPanelController.liftSpeed(0);
 		}
 		else {
