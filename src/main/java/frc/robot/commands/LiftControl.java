@@ -27,8 +27,8 @@ public class LiftControl extends CommandBase {
 		this.intakeSubsystem = intakeSubsystem;
 		this.inputDown = inputDown;
 		this.inputUp = inputUp;
+		
 		addRequirements(subsystem);
-		// Use addRequirements() here to declare subsystem dependencies.
 	}
 
 	// Called when the command is initially scheduled.
