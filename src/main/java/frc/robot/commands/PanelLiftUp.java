@@ -47,8 +47,7 @@ public class PanelLiftUp extends CommandBase {
 		}
 
 		// Run till upper limit
-		// The sensor value is true when there is no magnet detected
-		if(this.panelControllerSubsystem.getUpper() == true){
+		if(this.panelControllerSubsystem.getUpper() == false){
 			this.panelControllerSubsystem.liftSpeed(1);
 		}
 		else{

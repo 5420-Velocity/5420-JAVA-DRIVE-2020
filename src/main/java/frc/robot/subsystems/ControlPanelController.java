@@ -60,12 +60,22 @@ public class ControlPanelController extends SubsystemBase {
 		this.colorCommand = new AutoPanelColorTickTurn(this, colorCommandComplete);
 	}
 
-	public boolean getUpper(){
-		return this.upperLimit.get();
+	/**
+	 * 
+	 * @return boolean True means that its is at the limit
+	 */
+	public boolean getUpper() {
+		// The sensor value is true when there is no magnet detected
+		return !this.upperLimit.get();
 	}
 
-	public boolean getLower(){
-		return this.lowerLimit.get();
+	/**
+	 * 
+	 * @return boolean True means that its is at the limit
+	 */
+	public boolean getLower() {
+		// The sensor value is true when there is no magnet detected
+		return !this.lowerLimit.get();
 	}
 
 	public void liftSpeed(double power){
@@ -128,13 +138,10 @@ public class ControlPanelController extends SubsystemBase {
 		// Save the Encoder Value to the Dashboard
 		this.colorEncoderEntry.setDouble(this.colorMatchCounter.get());
 
-		// The sensor value is true when there is no magnet detected
-		if(this.getUpper() == false && this.colorCommand.isScheduled() == false && this.colorCommandComplete.get() == false) {
-			// Magnet is detected and the command is not running
+		if(this.getUpper() == true && this.colorCommand.isScheduled() == false && this.colorCommandComplete.get() == false) {
 			this.colorCommand.schedule();
 		}
-		else if(this.getUpper() == true && this.colorCommand.isScheduled() == true) {
-			// Magnet is not detected and the command is running
+		else if(this.getUpper() == false && this.colorCommand.isScheduled() == true) {
 			this.colorCommand.cancel();
 		}
 
