@@ -58,8 +58,21 @@ public class DriveTrain extends SubsystemBase {
 		drive = new DifferentialDrive(LeftAT, RightAT);
 	}
 
+	public void zero(){
+		LeftAT.getSensorCollection().setIntegratedSensorPosition(0, 5000);
+		RightAT.getSensorCollection().setIntegratedSensorPosition(0, 5000);
+	}
+
 	public void arcadeDrive(double speed, double rotation){
 		drive.arcadeDrive(speed, rotation);
+	}
+
+	public double getLeftEncoder(){
+		return LeftAT.getSelectedSensorPosition();
+	}
+	
+	public double getRightEncoder(){
+		return RightAT.getSelectedSensorPosition();
 	}
 	
 	public void shift(boolean state){
