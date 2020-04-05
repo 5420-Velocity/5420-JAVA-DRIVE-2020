@@ -11,5 +11,9 @@
     "**/.project": true,
     "**/.settings": true,
     "**/.factorypath": true
-  }
+  },
+  "editor.insertSpaces": false,
+  "telemetry.enableTelemetry": false,
+  "files.autoSave": "afterDelay",
+  "files.autoSaveDelay": 5000
 }

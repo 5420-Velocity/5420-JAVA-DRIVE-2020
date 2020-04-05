@@ -7,48 +7,111 @@
 
 package frc.robot.commands;
 
-import frc.robot.Robot;
-import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.DPad;
+import frc.robot.subsystems.DriveTrain;
+import java.util.function.DoubleSupplier;
 
-public class JoystickDrive extends Command {
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 
-  public JoystickDrive() {
-    requires(Robot.driveTrain);
-  }
+public class JoystickDrive extends CommandBase  {
 
-  // Called just before this Command runs the first time
-  @Override
-  protected void initialize() {
-  }
+	private final DriveTrain driveTrain;
+	private final DoubleSupplier speed;
+	private final DoubleSupplier rotation;
+	private final Joystick DPADController;
+	private boolean isControlFlipped = false;
 
-  // Called repeatedly when this Command is scheduled to run
-  @Override
-  protected void execute() {
-    double speed = Robot.m_oi.getSpeed();
-    double turn = Robot.m_oi.getTurn();
-    
-    if(Math.abs(speed) > 0.1 || Math.abs(turn) > 0.1){
-      Robot.driveTrain.arcadeDrive(speed, turn);
-    }
-    else{
-      Robot.driveTrain.arcadeDrive(0, 0);
-    }
-  }
+	/**
+	 * This function will get the input value on a scale of
+	 *  a curve using the Square Root Function
+	 * 
+	 * @param double
+	 * @return Curved Value
+	 */
+	public static double getCurve(double input)
+	{
+		double sign = Math.signum(input);
 
-  // Make this return true when this Command no longer needs to run execute()
-  @Override
-  protected boolean isFinished() {
-    return false;
-  }
+		double value = Math.abs(input);
+		value = Math.pow(value, 2);
+		value += 0.02;
 
-  // Called once after isFinished returns true
-  @Override
-  protected void end() {
-  }
+		return sign * value;
+	}
 
-  // Called when another command which requires one or more of the same
-  // subsystems is scheduled to run
-  @Override
-  protected void interrupted() {
-  }
+	public JoystickDrive(DriveTrain driveTrain, DoubleSupplier speed, DoubleSupplier rotation, Joystick DPADController) {
+		// Use addRequirements() here to declare subsystem dependencies.
+		this.driveTrain = driveTrain;
+		this.DPADController = DPADController;
+		this.speed = speed;
+		this.rotation = rotation;
+		addRequirements(driveTrain);
+	}
+
+	// Called just before this Command runs the first time
+	@Override
+	public void initialize() {
+	}
+
+	public void setFlipped(boolean isFlipped) {
+		this.isControlFlipped = isFlipped;
+	}
+
+	public void toggleFlipped() {
+		if(this.isControlFlipped == true) {
+			this.setFlipped(false);
+		}
+		else {
+			this.setFlipped(true);
+		}
+	}
+
+	// Called repeatedly when this Command is scheduled to run
+	@Override
+	public void execute() {
+		// Apply a Deadband to the Input mapped at 0.05
+		if (Math.abs(speed.getAsDouble()) > 0.05 || Math.abs(rotation.getAsDouble()) > 0.05) {
+
+			double controllerY = (-speed.getAsDouble()*0.9);
+			double controllerX = -rotation.getAsDouble()*0.6;
+
+			// Flip the controls of the drive forward and reverse code
+			if(this.isControlFlipped == true) controllerY = controllerY * -1;
+
+			// Apply a curve to the given input controls.
+			controllerY = JoystickDrive.getCurve(controllerY);
+
+			driveTrain.arcadeDrive(-controllerY, controllerX);
+		}
+		else if(DPad.up(DPADController)){
+			driveTrain.arcadeDrive(0.4, 0);
+		}
+		else if(DPad.down(DPADController)){
+			driveTrain.arcadeDrive(-0.4, 0);
+		}
+		else if(DPad.right(DPADController)){
+			driveTrain.arcadeDrive(0, -0.4);
+		}
+		else if(DPad.left(DPADController)){
+			driveTrain.arcadeDrive(0, 0.4);
+		}
+		else {
+			// Set the motor to zero, Its not out of the deadband
+			driveTrain.arcadeDrive(0, 0);
+		}
+
+	}
+
+	// Called once after isFinished returns true
+	@Override
+	public void end(boolean interrupted) {
+	}
+
+	// Returns true when the command should end.
+	@Override
+	public boolean isFinished() {
+		return false;
+	}
+	
 }
