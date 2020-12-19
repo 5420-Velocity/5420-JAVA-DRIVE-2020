@@ -57,6 +57,11 @@ public final class Constants {
 
 	}
 
+	public static final class NewShooterConstants{
+		public static final int shooterOne = 0;
+		public static final int shooterTwo = 2;
+	}
+
 	public static final class ControlPanelConstants {
 		// Number of changes in color
 		public static final int targetRotations = 32;
@@ -94,13 +99,34 @@ public final class Constants {
 		public static final double TurnI = 0.01;
 		public static final double TurnD = 0.002;
 
+		public static final double EncoderP = 0.03;
+		public static final double EncoderI = 0.03;
+		public static final double EncoderD = 0.003;
+
 		//trans solenoid
 		public static final int transmission = 0;
 		public static final boolean defaultGear = false;
 
 	}
 
+	public static final class charlesConstants {
+		public static final int encoderPort = 1;
+		public static final int charlesMotor = 8;
+		public static final int charlesColorSensor = 3;
+		public static final double ticksPerBall = 20;
+		public static final double initEncoderValue = 20;
+		
+		public static final Slot[] slots = new Slot[]{
+			new Slot(0, 0, 10),
+			new Slot(1, 10, 20),
+			new Slot(2, 20, 30),
+			new Slot(3, 30, 40),
+			new Slot(4, 40, 50),
+		};
+	}
+
 	public static final class ColorTargets {
+		
 		
 		public static final Color COLOR_BLUE = ColorMatch.makeColor(0.143, 0.427, 0.429);
 		public static final Color COLOR_GREEN = ColorMatch.makeColor(0.197, 0.561, 0.240);
