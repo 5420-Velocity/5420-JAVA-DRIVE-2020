@@ -11,6 +11,7 @@ import java.util.function.BooleanSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.NewShooterSubsystem;
+import frc.robot.subsystems.CharlesSubsystem;
 
 
 public class NewShoot extends CommandBase {
@@ -18,13 +19,15 @@ public class NewShoot extends CommandBase {
    * Creates a new Shoot.
    */
   private final NewShooterSubsystem shooter;
+  private final CharlesSubsystem charles;
   private final BooleanSupplier startShoot;
 
 
-  public NewShoot(NewShooterSubsystem Shooter, BooleanSupplier startshoot) {
-    this.shooter = Shooter;
+  public NewShoot(CharlesSubsystem charles, NewShooterSubsystem shooter, BooleanSupplier startshoot) {
+    this.shooter = shooter;
+    this.charles = charles;
     this.startShoot = startshoot;
-    addRequirements(Shooter);
+    addRequirements(shooter, charles);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -38,11 +41,13 @@ public class NewShoot extends CommandBase {
   public void execute() {
     //shooting
     if(startShoot.getAsBoolean()){
-      shooter.setSpeed(0.8, 0.8);
+      shooter.setSpeed(0.8, 0.8, 0.5);
     }
     else{
-      shooter.setSpeed(0, 0);
+      shooter.setSpeed(0, 0, 0);
     }
+
+    //add charles run command
   }
 
   // Called once the command ends or is interrupted.

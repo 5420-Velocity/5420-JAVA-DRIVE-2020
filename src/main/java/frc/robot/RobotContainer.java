@@ -83,7 +83,7 @@ public class RobotContainer {
 	// 	() -> operatorJoystick.getRawButton(4)
 	// );
 
-	private final NewShoot newShoot = new NewShoot(newShooter, 
+	private final NewShoot newShoot = new NewShoot(charles, newShooter, 
 		() -> operatorJoystick.getRawButton(Constants.ControllerMapConstants.Blue_Button_ID)
 	);
 

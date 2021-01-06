@@ -60,6 +60,8 @@ public final class Constants {
 	public static final class NewShooterConstants{
 		public static final int shooterOne = 0;
 		public static final int shooterTwo = 2;
+
+		public static final int feedMotor = 3;
 	}
 
 	public static final class ControlPanelConstants {
@@ -115,7 +117,7 @@ public final class Constants {
 		public static final int charlesColorSensor = 3;
 		public static final double ticksPerBall = 20;
 		public static final double initEncoderValue = 20;
-		
+
 		public static final Slot[] slots = new Slot[]{
 			new Slot(0, 0, 10),
 			new Slot(1, 10, 20),

@@ -17,6 +17,7 @@ public class NewShooterSubsystem extends SubsystemBase {
 
   private WPI_TalonFX shooterMotorOne = new WPI_TalonFX(Constants.NewShooterConstants.shooterOne);
   private WPI_TalonFX shooterMotorTwo = new WPI_TalonFX(Constants.NewShooterConstants.shooterTwo);
+  private WPI_TalonSRX feedMotor = new WPI_TalonSRX(Constants.NewShooterConstants.feedMotor);
 
   public NewShooterSubsystem() {
     // Dont't allow the power to be X instantly, make it
@@ -32,9 +33,10 @@ public class NewShooterSubsystem extends SubsystemBase {
    * @param rearMotor
    * @param frontMotor
    */
-  public void setSpeed(double rearMotor, double frontMotor){
+  public void setSpeed(double rearMotor, double frontMotor, double feed){
     shooterMotorOne.set(rearMotor);
     shooterMotorTwo.set(frontMotor);
+    feedMotor.set(feed);
   }
 
   @Override
