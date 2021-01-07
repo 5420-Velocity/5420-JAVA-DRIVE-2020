@@ -57,9 +57,9 @@ public final class Constants {
 
 	}
 
-	public static final class NewShooterConstants{
-		public static final int shooterOne = 0;
-		public static final int shooterTwo = 2;
+	public static final class NewShooterConstants {
+		public static final int shooterOne = 14;
+		public static final int shooterTwo = 15;
 
 		public static final int feedMotor = 3;
 	}
