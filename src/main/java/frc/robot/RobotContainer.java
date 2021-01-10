@@ -23,6 +23,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * (including subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
+
 	// The robot's subsystems and commands are defined here..
 	private final Joystick driverJoystick = new Joystick(ControllerConstants.JOYSTICK_USB_DRIVER);
 	private final Joystick operatorJoystick = new Joystick(ControllerConstants.JOYSTICK_USB_OPERATOR);
@@ -69,10 +70,10 @@ public class RobotContainer {
 	 * The container for the robot.  Contains subsystems, OI devices, and commands.
 	 */
 	public RobotContainer() {
-		// Initializing camera server for usb cameras atached to the rio
+		// Initializing camera server for usb cameras attached to the rio
 		// CameraServer.getInstance().startAutomaticCapture();
 
-		// Initalize the Limelight to turn it off.
+		// Initialize the Limelight to turn it off.
 		this.limeLight.setLedMode(1);
 
 		// Call of the configuration helper functions.
@@ -98,7 +99,7 @@ public class RobotContainer {
 	}
 
 	/**
-	 * Configure PID Controlelrs that are stored in the current
+	 * Configure PID Controllers that are stored in the current
 	 * RobotContainer instance.
 	 */
 	private void configurePIDControllers() {
@@ -135,7 +136,7 @@ public class RobotContainer {
 		 * Using AtomicReference we are using two PID Commands at the same time
 		 *  allowing one PID Command to actually set the motor value and use
 		 * the AtomicReference<Double> to hold the turn value.
-		 * Lambda functions only allow refrences not variables of direct types like doubles.
+		 * Lambda functions only allow references not variables of direct types like doubles.
 		 *
 		 */
 		AtomicReference<Double> turnOutput = new AtomicReference<Double>();
@@ -159,7 +160,7 @@ public class RobotContainer {
 					rangePIDController,
 					() -> {
 						// If no target is found, Offset is Zero
-						if (this.limeLight.hasTarget() == false) return 0.0;
+						if (!this.limeLight.hasTarget()) return 0.0;
 						return this.limeLight.getDistance() - Constants.ShooterConstants.rangeGoal;
 					},
 					0.0,
