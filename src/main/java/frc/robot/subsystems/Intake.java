@@ -70,12 +70,12 @@ public class Intake extends SubsystemBase {
 	 * If the flag `forceUpperlimitDown` is true then it returns
 	 * the low offset to force the arm down.
 	 *
-	 * @return Offset from the Hight Target
+	 * @return Offset from the Height Target
 	 */
 	public double getEncoderFromHighValue() {
 
 		// When the Override flag is enabled to force the arm in the Middle position
-		if (this.forceUpperlimitDown == true) {
+		if (this.forceUpperlimitDown) {
 			return this.getEncoderValue() - Constants.IntakeConstants.middleTarget;
 		}
 
@@ -102,7 +102,7 @@ public class Intake extends SubsystemBase {
 		AtomicInteger largestArea = new AtomicInteger(0);
 
 		/**
-		 * AtomicRefrnce and AtomicInteger is used to
+		 * AtomicReference and AtomicInteger is used to
 		 *  access and store variables between the different loops
 		 *  within the forEach Consumer Lambda Function.
 		 */
@@ -178,7 +178,7 @@ public class Intake extends SubsystemBase {
 	/**
 	 * This function will set a flag for force the arm target down.
 	 *
-	 * @param boolean Force High Offset to the Down Offset
+	 * @param force Force High Offset to the Down Offset
 	 */
 	public void forceArmDown(boolean force) {
 		this.forceUpperlimitDown = force;
