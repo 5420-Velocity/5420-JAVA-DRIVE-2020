@@ -28,21 +28,20 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class ControlPanelController extends SubsystemBase {
 
-	private WPI_TalonSRX panelDriver = new WPI_TalonSRX(ControlPanelConstants.CAN.ControlPanelDriver);
-	private WPI_TalonSRX panelLift = new WPI_TalonSRX(ControlPanelConstants.CAN.ControlPanelLift);
-	private I2C.Port ColorSensor = I2C.Port.kOnboard;
-	private ColorSensorV3 colorSensor = new ColorSensorV3(ColorSensor);
-	private ColorMatch colorMatch = new ColorMatch();
-	private ColorMatchCounter colorMatchCounter = new ColorMatchCounter(colorSensor, colorMatch);
-	private NetworkTableEntry colorEncoderEntry = NetworkTableInstance.getDefault().getEntry(Constants.NetworkTableEntries.COLOR_ENCODER_VALUE);
-	private NetworkTableEntry colorSensorEntry = NetworkTableInstance.getDefault().getEntry(Constants.NetworkTableEntries.COLOR_VALUE);
-	private NetworkTableEntry FMSColorEntry = NetworkTableInstance.getDefault().getEntry(Constants.NetworkTableEntries.FMSCOLOR_VALUE);
-	private DigitalInput upperLimit = new DigitalInput(Constants.ControlPanelConstants.DIO.upperLimit);
-	private DigitalInput lowerLimit = new DigitalInput(Constants.ControlPanelConstants.DIO.lowerLimit);
+	private final WPI_TalonSRX panelDriver = new WPI_TalonSRX(ControlPanelConstants.CAN.ControlPanelDriver);
+	private final WPI_TalonSRX panelLift = new WPI_TalonSRX(ControlPanelConstants.CAN.ControlPanelLift);
+	private final I2C.Port ColorSensor = I2C.Port.kOnboard;
+	private final ColorSensorV3 colorSensor = new ColorSensorV3(ColorSensor);
+	private final ColorMatch colorMatch = new ColorMatch();
+	private final ColorMatchCounter colorMatchCounter = new ColorMatchCounter(colorSensor, colorMatch);
+	private final NetworkTableEntry colorEncoderEntry = NetworkTableInstance.getDefault().getEntry(Constants.NetworkTableEntries.COLOR_ENCODER_VALUE);
+	private final NetworkTableEntry colorSensorEntry = NetworkTableInstance.getDefault().getEntry(Constants.NetworkTableEntries.COLOR_VALUE);
+	private final NetworkTableEntry FMSColorEntry = NetworkTableInstance.getDefault().getEntry(Constants.NetworkTableEntries.FMSCOLOR_VALUE);
+	private final DigitalInput upperLimit = new DigitalInput(Constants.ControlPanelConstants.DIO.upperLimit);
+	private final DigitalInput lowerLimit = new DigitalInput(Constants.ControlPanelConstants.DIO.lowerLimit);
 	private String gameData = "";
-	private AutoPanelColorTickTurn colorCommand;
-	private AtomicReference<Boolean> colorCommandComplete = new AtomicReference<Boolean>();
-
+	private final AutoPanelColorTickTurn colorCommand;
+	private final AtomicReference<Boolean> colorCommandComplete = new AtomicReference<Boolean>();
 
 	public ControlPanelController() {
 		this.colorSensorEntry.setDefaultString("");
@@ -111,13 +110,7 @@ public class ControlPanelController extends SubsystemBase {
 				case 'Y':
 					value = ColorTargets.COLOR_YELLOW;
 					break;
-				default:
-					value = null;
-					break;
 			}
-		}
-		else {
-			value = null;
 		}
 
 		return value;
@@ -135,15 +128,15 @@ public class ControlPanelController extends SubsystemBase {
 		// Save the Encoder Value to the Dashboard
 		this.colorEncoderEntry.setDouble(this.colorMatchCounter.get());
 
-		if (this.getUpper() == true && this.colorCommand.isScheduled() == false && this.colorCommandComplete.get() == false) {
+		if (this.getUpper() && !this.colorCommand.isScheduled() && !this.colorCommandComplete.get()) {
 			this.colorCommand.schedule();
 		}
-		else if (this.getUpper() == false && this.colorCommand.isScheduled() == true) {
+		else if (!this.getUpper() && this.colorCommand.isScheduled()) {
 			this.colorCommand.cancel();
 		}
 
-		if (this.getLower() == true && this.colorCommandComplete.get() == true) {
-			// Reset the Is Completed Commmand
+		if (this.getLower() && this.colorCommandComplete.get()) {
+			// Reset the Is Completed Command
 			this.colorCommandComplete.set(false);
 		}
 

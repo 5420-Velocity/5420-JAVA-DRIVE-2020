@@ -17,8 +17,8 @@ public class DriveWithEncoder extends CommandBase {
 
 	private final DriveTrain driveTrain;
 	private final double encoderTarget;
-	private PIDController drivePidController;
-	private PIDCommand pidCommand;
+	private final PIDController drivePidController;
+	private final PIDCommand pidCommand;
 	private double currentLocation;
 
 	public DriveWithEncoder(DriveTrain subsystem, double targetDistance) {
@@ -54,7 +54,7 @@ public class DriveWithEncoder extends CommandBase {
 	@Override
 	public void execute() {
 		if (this.currentLocation == 4) {
-
+			// TODO
 		}
 	}
 

@@ -17,10 +17,10 @@ public class LiftControl extends CommandBase {
 	/**
 	 * Creates a new liftControl.
 	 */
-	private LiftSubsystem liftS;
-	private Intake intakeSubsystem;
-	private DoubleSupplier inputUp;
-	private DoubleSupplier inputDown;
+	private final LiftSubsystem liftS;
+	private final Intake intakeSubsystem;
+	private final DoubleSupplier inputUp;
+	private final DoubleSupplier inputDown;
 
 	public LiftControl(LiftSubsystem subsystem, Intake intakeSubsystem, DoubleSupplier inputUp, DoubleSupplier inputDown) {
 		this.liftS = subsystem;

@@ -12,7 +12,6 @@ import frc.robot.subsystems.ShooterSubsystem;
 
 import java.util.function.BooleanSupplier;
 
-
 public class Shoot extends CommandBase {
 	/**
 	 * Creates a new Shoot.
@@ -22,11 +21,11 @@ public class Shoot extends CommandBase {
 	private final BooleanSupplier aim1;
 	private final BooleanSupplier aim2;
 
-	public Shoot(ShooterSubsystem Shooter, BooleanSupplier startshoot, BooleanSupplier aim1, BooleanSupplier aim2) {
+	public Shoot(ShooterSubsystem Shooter, BooleanSupplier startShoot, BooleanSupplier aim1, BooleanSupplier aim2) {
 		this.aim1 = aim1;
 		this.aim2 = aim2;
 		this.shooter = Shooter;
-		this.startShoot = startshoot;
+		this.startShoot = startShoot;
 		addRequirements(Shooter);
 		// Use addRequirements() here to declare subsystem dependencies.
 	}

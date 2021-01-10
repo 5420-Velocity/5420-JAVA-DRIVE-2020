@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
  * CommandGroup
  * <p>
  * This allows you to run commands in a command group
- * in parrallel calling all of the common functions.
+ * in parallel calling all of the common functions.
  */
 public class ParallelCommandGroup extends CommandBase {
 
@@ -59,7 +59,7 @@ public class ParallelCommandGroup extends CommandBase {
 	public boolean isFinished() {
 		// Check to see if the commands are Finished
 		for (Command command : this.commands) {
-			if (command.isFinished() == false) return false;
+			if (!command.isFinished()) return false;
 		}
 		return true;
 	}

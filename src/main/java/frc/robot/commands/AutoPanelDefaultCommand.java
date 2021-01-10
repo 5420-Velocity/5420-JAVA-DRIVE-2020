@@ -14,8 +14,8 @@ import java.util.function.DoubleSupplier;
 
 public class AutoPanelDefaultCommand extends CommandBase {
 
-	private ControlPanelController controlPanelController;
-	private DoubleSupplier liftInput;
+	private final ControlPanelController controlPanelController;
+	private final DoubleSupplier liftInput;
 
 
 	public AutoPanelDefaultCommand(ControlPanelController controlPanelController, DoubleSupplier liftInput) {
@@ -36,10 +36,10 @@ public class AutoPanelDefaultCommand extends CommandBase {
 	public void execute() {
 
 		// Lift Control
-		if (controlPanelController.getUpper() == true && liftInput.getAsDouble() > 0) {
+		if (controlPanelController.getUpper() && liftInput.getAsDouble() > 0) {
 			controlPanelController.liftSpeed(0);
 		}
-		else if (controlPanelController.getLower() == true && liftInput.getAsDouble() < 0) {
+		else if (controlPanelController.getLower() && liftInput.getAsDouble() < 0) {
 			controlPanelController.liftSpeed(0);
 		}
 		else {

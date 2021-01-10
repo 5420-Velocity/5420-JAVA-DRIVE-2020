@@ -20,12 +20,12 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class AutoPanelColorTickTurn extends CommandBase {
 
-	private ControlPanelController controlPanelController;
+	private final ControlPanelController controlPanelController;
 	private Date EStopCheckTime;
 	private Color previous;
 	private int index = 0;
 	private boolean isFinished = false;
-	private AtomicReference<Boolean> commandCompleted;
+	private final AtomicReference<Boolean> commandCompleted;
 
 	public AutoPanelColorTickTurn(ControlPanelController controlPanelController, AtomicReference<Boolean> commandCompleted) {
 		this.controlPanelController = controlPanelController;

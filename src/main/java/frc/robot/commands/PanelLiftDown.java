@@ -17,7 +17,7 @@ import java.util.GregorianCalendar;
 
 public class PanelLiftDown extends CommandBase {
 
-	private ControlPanelController panelControllerSubsystem;
+	private final ControlPanelController panelControllerSubsystem;
 	private boolean isFinished = false;
 	private Date EStopCheckTime;
 
@@ -39,7 +39,7 @@ public class PanelLiftDown extends CommandBase {
 	@Override
 	public void execute() {
 		// Safety time out
-		if (new Date().after(EStopCheckTime) && this.panelControllerSubsystem.getLower() == false) {
+		if (new Date().after(EStopCheckTime) && !this.panelControllerSubsystem.getLower()) {
 			// Quit Early, Must not be connected.
 			System.err.println("E-Stop >> Code Detected the lower limit on the control pannel isn't detected.");
 
@@ -47,7 +47,7 @@ public class PanelLiftDown extends CommandBase {
 		}
 
 		// Run till lower limit
-		if (this.panelControllerSubsystem.getLower() == false) {
+		if (!this.panelControllerSubsystem.getLower()) {
 			this.panelControllerSubsystem.liftSpeed(-1);
 		}
 		else {

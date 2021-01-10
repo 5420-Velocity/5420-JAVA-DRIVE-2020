@@ -13,7 +13,7 @@ import frc.robot.subsystems.Intake;
 
 public class IntakeUp extends CommandBase {
 
-	private Intake intake;
+	private final Intake intake;
 
 	public IntakeUp(Intake intakeRun) {
 		this.intake = intakeRun;
