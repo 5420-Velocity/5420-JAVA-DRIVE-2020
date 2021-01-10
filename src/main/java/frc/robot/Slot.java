@@ -25,7 +25,7 @@ public class Slot {
 	}
 
 	public boolean inBetween(int currentPos) {
-		return (currentPos < endRange && currentPos > startRange);
+		return (currentPos <= endRange && currentPos >= startRange);
 	}
 
 }
