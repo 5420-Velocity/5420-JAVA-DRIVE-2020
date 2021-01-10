@@ -26,7 +26,7 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 public class PixyAlgo {
 
-	private Pixy2 pixy;
+	private final Pixy2 pixy;
 
 	public PixyAlgo(Pixy2 pixy) {
 		this.pixy = pixy;
@@ -52,7 +52,7 @@ public class PixyAlgo {
 		AtomicInteger largestArea = new AtomicInteger(0);
 
 		/**
-		 * AtomicRefrnce and AtomicInteger is used to
+		 * AtomicReference and AtomicInteger is used to
 		 *  access and store variables between the different loops
 		 *  within the forEach Consumer Lambda Function.
 		 */
@@ -93,7 +93,7 @@ public class PixyAlgo {
 
 		// Sort the list by the weight of area and the offset from
 		//  zero!
-		Collections.sort(blocks, new Comparator<BlockExtra>() {
+		blocks.sort(new Comparator<BlockExtra>() {
 			/**
 			 * Setup sorting to rank the blocks by the following conditions:
 			 *  - Block has a Larger Area
@@ -141,11 +141,10 @@ public class PixyAlgo {
 	}
 
 	/**
-	 * See `convertToBlockExtra` for more details on what this function does.
+	 * See {@link #convertToBlockExtra} for more details on what this function does.
 	 *
 	 * @param blocks
 	 * @return Blocks that are extended to BlockExtra
-	 * @see convertToBlockExtra
 	 */
 	private ArrayList<BlockExtra> convertToBlockExtra(ArrayList<Block> blocks) {
 		// Convert All Blocks Given to BlockExtra
@@ -164,12 +163,10 @@ public class PixyAlgo {
 	 * @return Creates a new BlockExtra Element that extends Block
 	 */
 	private BlockExtra convertToBlockExtra(Block block) {
-		BlockExtra newElement = new BlockExtra(
+		return new BlockExtra(
 			this.pixy,
 			block
 		);
-
-		return newElement;
 	}
 
 }
