@@ -2,6 +2,39 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Joystick;
+import frc.robot.Constants.ControllerMapConstants;
+import frc.robot.Constants.ControllerConstants;
+import frc.robot.Constants.IntakeConstants;
+import frc.robot.Constants.ShooterConstants;
+import frc.robot.Constants.NewShooterConstants;
+import frc.robot.commands.AutoPanelColorTickTurn;
+import frc.robot.commands.DoNothingAutoCommand;
+import frc.robot.commands.ParallelCommandGroup;
+import frc.robot.commands.JoystickDrive;
+
+import java.util.concurrent.atomic.AtomicReference;
+
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.wpilibj.Compressor;
+import frc.robot.commands.Shoot;
+import frc.robot.commands.NewShoot;
+import frc.robot.commands.LiftControl;
+import frc.robot.commands.PanelLiftDown;
+import frc.robot.commands.PanelLiftUp;
+import frc.robot.Constants.DriveTrainConstants;
+import frc.robot.subsystems.ChuteSubsystem;
+import frc.robot.subsystems.Limelight;
+import frc.robot.subsystems.ControlPanelController;
+import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.NewShooterSubsystem;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.CharlesSubsystem;
+import frc.robot.subsystems.LiftSubsystem;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -41,14 +74,20 @@ public class RobotContainer {
 	 * Setup Intake Subsystm and the Extra Commands to Contorl It
 	 */
 	public final Intake intake = new Intake();
+	public final CharlesSubsystem charles = new CharlesSubsystem();
 	private final ShooterSubsystem shooter = new ShooterSubsystem();
+	private final NewShooterSubsystem newShooter = new NewShooterSubsystem();
 	private final LiftSubsystem lift = new LiftSubsystem();
 	private final ChuteSubsystem chute = new ChuteSubsystem();
 
-	private final Shoot shoot = new Shoot(shooter,
-		() -> operatorJoystick.getRawButton(Constants.ControllerMapConstants.Blue_Button_ID),
-		() -> operatorJoystick.getRawButton(5),
-		() -> operatorJoystick.getRawButton(4)
+	// private final Shoot shoot = new Shoot(shooter,
+	// 	() -> operatorJoystick.getRawButton(Constants.ControllerMapConstants.Blue_Button_ID),
+	// 	() -> operatorJoystick.getRawButton(5),
+	// 	() -> operatorJoystick.getRawButton(4)
+	// );
+
+	private final NewShoot newShoot = new NewShoot(charles, newShooter, 
+		() -> operatorJoystick.getRawButton(Constants.ControllerMapConstants.Blue_Button_ID)
 	);
 
 	// Encoder PID
@@ -180,14 +219,14 @@ public class RobotContainer {
 
 		// Update the command settings to flip the controls
 		new JoystickButton(this.driverJoystick, Constants.ControllerMapConstants.Red_Button_ID)
-			.whenPressed(() -> this.joystickDrive.toggleFlipped());
+			.whenPressed(() ->this.joystickDrive.toggleFlipped());
 
 		/**
 		 * Setup Button Events for the Shooter on the Operator Controller
 		 */
 		new JoystickButton(this.operatorJoystick, Constants.ControllerMapConstants.Blue_Button_ID)
-			.whenPressed(() -> this.shooter.setSpeed(-0.65, -0.67))
-			.whenReleased(() -> this.shooter.setSpeed(0, 0));
+			.whenPressed(() -> this.newShooter.setSpeed(-0.65, -0.67, 0))
+			.whenReleased(() -> this.newShooter.setSpeed(0, 0, 0));
 
 		new JoystickButton(this.operatorJoystick, Constants.ControllerMapConstants.Left_Bumper)
 			.whenPressed(() -> this.chute.setLeft(-0.7))
@@ -215,6 +254,11 @@ public class RobotContainer {
 			)
 			// Turn off Motor
 			.whenReleased(() -> this.intake.intakeMove(0));
+
+			new JoystickButton(this.operatorJoystick, ControllerMapConstants.Left_Bumper);
+				//loading
+				
+				
 
 	}
 
