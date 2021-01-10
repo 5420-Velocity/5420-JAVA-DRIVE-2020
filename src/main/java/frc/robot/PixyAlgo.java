@@ -11,7 +11,6 @@ import io.github.pseudoresonance.pixy2api.Pixy2;
 import io.github.pseudoresonance.pixy2api.Pixy2CCC.Block;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.TreeSet;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -75,7 +74,7 @@ public class PixyAlgo {
 	 * <p>
 	 * This function will convert the Pixy Blocks objects X and Y values to
 	 * the offset from CENTER of the camera screen.
-	 *
+	 * </p>
 	 * @return Block X Offset from the Nearest based on Area (distance away) and
 	 * offset from 0 on the X target.
 	 * @link https://stackoverflow.com/a/30449464
@@ -91,8 +90,7 @@ public class PixyAlgo {
 			zeroRank.add(Math.abs(block.getX()));
 		}
 
-		// Sort the list by the weight of area and the offset from
-		//  zero!
+		// Sort the list by the weight of area and the offset from zero!
 		blocks.sort(new Comparator<BlockExtra>() {
 			/**
 			 * Setup sorting to rank the blocks by the following conditions:
@@ -105,7 +103,7 @@ public class PixyAlgo {
 				int block2Area = block2.getArea();
 
 				// Using tailSet to get the rankings from the top of the list, get the
-				//  area (gets the positiion with the larger area as a good point)
+				//  area (gets the position with the larger area as a good point)
 				// So having 5 as an area will score High in the rank while 1 will be lower!
 				int areaRank1 = areaRank.tailSet(block1Area).size();
 				int areaRank2 = areaRank.tailSet(block2Area).size();
@@ -121,18 +119,10 @@ public class PixyAlgo {
 				int scoreBlock2 = areaRank2 + zeroOffsetRank2;
 
 				// Decide the position of the block in the list
-				if (scoreBlock1 > scoreBlock2) {
-					// Block 1 is a better choice, Move it up!
-					return 1;
-				}
-				else if (scoreBlock1 < scoreBlock2) {
-					// Block 2 is a better choice, Move Block 1 down!
-					return -1;
-				}
-				else {
-					// Blocks are equal, Let it be.
-					return 0;
-				}
+				return Integer.compare(scoreBlock1, scoreBlock2);
+				// Block 1 is a better choice, Move it up!
+				// Block 2 is a better choice, Move Block 1 down!
+				// Blocks are equal, Let it be.
 			}
 		});
 
@@ -143,7 +133,7 @@ public class PixyAlgo {
 	/**
 	 * See {@link #convertToBlockExtra} for more details on what this function does.
 	 *
-	 * @param blocks
+	 * @param blocks Blocks to convert
 	 * @return Blocks that are extended to BlockExtra
 	 */
 	private ArrayList<BlockExtra> convertToBlockExtra(ArrayList<Block> blocks) {
