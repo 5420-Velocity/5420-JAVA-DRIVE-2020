@@ -112,7 +112,7 @@ public final class Constants {
 	}
 
 	public static final class charlesConstants {
-		public static final int encoderPort = 1;
+		public static final int encoderPort = 8; // TODO: Temporary Fix
 		public static final int charlesMotor = 8;
 		public static final int charlesColorSensor = 3;
 		public static final double ticksPerBall = 20;
