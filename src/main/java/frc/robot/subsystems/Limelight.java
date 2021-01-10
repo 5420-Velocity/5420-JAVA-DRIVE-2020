@@ -131,7 +131,7 @@ public class Limelight extends SubsystemBase {
 	 *              1 Force off
 	 *              2 Force blink
 	 *              3 Force on
-	 * @see https://docs.limelightvision.io/en/latest/networktables_api.html
+	 * @link https://docs.limelightvision.io/en/latest/networktables_api.html
 	 */
 	public void setLedMode(double value) {
 		this.table.getEntry("ledMode").setDouble(value);

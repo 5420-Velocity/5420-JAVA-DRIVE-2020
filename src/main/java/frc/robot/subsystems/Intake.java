@@ -30,7 +30,7 @@ public class Intake extends SubsystemBase {
 	private final NetworkTableEntry ntEncoderValue = NetworkTableInstance.getDefault().getEntry("Ball Lift Encoder Value");
 	private final NetworkTableEntry ntPixyStatus = NetworkTableInstance.getDefault().getEntry("Pixy Status");
 	private final NetworkTableEntry ntPixyBlocks = NetworkTableInstance.getDefault().getEntry("Pixy Blocks");
-	private final Pixy2 pixy = Pixy2.createInstance(IntakeConstants.I2C.pixyLinkType);
+	private final Pixy2 pixy = Pixy2.createInstance(IntakeConstants.pixyLinkType);
 	private final PixyAlgo pixyAlgo = new PixyAlgo(pixy);
 	private boolean forceUpperlimitDown = false;
 	private int pixyCachedLoop = 0;
@@ -49,7 +49,7 @@ public class Intake extends SubsystemBase {
 		encoder.setConnectedFrequencyThreshold(975);
 
 		// Tries to Communicate with the Pixy at this moment
-		this.pixy.init(IntakeConstants.I2C.pixyLinkPort);
+		this.pixy.init(IntakeConstants.pixyLinkPort);
 	}
 
 	public double getEncoderValue() {

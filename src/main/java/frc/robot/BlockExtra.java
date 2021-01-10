@@ -49,7 +49,7 @@ public class BlockExtra extends Block {
 	 * center of the given block.
 	 *
 	 * @return X Offset from the Center of the frame
-	 * @see https://stackoverflow.com/a/14880815/5779200
+	 * @link https://stackoverflow.com/a/14880815/5779200
 	 */
 	public Integer getXOffset() {
 		double frameWidth = this.pixy.getFrameWidth() / 2;
@@ -63,7 +63,7 @@ public class BlockExtra extends Block {
 	 * center of the given block.
 	 *
 	 * @return Y Offset from the Center of the frame
-	 * @see https://stackoverflow.com/a/14880815/5779200
+	 * @link https://stackoverflow.com/a/14880815/5779200
 	 */
 	public Integer getYOffset() {
 		double frameHeight = this.pixy.getFrameHeight();

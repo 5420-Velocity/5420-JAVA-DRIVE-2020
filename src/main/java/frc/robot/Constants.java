@@ -43,10 +43,9 @@ public final class Constants {
 			public static final int intakeMotor = 9;
 		}
 
-		public static final class I2C {
-			public static final LinkType pixyLinkType = LinkType.I2C;
-			public static final int pixyLinkPort = Pixy2.PIXY_DEFAULT_ARGVAL;
-		}
+		public static final LinkType pixyLinkType = LinkType.SPI;
+		public static final int pixyLinkPort = Pixy2.PIXY_DEFAULT_ARGVAL;
+
 	}
 
 	public static final class ShooterConstants {
