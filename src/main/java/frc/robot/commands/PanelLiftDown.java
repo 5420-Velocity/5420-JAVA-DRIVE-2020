@@ -67,3 +67,4 @@ public class PanelLiftDown extends CommandBase {
 		return this.isFinished;
 	}
 }
+  
