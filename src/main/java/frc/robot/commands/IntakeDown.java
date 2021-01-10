@@ -31,11 +31,11 @@ public class IntakeDown extends CommandBase {
 	public void execute() {
 		//when arm is up move it down
 		if (intake.getEncoderValue() < 3) {
-			intake.armRun(0.7);
+			intake.armSpeed(0.7);
 			intake.intakeMove(1);
 		}
 		else {
-			intake.armRun(0);
+			intake.armSpeed(0);
 			intake.intakeMove(0);
 		}
 

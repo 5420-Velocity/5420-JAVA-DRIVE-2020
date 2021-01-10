@@ -15,7 +15,7 @@ public class LiftSubsystem extends SubsystemBase {
 	/**
 	 * Creates a new LiftSubsystem.
 	 */
-	private VictorSP liftMotor = new VictorSP(Constants.LiftConstants.liftMotor);
+	private VictorSP liftMotor = new VictorSP(Constants.LiftConstants.PWM.liftMotor);
 
 	public LiftSubsystem() {
 

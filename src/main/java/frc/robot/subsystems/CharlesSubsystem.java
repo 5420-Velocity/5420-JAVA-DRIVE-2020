@@ -20,16 +20,18 @@ import frc.robot.Slot;
 import frc.robot.exceptions.UnindexPositionException;
 
 import java.util.HashMap;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.function.Predicate;
 
 public class CharlesSubsystem extends SubsystemBase {
 
-	private DutyCycleEncoder encoder = new DutyCycleEncoder(Constants.charlesConstants.encoderPort);
-	private WPI_TalonSRX charlesMotor = new WPI_TalonSRX(charlesConstants.charlesMotor);
-	private I2C.Port ColorSensor = I2C.Port.kMXP;
-	private ColorSensorV3 charlesColorSensor = new ColorSensorV3(ColorSensor);
-	private ColorMatch colorMatch = new ColorMatch();
+	private final DutyCycleEncoder encoder = new DutyCycleEncoder(Constants.charlesConstants.DIO.encoderPort);
+	private final WPI_TalonSRX charlesMotor = new WPI_TalonSRX(charlesConstants.CAN.charlesMotor);
+	private final ColorSensorV3 charlesColorSensor = new ColorSensorV3(Constants.ColorTargets.I2C.ColorSensor);
+	private final ColorMatch colorMatch = new ColorMatch();
 
-	private HashMap<Integer, Boolean> storedBalls = new HashMap<Integer, Boolean>();
+	private final HashMap<Integer, Boolean> storedBalls = new HashMap<Integer, Boolean>();
 
 	public int index;
 
@@ -53,19 +55,21 @@ public class CharlesSubsystem extends SubsystemBase {
 		throw new UnindexPositionException(currentEncoderPosition);
 	}
 
-	public void ballReset() {
-		this.storedBalls.clear();
-	}
-
+	/**
+	 *
+	 */
 	public void inTook() {
-		if (index > 4) {
-			index = 0;
+		if (this.index > 4) {
+			this.index = 0;
 		}
 
-		this.storedBalls.put(index, true);
-		index++;
+		this.storedBalls.put(this.index, true);
+		this.index++;
 	}
 
+	/**
+	 * Rest the encoder
+	 */
 	public void reset() {
 		this.encoder.reset();
 	}
@@ -84,22 +88,47 @@ public class CharlesSubsystem extends SubsystemBase {
 	}
 
 	public void gotoSlot(int location) {
-		// TODO: Read the encoder values, keep tunring until it true.
+		// TODO: Read the encoder values, keep turning until it true.
+		// Read the current encoder value, find what slot we are in.
+		// Calculate the Delta, and then turn to the location.
+
 	}
 
 	public boolean hasBallAtIndex(int x) {
 		return this.storedBalls.get(x);
 	}
 
-	public void nextOpenLocation() {
-		int firstOpen = this.storedBalls.entrySet()
-			.stream()
-			.filter(x -> x.getValue() == true)
-			.findFirst()
-			.get()
-			.getKey();
+	public int filterFirstPosition(Predicate<Map.Entry<Integer, Boolean>> predicate) throws NoSuchElementException  {
+		return this.storedBalls.entrySet()
+				.stream()
+				.filter(predicate)
+				.findFirst()
+				.orElseThrow()
+				.getKey();
+	}
 
-		this.gotoSlot(firstOpen);
+	public void nextOpenLocation() {
+		try {
+			int firstOpen = this.filterFirstPosition(e -> !e.getValue());
+			this.gotoSlot(firstOpen);
+		}
+		catch (NoSuchElementException ignored) {
+
+		}
+	}
+
+	/**
+	 * Turn the the next slot that has a ball near the current position to the shooter input.
+	 * Following a counter-clockwise rotation.
+	 */
+	public void nextFilledLocation() {
+		try {
+			int firstFilled = this.filterFirstPosition(Map.Entry::getValue);
+			this.gotoSlot(firstFilled);
+		}
+		catch (NoSuchElementException ignored) {
+
+		}
 	}
 
 	@Override

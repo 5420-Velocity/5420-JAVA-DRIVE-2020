@@ -28,8 +28,8 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class ControlPanelController extends SubsystemBase {
 
-	private WPI_TalonSRX panelDriver = new WPI_TalonSRX(ControlPanelConstants.ControlPanelDriver);
-	private WPI_TalonSRX panelLift = new WPI_TalonSRX(ControlPanelConstants.ControlPanelLift);
+	private WPI_TalonSRX panelDriver = new WPI_TalonSRX(ControlPanelConstants.CAN.ControlPanelDriver);
+	private WPI_TalonSRX panelLift = new WPI_TalonSRX(ControlPanelConstants.CAN.ControlPanelLift);
 	private I2C.Port ColorSensor = I2C.Port.kOnboard;
 	private ColorSensorV3 colorSensor = new ColorSensorV3(ColorSensor);
 	private ColorMatch colorMatch = new ColorMatch();
@@ -37,8 +37,8 @@ public class ControlPanelController extends SubsystemBase {
 	private NetworkTableEntry colorEncoderEntry = NetworkTableInstance.getDefault().getEntry(Constants.NetworkTableEntries.COLOR_ENCODER_VALUE);
 	private NetworkTableEntry colorSensorEntry = NetworkTableInstance.getDefault().getEntry(Constants.NetworkTableEntries.COLOR_VALUE);
 	private NetworkTableEntry FMSColorEntry = NetworkTableInstance.getDefault().getEntry(Constants.NetworkTableEntries.FMSCOLOR_VALUE);
-	private DigitalInput upperLimit = new DigitalInput(Constants.ControlPanelConstants.upperLimit);
-	private DigitalInput lowerLimit = new DigitalInput(Constants.ControlPanelConstants.lowerLimit);
+	private DigitalInput upperLimit = new DigitalInput(Constants.ControlPanelConstants.DIO.upperLimit);
+	private DigitalInput lowerLimit = new DigitalInput(Constants.ControlPanelConstants.DIO.lowerLimit);
 	private String gameData = "";
 	private AutoPanelColorTickTurn colorCommand;
 	private AtomicReference<Boolean> colorCommandComplete = new AtomicReference<Boolean>();

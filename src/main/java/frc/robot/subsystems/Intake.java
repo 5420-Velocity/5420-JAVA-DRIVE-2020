@@ -24,14 +24,14 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class Intake extends SubsystemBase {
 
-	private DutyCycleEncoder encoder = new DutyCycleEncoder(Constants.IntakeConstants.encoderPort);
-	private WPI_TalonSRX armMotor = new WPI_TalonSRX(Constants.IntakeConstants.armMotor);
-	private WPI_TalonSRX intakeMotor = new WPI_TalonSRX(Constants.IntakeConstants.intakeMotor);
-	private NetworkTableEntry ntEncoderValue = NetworkTableInstance.getDefault().getEntry("Ball Lift Encoder Value");
-	private NetworkTableEntry ntPixyStatus = NetworkTableInstance.getDefault().getEntry("Pixy Status");
-	private NetworkTableEntry ntPixyBlocks = NetworkTableInstance.getDefault().getEntry("Pixy Blocks");
-	private Pixy2 pixy = Pixy2.createInstance(IntakeConstants.pixyLinkType);
-	private PixyAlgo pixyAlgo = new PixyAlgo(pixy);
+	private final DutyCycleEncoder encoder = new DutyCycleEncoder(Constants.IntakeConstants.DIO.encoderPort);
+	private final WPI_TalonSRX armMotor = new WPI_TalonSRX(Constants.IntakeConstants.PWM.armMotor);
+	private final WPI_TalonSRX intakeMotor = new WPI_TalonSRX(Constants.IntakeConstants.PWM.intakeMotor);
+	private final NetworkTableEntry ntEncoderValue = NetworkTableInstance.getDefault().getEntry("Ball Lift Encoder Value");
+	private final NetworkTableEntry ntPixyStatus = NetworkTableInstance.getDefault().getEntry("Pixy Status");
+	private final NetworkTableEntry ntPixyBlocks = NetworkTableInstance.getDefault().getEntry("Pixy Blocks");
+	private final Pixy2 pixy = Pixy2.createInstance(IntakeConstants.I2C.pixyLinkType);
+	private final PixyAlgo pixyAlgo = new PixyAlgo(pixy);
 	private boolean forceUpperlimitDown = false;
 	private int pixyCachedLoop = 0;
 
@@ -49,7 +49,7 @@ public class Intake extends SubsystemBase {
 		encoder.setConnectedFrequencyThreshold(975);
 
 		// Tries to Communicate with the Pixy at this moment
-		this.pixy.init(IntakeConstants.pixyLinkPort);
+		this.pixy.init(IntakeConstants.I2C.pixyLinkPort);
 	}
 
 	public double getEncoderValue() {
@@ -119,7 +119,7 @@ public class Intake extends SubsystemBase {
 		return largestBlock.get();
 	}
 
-	public void armRun(double power) {
+	public void armSpeed(double power) {
 		armMotor.set(power);
 	}
 
@@ -131,9 +131,7 @@ public class Intake extends SubsystemBase {
 	public void periodic() {
 		// This method will be called once per scheduler run
 
-		/**
-		 * Push Encoder Value to the Dashbaord via NetworkTables.
-		 */
+		// Push Encoder Value to the Dashboard via NetworkTables.
 		this.ntEncoderValue.setDouble(this.getEncoderValue());
 
 		if (this.pixyCachedLoop == 0) {
@@ -141,7 +139,7 @@ public class Intake extends SubsystemBase {
 			 * Must be called in order for the subsystem to request
 			 *  blocks from the pixy.
 			 * Calling this function without the given params will
-			 *  return the previous resutls received in this request.
+			 *  return the previous results received in this request.
 			 *
 			 */
 			int pixyStatus = this.pixy.getCCC().getBlocks(false, 0, 8);

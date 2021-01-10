@@ -22,11 +22,11 @@ public class DriveTrain extends SubsystemBase {
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
 
-	private WPI_TalonFX LeftAT = new WPI_TalonFX(DriveTrainConstants.Left_A_ID);
-	private WPI_TalonFX LeftBT = new WPI_TalonFX(DriveTrainConstants.Left_B_ID);
+	private WPI_TalonFX LeftAT = new WPI_TalonFX(DriveTrainConstants.CAN.Left_A_ID);
+	private WPI_TalonFX LeftBT = new WPI_TalonFX(DriveTrainConstants.CAN.Left_B_ID);
 
-	private WPI_TalonFX RightAT = new WPI_TalonFX(DriveTrainConstants.Right_A_ID);
-	private WPI_TalonFX RightBT = new WPI_TalonFX(DriveTrainConstants.Right_B_ID);
+	private WPI_TalonFX RightAT = new WPI_TalonFX(DriveTrainConstants.CAN.Right_A_ID);
+	private WPI_TalonFX RightBT = new WPI_TalonFX(DriveTrainConstants.CAN.Right_B_ID);
 
 	private Solenoid trans = new Solenoid(Constants.DriveTrainConstants.transmission);
 

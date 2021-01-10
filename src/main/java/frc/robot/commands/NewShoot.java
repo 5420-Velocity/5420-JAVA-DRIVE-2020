@@ -13,7 +13,6 @@ import frc.robot.subsystems.NewShooterSubsystem;
 
 import java.util.function.BooleanSupplier;
 
-
 public class NewShoot extends CommandBase {
 	/**
 	 * Creates a new Shoot.
@@ -22,11 +21,10 @@ public class NewShoot extends CommandBase {
 	private final CharlesSubsystem charles;
 	private final BooleanSupplier startShoot;
 
-
-	public NewShoot(CharlesSubsystem charles, NewShooterSubsystem shooter, BooleanSupplier startshoot) {
+	public NewShoot(CharlesSubsystem charles, NewShooterSubsystem shooter, BooleanSupplier startShoot) {
 		this.shooter = shooter;
 		this.charles = charles;
-		this.startShoot = startshoot;
+		this.startShoot = startShoot;
 		addRequirements(shooter, charles);
 		// Use addRequirements() here to declare subsystem dependencies.
 	}
@@ -39,15 +37,14 @@ public class NewShoot extends CommandBase {
 	// Called every time the scheduler runs while the command is scheduled.
 	@Override
 	public void execute() {
-		//shooting
+		// Shooting
 		if (startShoot.getAsBoolean()) {
 			shooter.setSpeed(0.8, 0.8, 0.5);
+			this.charles.nextFilledLocation();
 		}
 		else {
 			shooter.setSpeed(0, 0, 0);
 		}
-
-		//add charles run command
 	}
 
 	// Called once the command ends or is interrupted.

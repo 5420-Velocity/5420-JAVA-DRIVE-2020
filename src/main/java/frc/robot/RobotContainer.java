@@ -58,7 +58,7 @@ public class RobotContainer {
 	);
 
 	// Encoder PID
-	private PIDController pidController = new PIDController(
+	private final PIDController pidController = new PIDController(
 		IntakeConstants.Proportional,
 		IntakeConstants.Integral,
 		IntakeConstants.Derivative);
@@ -215,7 +215,7 @@ public class RobotContainer {
 					this.pidController,
 					() -> this.intake.getEncoderFromLowValue(),
 					0.0,
-					output -> this.intake.armRun(output),
+					output -> this.intake.armSpeed(output),
 					this.intake
 				)
 			)
@@ -246,7 +246,7 @@ public class RobotContainer {
 			this.pidController,
 			() -> this.intake.getEncoderFromHighValue(),
 			0.0,
-			output -> intake.armRun(output),
+			output -> intake.armSpeed(output),
 			this.intake
 		));
 

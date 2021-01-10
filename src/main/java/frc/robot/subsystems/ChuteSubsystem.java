@@ -15,8 +15,8 @@ public class ChuteSubsystem extends SubsystemBase {
 	/**
 	 * Creates a new Chute.
 	 */
-	public WPI_TalonSRX chuteLeft = new WPI_TalonSRX(Constants.ChuteConstanst.LeftChute);
-	public WPI_TalonSRX chuteRight = new WPI_TalonSRX(Constants.ChuteConstanst.RightChute);
+	public WPI_TalonSRX chuteLeft = new WPI_TalonSRX(Constants.ChuteConstants.CAN.LeftChute);
+	public WPI_TalonSRX chuteRight = new WPI_TalonSRX(Constants.ChuteConstants.CAN.RightChute);
 
 	public ChuteSubsystem() {
 

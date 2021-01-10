@@ -15,13 +15,13 @@ import frc.robot.Constants;
 public class ShooterSubsystem extends SubsystemBase {
 
 	// Used to move the tunnel up or down to aim tward the goal from the LL values.
-	private WPI_TalonSRX aimerMotor = new WPI_TalonSRX(Constants.ShooterConstants.aimerMotor);
+	private final WPI_TalonSRX aimerMotor = new WPI_TalonSRX(Constants.ShooterConstants.CAN.aimerMotor);
 
 	// This motor is taking the balls from Charlie (the hopper) and pushes to the Front Motor
-	private WPI_TalonSRX shooterMotorBack = new WPI_TalonSRX(Constants.ShooterConstants.shooterOut);
+	private final WPI_TalonSRX shooterMotorBack = new WPI_TalonSRX(Constants.ShooterConstants.CAN.shooterOut);
 
 	// This Motor is used to give the ball extra power to throw it.
-	private WPI_TalonFX shooterMotorFront = new WPI_TalonFX(Constants.ShooterConstants.shooterIn);
+	private final WPI_TalonFX shooterMotorFront = new WPI_TalonFX(Constants.ShooterConstants.CAN.shooterIn);
 
 	public ShooterSubsystem() {
 		// Dont't allow the power to be X instantly, make it

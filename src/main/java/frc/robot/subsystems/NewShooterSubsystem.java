@@ -14,12 +14,12 @@ import frc.robot.Constants;
 
 public class NewShooterSubsystem extends SubsystemBase {
 
-	private WPI_TalonFX shooterMotorOne = new WPI_TalonFX(Constants.NewShooterConstants.shooterOne);
-	private WPI_TalonFX shooterMotorTwo = new WPI_TalonFX(Constants.NewShooterConstants.shooterTwo);
-	private WPI_TalonSRX feedMotor = new WPI_TalonSRX(Constants.NewShooterConstants.feedMotor);
+	private final WPI_TalonFX shooterMotorOne = new WPI_TalonFX(Constants.NewShooterConstants.CAN.shooterOne);
+	private final WPI_TalonFX shooterMotorTwo = new WPI_TalonFX(Constants.NewShooterConstants.CAN.shooterTwo);
+	private final WPI_TalonSRX feedMotor = new WPI_TalonSRX(Constants.NewShooterConstants.CAN.feedMotor);
 
 	public NewShooterSubsystem() {
-		// Dont't allow the power to be X instantly, make it
+		// Don't allow the power to be X instantly, make it
 		//  slowly adjust to the target speed over time.
 		shooterMotorOne.configOpenloopRamp(1);
 		shooterMotorTwo.configOpenloopRamp(1);

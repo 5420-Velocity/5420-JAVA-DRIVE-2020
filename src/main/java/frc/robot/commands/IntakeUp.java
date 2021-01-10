@@ -30,10 +30,10 @@ public class IntakeUp extends CommandBase {
 	public void execute() {
 
 		if (intake.getEncoderValue() > 0) {
-			intake.armRun(-0.8);
+			intake.armSpeed(-0.8);
 		}
 		else {
-			intake.armRun(0);
+			intake.armSpeed(0);
 		}
 
 		/**

@@ -8,6 +8,7 @@
 package frc.robot;
 
 import com.revrobotics.ColorMatch;
+import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.util.Color;
 import io.github.pseudoresonance.pixy2api.Pixy2;
 import io.github.pseudoresonance.pixy2api.Pixy2.LinkType;
@@ -23,75 +24,98 @@ import io.github.pseudoresonance.pixy2api.Pixy2.LinkType;
 public final class Constants {
 
 	public static final class IntakeConstants {
-		public static final int encoderPort = 0; // Encoder port
 
 		public static final double highTarget = 15; // Encoder Position for high position
 		public static final double middleTarget = 15; // Encoder position for middle position
 		public static final double lowTarget = 25.5; // Encoder Position for low position
-
-		public static final int armMotor = 11; // PID Port
-		public static final int intakeMotor = 9; // PID Port
 
 		// PID Control Values
 		public static final double Proportional = 0.08;
 		public static final double Integral = 0.04;
 		public static final double Derivative = 0.005;
 
-		// Define the way to communicate with the Pixy2 Device
-		public static final LinkType pixyLinkType = LinkType.I2C;
-		public static final int pixyLinkPort = Pixy2.PIXY_DEFAULT_ARGVAL;
+		public static final class DIO {
+			public static final int encoderPort = 0;
+		}
 
+		public static final class PWM {
+			public static final int armMotor = 11;
+			public static final int intakeMotor = 9;
+		}
+
+		public static final class I2C {
+			public static final LinkType pixyLinkType = LinkType.I2C;
+			public static final int pixyLinkPort = Pixy2.PIXY_DEFAULT_ARGVAL;
+		}
 	}
 
 	public static final class ShooterConstants {
-		public static final int shooterOut = 6;
-		public static final int shooterIn = 0;
 
-		//target range for the limelight to drive the bot
+		// Target range for the limelight to drive the bot
 		public static final double rangeGoal = 110;
 		public static final double knownDistance = 99;
 		public static final double knownArea = 2.5;
 
-		public static final int aimerMotor = 13;
+		public static final class CAN {
+			public static final int shooterOut = 6;
+			public static final int shooterIn = 0;
 
+			public static final int aimerMotor = 13;
+		}
 	}
 
 	public static final class NewShooterConstants {
-		public static final int shooterOne = 14;
-		public static final int shooterTwo = 15;
 
-		public static final int feedMotor = 3;
+		public static final class CAN {
+			public static final int shooterOne = 14;
+			public static final int shooterTwo = 15;
+			public static final int feedMotor = 3;
+		}
+
 	}
 
 	public static final class ControlPanelConstants {
+
+		// Timeout wait in milliseconds
+		public static final int timeOutTime = 3500;
+
 		// Number of changes in color
 		public static final int targetRotations = 32;
-		public static final int ControlPanelDriver = 5;
-		public static final int ControlPanelLift = 7;
 
-		//upper and lower limits for the panel controller lift
-		public static final int upperLimit = 2;
-		public static final int lowerLimit = 1;
+		public static final class CAN {
+			public static final int ControlPanelDriver = 5;
+			public static final int ControlPanelLift = 7;
+		}
 
-		//Timeout wait in milliseconds
-		public static final int timeOutTime = 3500;
+		public static final class DIO {
+			// Upper and lower limits for the panel controller lift
+			public static final int upperLimit = 2;
+			public static final int lowerLimit = 1;
+		}
+
 	}
 
 	public static final class LiftConstants {
-		public static final int liftMotor = 3;
+
+		public static final class PWM {
+			public static final int liftMotor = 3;
+		}
+
 	}
 
 	public static final class DriveTrainConstants {
 
-		// Left Motor Controller Map for the Talon CAN IDs
-		public static final int Left_A_ID = 1;
-		public static final int Left_B_ID = 2;
+		public static final class CAN {
+			// Left Motor Controller Map for the Talon CAN IDs
+			public static final int Left_A_ID = 1;
+			public static final int Left_B_ID = 2;
 
-		// Right Motor Controller Map for the Talon CAN IDs
-		public static final int Right_A_ID = 3;
-		public static final int Right_B_ID = 4;
+			// Right Motor Controller Map for the Talon CAN IDs
+			public static final int Right_A_ID = 3;
+			public static final int Right_B_ID = 4;
+		}
 
-		//PID values
+		// PID values
 		public static final double RangeP = 0.03;
 		public static final double RangeI = 0.035;
 		public static final double RangeD = 0.002;
@@ -104,15 +128,22 @@ public final class Constants {
 		public static final double EncoderI = 0.03;
 		public static final double EncoderD = 0.003;
 
-		//trans solenoid
+		// Trans Solenoid
 		public static final int transmission = 0;
 		public static final boolean defaultGear = false;
 
 	}
 
 	public static final class charlesConstants {
-		public static final int encoderPort = 8; // TODO: Temporary Fix
-		public static final int charlesMotor = 8;
+
+		public static final class CAN {
+			public static final int charlesMotor = 8;
+		}
+
+		public static final class DIO {
+			public static final int encoderPort = 8; // TODO: Temporary Fix
+		}
+
 		public static final int charlesColorSensor = 3;
 		public static final double ticksPerBall = 20;
 		public static final double initEncoderValue = 20;
@@ -128,14 +159,17 @@ public final class Constants {
 
 	public static final class ColorTargets {
 
+		public static final class I2C {
+			public static final edu.wpi.first.wpilibj.I2C.Port ColorSensor = edu.wpi.first.wpilibj.I2C.Port.kMXP;
+		}
+
 		public static final Color COLOR_BLUE = ColorMatch.makeColor(0.143, 0.427, 0.429);
 		public static final Color COLOR_GREEN = ColorMatch.makeColor(0.197, 0.561, 0.240);
 		public static final Color COLOR_RED = ColorMatch.makeColor(0.561, 0.232, 0.114);
 		public static final Color COLOR_YELLOW = ColorMatch.makeColor(0.361, 0.524, 0.113);
 
-
 		/**
-		 * Retuns the string representation of the color
+		 * Returns the string representation of the color
 		 * instance we have.
 		 */
 		public static String resolveColor(Color color) {
@@ -148,9 +182,13 @@ public final class Constants {
 
 	}
 
-	public static final class ChuteConstanst {
-		public static final int LeftChute = 12;
-		public static final int RightChute = 10;
+	public static final class ChuteConstants {
+
+		public static final class CAN {
+			public static final int LeftChute = 12;
+			public static final int RightChute = 10;
+		}
+
 	}
 
 	public static final class NetworkTableEntries {
@@ -168,7 +206,6 @@ public final class Constants {
 		public static final int JOYSTICK_USB_OPERATOR = 1;
 
 	}
-
 
 	public static final class ControllerMapConstants {
 
