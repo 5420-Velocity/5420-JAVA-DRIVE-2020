@@ -20,15 +20,12 @@ public class Slot {
 		this.endRange = endRange;
 	}
 
-
 	public boolean inBetween(double currentPos) {
 		return inBetween((int) currentPos);
 	}
 
-
 	public boolean inBetween(int currentPos) {
 		return (currentPos < endRange && currentPos > startRange);
 	}
-
 
 }
