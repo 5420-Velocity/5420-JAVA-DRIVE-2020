@@ -14,61 +14,61 @@ import frc.robot.Constants.DriveTrainConstants;
 import frc.robot.subsystems.DriveTrain;
 
 public class DriveWithEncoder extends CommandBase {
-  
-  private final DriveTrain driveTrain;
-  private final double encoderTarget;
-  private PIDController drivePidController;
-  private PIDCommand pidCommand;
-  private double currentLocation;
 
-  public DriveWithEncoder(DriveTrain subsystem, double targetDistance) {
-    this.driveTrain = subsystem;
-    this.encoderTarget = targetDistance;
+	private final DriveTrain driveTrain;
+	private final double encoderTarget;
+	private PIDController drivePidController;
+	private PIDCommand pidCommand;
+	private double currentLocation;
 
-    this.drivePidController = new PIDController(
-      DriveTrainConstants.EncoderP, 
-      DriveTrainConstants.EncoderI, 
-      DriveTrainConstants.EncoderD);
+	public DriveWithEncoder(DriveTrain subsystem, double targetDistance) {
+		this.driveTrain = subsystem;
+		this.encoderTarget = targetDistance;
 
-    this.pidCommand = new PIDCommand(
-      drivePidController,
-      () -> (this.encoderTarget - this.driveTrain.getLeftEncoder()), 
-      0.0, 
-      output -> this.driveTrain.arcadeDrive(output, 0),
-      this.driveTrain
-    );
+		this.drivePidController = new PIDController(
+			DriveTrainConstants.EncoderP,
+			DriveTrainConstants.EncoderI,
+			DriveTrainConstants.EncoderD);
 
-    addRequirements(subsystem);
-  }
+		this.pidCommand = new PIDCommand(
+			drivePidController,
+			() -> (this.encoderTarget - this.driveTrain.getLeftEncoder()),
+			0.0,
+			output -> this.driveTrain.arcadeDrive(output, 0),
+			this.driveTrain
+		);
 
-  // Called when the command is initially scheduled.
-  @Override
-  public void initialize() {
-    this.driveTrain.zero();
+		addRequirements(subsystem);
+	}
 
-    // Start the PID Command to run the task.
-    this.pidCommand.schedule();
-  }
+	// Called when the command is initially scheduled.
+	@Override
+	public void initialize() {
+		this.driveTrain.zero();
 
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
-    if(this.currentLocation == 4){
-      
-    }
-  }
+		// Start the PID Command to run the task.
+		this.pidCommand.schedule();
+	}
 
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {
+	// Called every time the scheduler runs while the command is scheduled.
+	@Override
+	public void execute() {
+		if (this.currentLocation == 4) {
 
-    // Stop the PID Command to run the task.
-    this.pidCommand.cancel();
-  }
+		}
+	}
 
-  // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-    return false;
-  }
+	// Called once the command ends or is interrupted.
+	@Override
+	public void end(boolean interrupted) {
+
+		// Stop the PID Command to run the task.
+		this.pidCommand.cancel();
+	}
+
+	// Returns true when the command should end.
+	@Override
+	public boolean isFinished() {
+		return false;
+	}
 }

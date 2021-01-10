@@ -12,18 +12,15 @@ package frc.robot.exceptions;
  */
 public class UnindexPositionException extends Exception {
 
-	public UnindexPositionException()
-	{
+	public UnindexPositionException() {
 		this(-1);
 	}
 
-	public UnindexPositionException(int pos)
-	{
+	public UnindexPositionException(int pos) {
 		this((double) pos);
 	}
 
-	public UnindexPositionException(double pos)
-	{
+	public UnindexPositionException(double pos) {
 		super("Unindexed Position: " + Double.toString(pos));
 	}
 

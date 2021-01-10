@@ -14,40 +14,40 @@ import frc.robot.subsystems.Intake;
 
 public class CharlesIntake extends CommandBase {
 
-  public CharlesSubsystem charles;
-  public Intake intake;
+	public CharlesSubsystem charles;
+	public Intake intake;
 
-  public CharlesIntake(CharlesSubsystem charles, Intake intake ) {
-    this.intake = intake;
-    this.charles = charles;
-    addRequirements(charles);
-    addRequirements(intake);
-  }
+	public CharlesIntake(CharlesSubsystem charles, Intake intake) {
+		this.intake = intake;
+		this.charles = charles;
+		addRequirements(charles);
+		addRequirements(intake);
+	}
 
-  // Called when the command is initially scheduled.
-  @Override
-  public void initialize() {
-    charles.encoderRun(Constants.charlesConstants.initEncoderValue);
-  }
+	// Called when the command is initially scheduled.
+	@Override
+	public void initialize() {
+		charles.encoderRun(Constants.charlesConstants.initEncoderValue);
+	}
 
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
-    intake.armRun(0.5);
-    if(charles.getColor() == Constants.ColorTargets.COLOR_YELLOW){
-      charles.inTook();
-      
-    }
-  }
+	// Called every time the scheduler runs while the command is scheduled.
+	@Override
+	public void execute() {
+		intake.armRun(0.5);
+		if (charles.getColor() == Constants.ColorTargets.COLOR_YELLOW) {
+			charles.inTook();
 
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {
-  }
+		}
+	}
 
-  // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-    return false;
-  }
+	// Called once the command ends or is interrupted.
+	@Override
+	public void end(boolean interrupted) {
+	}
+
+	// Returns true when the command should end.
+	@Override
+	public boolean isFinished() {
+		return false;
+	}
 }

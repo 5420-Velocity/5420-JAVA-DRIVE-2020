@@ -7,57 +7,57 @@
 
 package frc.robot.commands;
 
-import java.util.function.BooleanSupplier;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.NewShooterSubsystem;
 import frc.robot.subsystems.CharlesSubsystem;
+import frc.robot.subsystems.NewShooterSubsystem;
+
+import java.util.function.BooleanSupplier;
 
 
 public class NewShoot extends CommandBase {
-  /**
-   * Creates a new Shoot.
-   */
-  private final NewShooterSubsystem shooter;
-  private final CharlesSubsystem charles;
-  private final BooleanSupplier startShoot;
+	/**
+	 * Creates a new Shoot.
+	 */
+	private final NewShooterSubsystem shooter;
+	private final CharlesSubsystem charles;
+	private final BooleanSupplier startShoot;
 
 
-  public NewShoot(CharlesSubsystem charles, NewShooterSubsystem shooter, BooleanSupplier startshoot) {
-    this.shooter = shooter;
-    this.charles = charles;
-    this.startShoot = startshoot;
-    addRequirements(shooter, charles);
-    // Use addRequirements() here to declare subsystem dependencies.
-  }
+	public NewShoot(CharlesSubsystem charles, NewShooterSubsystem shooter, BooleanSupplier startshoot) {
+		this.shooter = shooter;
+		this.charles = charles;
+		this.startShoot = startshoot;
+		addRequirements(shooter, charles);
+		// Use addRequirements() here to declare subsystem dependencies.
+	}
 
-  // Called when the command is initially scheduled.
-  @Override
-  public void initialize() {
-  }
+	// Called when the command is initially scheduled.
+	@Override
+	public void initialize() {
+	}
 
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
-    //shooting
-    if(startShoot.getAsBoolean()){
-      shooter.setSpeed(0.8, 0.8, 0.5);
-    }
-    else{
-      shooter.setSpeed(0, 0, 0);
-    }
+	// Called every time the scheduler runs while the command is scheduled.
+	@Override
+	public void execute() {
+		//shooting
+		if (startShoot.getAsBoolean()) {
+			shooter.setSpeed(0.8, 0.8, 0.5);
+		}
+		else {
+			shooter.setSpeed(0, 0, 0);
+		}
 
-    //add charles run command
-  }
+		//add charles run command
+	}
 
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {
-  }
+	// Called once the command ends or is interrupted.
+	@Override
+	public void end(boolean interrupted) {
+	}
 
-  // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-    return false;
-  }
+	// Returns true when the command should end.
+	@Override
+	public boolean isFinished() {
+		return false;
+	}
 }

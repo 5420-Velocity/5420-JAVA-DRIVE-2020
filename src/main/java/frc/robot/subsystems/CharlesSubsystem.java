@@ -6,105 +6,104 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot.subsystems;
-import edu.wpi.first.wpilibj.DutyCycleEncoder;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.charlesConstants;
-import frc.robot.Constants;
+
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import com.revrobotics.ColorSensorV3;
-import edu.wpi.first.wpilibj.I2C;
 import com.revrobotics.ColorMatch;
-import com.revrobotics.ColorMatchResult;
+import com.revrobotics.ColorSensorV3;
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.util.Color;
-import java.util.HashMap;
-import java.util.Map;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
+import frc.robot.Constants.charlesConstants;
 import frc.robot.Slot;
-import frc.robot.exceptions.*;
+import frc.robot.exceptions.UnindexPositionException;
+
+import java.util.HashMap;
 
 public class CharlesSubsystem extends SubsystemBase {
 
-  private DutyCycleEncoder encoder = new DutyCycleEncoder(Constants.charlesConstants.encoderPort);
-  private WPI_TalonSRX charlesMotor = new WPI_TalonSRX(charlesConstants.charlesMotor);
-  private I2C.Port ColorSensor = I2C.Port.kMXP;
-  private ColorSensorV3 charlesColorSensor = new ColorSensorV3(ColorSensor);
-  private ColorMatch colorMatch = new ColorMatch();
+	private DutyCycleEncoder encoder = new DutyCycleEncoder(Constants.charlesConstants.encoderPort);
+	private WPI_TalonSRX charlesMotor = new WPI_TalonSRX(charlesConstants.charlesMotor);
+	private I2C.Port ColorSensor = I2C.Port.kMXP;
+	private ColorSensorV3 charlesColorSensor = new ColorSensorV3(ColorSensor);
+	private ColorMatch colorMatch = new ColorMatch();
 
-  private HashMap<Integer, Boolean> storedBalls = new HashMap<Integer, Boolean>();
+	private HashMap<Integer, Boolean> storedBalls = new HashMap<Integer, Boolean>();
 
-  public int index;
+	public int index;
 
-  public CharlesSubsystem() {
-   
-  }
+	public CharlesSubsystem() {
 
-  public double getEncoder() {
-    return this.encoder.get();
-  }
+	}
 
-  public int getIndex() throws UnindexPositionException
-  {
-    double currentEncoderPosition = this.encoder.getDistance();
+	public double getEncoder() {
+		return this.encoder.get();
+	}
 
-    for(Slot slot : Constants.charlesConstants.slots) {
-      if (slot.inBetween(currentEncoderPosition)) {
-        return slot.position;
-      }
-    }
+	public int getIndex() throws UnindexPositionException {
+		double currentEncoderPosition = this.encoder.getDistance();
 
-    throw new UnindexPositionException(currentEncoderPosition);
-  }
+		for (Slot slot : Constants.charlesConstants.slots) {
+			if (slot.inBetween(currentEncoderPosition)) {
+				return slot.position;
+			}
+		}
 
-  public void ballReset() {
-    this.storedBalls.clear();
-  }
+		throw new UnindexPositionException(currentEncoderPosition);
+	}
 
-  public void inTook() {
-    if(index > 4) {
-      index = 0;
-    }
+	public void ballReset() {
+		this.storedBalls.clear();
+	}
 
-    this.storedBalls.put(index, true);
-    index++;
-  }
+	public void inTook() {
+		if (index > 4) {
+			index = 0;
+		}
 
-  public void reset() {
-    this.encoder.reset();
-  }
+		this.storedBalls.put(index, true);
+		index++;
+	}
 
-  public Color getColor() {
-    return this.colorMatch.matchClosestColor(charlesColorSensor.getColor()).color;
-  }
-  
-  public void encoderRun(double target) {
-    if(encoder.get() < target) {
-      charlesMotor.set(0.3);
-    }
-    else {
-      charlesMotor.set(0);
-    }
-  }
+	public void reset() {
+		this.encoder.reset();
+	}
 
-  public void gotoSlot(int location) {
-    // TODO: Read the encoder values, keep tunring until it true.
-  }
+	public Color getColor() {
+		return this.colorMatch.matchClosestColor(charlesColorSensor.getColor()).color;
+	}
 
-  public boolean hasBallAtIndex(int x) {
-    return this.storedBalls.get(x);
-  }
+	public void encoderRun(double target) {
+		if (encoder.get() < target) {
+			charlesMotor.set(0.3);
+		}
+		else {
+			charlesMotor.set(0);
+		}
+	}
 
-  public void nextOpenLocation() {
-    int firstOpen = this.storedBalls.entrySet()
-        .stream()
-        .filter(x -> x.getValue() == true)
-        .findFirst()
-        .get()
-        .getKey();
+	public void gotoSlot(int location) {
+		// TODO: Read the encoder values, keep tunring until it true.
+	}
 
-    this.gotoSlot(firstOpen);
-  }
+	public boolean hasBallAtIndex(int x) {
+		return this.storedBalls.get(x);
+	}
 
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-  }
+	public void nextOpenLocation() {
+		int firstOpen = this.storedBalls.entrySet()
+			.stream()
+			.filter(x -> x.getValue() == true)
+			.findFirst()
+			.get()
+			.getKey();
+
+		this.gotoSlot(firstOpen);
+	}
+
+	@Override
+	public void periodic() {
+		// This method will be called once per scheduler run
+	}
 }
