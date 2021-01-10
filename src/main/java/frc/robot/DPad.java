@@ -29,12 +29,7 @@ public class DPad {
 	 * @return True if the DPad is pushed up, False if it is not pressed
 	 */
 	public static boolean up(Joystick joy) {
-		if ((joy.getPOV(XBOX_DPAD_POV) >= 315 || joy.getPOV(XBOX_DPAD_POV) <= 45) && joy.getPOV(XBOX_DPAD_POV) != -1) {
-			return true;
-		}
-		else {
-			return false;
-		}
+		return (joy.getPOV(XBOX_DPAD_POV) >= 315 || joy.getPOV(XBOX_DPAD_POV) <= 45) && joy.getPOV(XBOX_DPAD_POV) != -1;
 	}
 
 
@@ -44,12 +39,7 @@ public class DPad {
 	 * @return True if the DPad is pushed right, False if it is not pressed
 	 */
 	public static boolean right(Joystick joy) {
-		if (joy.getPOV(XBOX_DPAD_POV) >= 45 && joy.getPOV(XBOX_DPAD_POV) <= 135) {
-			return true;
-		}
-		else {
-			return false;
-		}
+		return joy.getPOV(XBOX_DPAD_POV) >= 45 && joy.getPOV(XBOX_DPAD_POV) <= 135;
 	}
 
 
@@ -59,12 +49,7 @@ public class DPad {
 	 * @return True if the DPad is pushed down, False if it is not pressed
 	 */
 	public static boolean down(Joystick joy) {
-		if (joy.getPOV(XBOX_DPAD_POV) >= 135 && joy.getPOV(XBOX_DPAD_POV) <= 225) {
-			return true;
-		}
-		else {
-			return false;
-		}
+		return joy.getPOV(XBOX_DPAD_POV) >= 135 && joy.getPOV(XBOX_DPAD_POV) <= 225;
 	}
 
 
@@ -74,12 +59,7 @@ public class DPad {
 	 * @return True if the DPad is pushed left, False if it is not pressed
 	 */
 	public static boolean left(Joystick joy) {
-		if (joy.getPOV(XBOX_DPAD_POV) >= 225 && joy.getPOV(XBOX_DPAD_POV) <= 315) {
-			return true;
-		}
-		else {
-			return false;
-		}
+		return joy.getPOV(XBOX_DPAD_POV) >= 225 && joy.getPOV(XBOX_DPAD_POV) <= 315;
 	}
 
 	public DPad(Joystick joy) {

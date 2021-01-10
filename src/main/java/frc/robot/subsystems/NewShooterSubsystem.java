@@ -29,8 +29,9 @@ public class NewShooterSubsystem extends SubsystemBase {
 	/**
 	 * Set the Speed for the motors
 	 *
-	 * @param rearMotor
-	 * @param frontMotor
+	 * @param rearMotor Speed Value for the Back Motor
+	 * @param frontMotor Speed Value for the Front Motor
+	 * @param feed Motor Speed for the Feed   
 	 */
 	public void setSpeed(double rearMotor, double frontMotor, double feed) {
 		shooterMotorOne.set(rearMotor);

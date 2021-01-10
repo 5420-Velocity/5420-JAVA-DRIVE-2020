@@ -16,9 +16,9 @@ public class Limelight extends SubsystemBase {
 
 	private double knownArea = 0;
 	private double knownDistance = 0;
-	private NetworkTableEntry limelightDistance;
+	private final NetworkTableEntry limelightDistance;
 
-	private NetworkTable table;
+	private final NetworkTable table;
 
 	public Limelight() {
 		this(null, 0.0, 0.0);
@@ -34,7 +34,7 @@ public class Limelight extends SubsystemBase {
 	 * @param limelightSuffix When you setup the limelight you can given it a custom name.
 	 *                        All setup with limelight-{name}
 	 * @param knownArea       Used in combination with knownDistance to calculate the distance
-	 * @param knownDistance
+	 * @param knownDistance   See knownArea
 	 */
 	public Limelight(String limelightSuffix, double knownArea, double knownDistance) {
 
@@ -88,7 +88,7 @@ public class Limelight extends SubsystemBase {
 	public boolean hasTarget() {
 		double check = this.table.getEntry("tv").getDouble(0.0);
 
-		return (check == 1.0) ? true : false;
+		return check == 1.0;
 	}
 
 	/**

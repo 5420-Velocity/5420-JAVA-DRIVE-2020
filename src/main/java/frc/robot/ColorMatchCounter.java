@@ -16,8 +16,8 @@ import edu.wpi.first.wpilibj.util.Color;
  */
 public class ColorMatchCounter implements Sendable, AutoCloseable {
 
-	private ColorSensorV3 colorSensor;
-	private ColorMatch colorMatch;
+	private final ColorSensorV3 colorSensor;
+	private final ColorMatch colorMatch;
 	private Color lastColorResult;
 	private int count = 0;
 	private String tagId;
