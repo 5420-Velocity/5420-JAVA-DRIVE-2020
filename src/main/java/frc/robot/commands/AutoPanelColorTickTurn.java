@@ -7,26 +7,26 @@
 
 package frc.robot.commands;
 
-import java.util.Date;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.concurrent.atomic.AtomicReference;
-
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.Constants.ControlPanelConstants;
 import frc.robot.subsystems.ControlPanelController;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.concurrent.atomic.AtomicReference;
+
 public class AutoPanelColorTickTurn extends CommandBase {
-	
+
 	private ControlPanelController controlPanelController;
 	private Date EStopCheckTime;
 	private Color previous;
 	private int index = 0;
 	private boolean isFinished = false;
 	private AtomicReference<Boolean> commandCompleted;
-	
+
 	public AutoPanelColorTickTurn(ControlPanelController controlPanelController, AtomicReference<Boolean> commandCompleted) {
 		this.controlPanelController = controlPanelController;
 
@@ -50,8 +50,8 @@ public class AutoPanelColorTickTurn extends CommandBase {
 	// Called every time the scheduler runs while the command is scheduled.
 	@Override
 	public void execute() {
-		
-		if(new Date().after(EStopCheckTime) && this.index == 0) {
+
+		if (new Date().after(EStopCheckTime) && this.index == 0) {
 			// Quit Early, Must not be connected.
 			System.err.println("E-Stop >> Code Detected the Color wheel has not chagned color. Check Sensor!");
 
@@ -59,13 +59,13 @@ public class AutoPanelColorTickTurn extends CommandBase {
 		}
 
 		// Update Changed Color
-		if(this.controlPanelController.getColor() != this.previous){
+		if (this.controlPanelController.getColor() != this.previous) {
 			this.index += 1;
 			this.previous = this.controlPanelController.getColor();
 		}
 
 		// Completed rotations
-		if(this.index >= ControlPanelConstants.targetRotations){
+		if (this.index >= ControlPanelConstants.targetRotations) {
 			this.isFinished = true;
 			this.commandCompleted.set(true);
 		}
@@ -75,7 +75,7 @@ public class AutoPanelColorTickTurn extends CommandBase {
 		}
 	}
 
-  	// Called once the command ends or is interrupted.
+	// Called once the command ends or is interrupted.
 	@Override
 	public void end(boolean interrupted) {
 		this.controlPanelController.turnSpeed(0);

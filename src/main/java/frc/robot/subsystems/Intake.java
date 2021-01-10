@@ -7,21 +7,20 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
+import frc.robot.Constants.IntakeConstants;
+import frc.robot.PixyAlgo;
+import io.github.pseudoresonance.pixy2api.Pixy2;
+import io.github.pseudoresonance.pixy2api.Pixy2CCC.Block;
+
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
-
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-
-import edu.wpi.first.wpilibj.DutyCycleEncoder;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
-import frc.robot.PixyAlgo;
-import frc.robot.Constants.IntakeConstants;
-import io.github.pseudoresonance.pixy2api.Pixy2;
-import io.github.pseudoresonance.pixy2api.Pixy2CCC.Block;
 
 public class Intake extends SubsystemBase {
 
@@ -54,12 +53,12 @@ public class Intake extends SubsystemBase {
 	}
 
 	public double getEncoderValue() {
-		return encoder.get()*100;
+		return encoder.get() * 100;
 	}
 
 	/**
 	 * Get the offset of the low target and current position
-	 * 
+	 *
 	 * @return Offset from Low Target
 	 */
 	public double getEncoderFromLowValue() {
@@ -69,14 +68,14 @@ public class Intake extends SubsystemBase {
 	/**
 	 * Get the offset of the high target and current position
 	 * If the flag `forceUpperlimitDown` is true then it returns
-	 *   the low offset to force the arm down.
-	 * 
+	 * the low offset to force the arm down.
+	 *
 	 * @return Offset from the Hight Target
 	 */
 	public double getEncoderFromHighValue() {
-		
+
 		// When the Override flag is enabled to force the arm in the Middle position
-		if(this.forceUpperlimitDown == true) {
+		if (this.forceUpperlimitDown == true) {
 			return this.getEncoderValue() - Constants.IntakeConstants.middleTarget;
 		}
 
@@ -85,7 +84,7 @@ public class Intake extends SubsystemBase {
 
 	/**
 	 * Returns all of the Objects within the view of the Pixy2
-	 * 
+	 *
 	 * @return All Blocks Found in the FOV
 	 */
 	public ArrayList<Block> getPixyBlocks() {
@@ -94,8 +93,8 @@ public class Intake extends SubsystemBase {
 
 	/**
 	 * This function will get the largest (inherently the closest) object
-	 *  from the list of the blocks in the detected FOV.
-	 * 
+	 * from the list of the blocks in the detected FOV.
+	 *
 	 * @return Block that is the closest
 	 */
 	public Block getPixyLargest() {
@@ -110,7 +109,7 @@ public class Intake extends SubsystemBase {
 		this.getPixyBlocks().forEach((block) -> {
 			int area = block.getWidth() * block.getHeight();
 
-			if(area > largestArea.get()) {
+			if (area > largestArea.get()) {
 				// Found a larger block!
 				largestBlock.set(block);
 				largestArea.set(area);
@@ -137,13 +136,13 @@ public class Intake extends SubsystemBase {
 		 */
 		this.ntEncoderValue.setDouble(this.getEncoderValue());
 
-		if(this.pixyCachedLoop == 0) {
+		if (this.pixyCachedLoop == 0) {
 			/**
 			 * Must be called in order for the subsystem to request
 			 *  blocks from the pixy.
 			 * Calling this function without the given params will
 			 *  return the previous resutls received in this request.
-			 * 
+			 *
 			 */
 			int pixyStatus = this.pixy.getCCC().getBlocks(false, 0, 8);
 
@@ -153,7 +152,7 @@ public class Intake extends SubsystemBase {
 			 * The getBlocks Function returns either an error code or the total
 			 *  amount of blocks detected.
 			 */
-			switch(pixyStatus) {
+			switch (pixyStatus) {
 				case Pixy2.PIXY_RESULT_BUSY:
 					this.ntPixyBlocks.setDouble(0.0);
 					this.ntPixyStatus.setString("Busy");
@@ -167,7 +166,7 @@ public class Intake extends SubsystemBase {
 					this.ntPixyStatus.setString("Operational");
 			}
 		}
-		else if(this.pixyCachedLoop == 120) {
+		else if (this.pixyCachedLoop == 120) {
 			// Reset the Counter one 120 has been hit
 			this.pixyCachedLoop = 0;
 		}
@@ -180,7 +179,7 @@ public class Intake extends SubsystemBase {
 
 	/**
 	 * This function will set a flag for force the arm target down.
-	 * 
+	 *
 	 * @param boolean Force High Offset to the Down Offset
 	 */
 	public void forceArmDown(boolean force) {

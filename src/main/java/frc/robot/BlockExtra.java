@@ -12,8 +12,8 @@ import io.github.pseudoresonance.pixy2api.Pixy2CCC.Block;
 
 /**
  * Adds in support for extra options related to getting the area
- *  of the item or getting the offset related to the center of the screen.
- * 
+ * of the item or getting the offset related to the center of the screen.
+ *
  * @author Noah Halstead <nhalstead00@gmail.com>
  */
 public class BlockExtra extends Block {
@@ -22,7 +22,7 @@ public class BlockExtra extends Block {
 
 	/**
 	 * Helper Function to create the BlockExtra with Block Object
-	 * 
+	 *
 	 * @param pixy
 	 * @param block
 	 */
@@ -37,7 +37,7 @@ public class BlockExtra extends Block {
 
 	/**
 	 * Get the Area of the Given Block
-	 * 
+	 *
 	 * @return
 	 */
 	public Integer getArea() {
@@ -46,30 +46,30 @@ public class BlockExtra extends Block {
 
 	/**
 	 * Get the X Offset from Center of the Frame to the
-	 *  center of the given block.
-	 * 
-	 * @see https://stackoverflow.com/a/14880815/5779200
+	 * center of the given block.
+	 *
 	 * @return X Offset from the Center of the frame
+	 * @see https://stackoverflow.com/a/14880815/5779200
 	 */
 	public Integer getXOffset() {
 		double frameWidth = this.pixy.getFrameWidth() / 2;
 		double blockX = this.getX();
 
-		return (int)(blockX + frameWidth / 2);
+		return (int) (blockX + frameWidth / 2);
 	}
 
 	/**
 	 * Get the Y Offset from Center of the Frame to the
-	 *  center of the given block.
-	 * 
-	 * @see https://stackoverflow.com/a/14880815/5779200
+	 * center of the given block.
+	 *
 	 * @return Y Offset from the Center of the frame
+	 * @see https://stackoverflow.com/a/14880815/5779200
 	 */
 	public Integer getYOffset() {
 		double frameHeight = this.pixy.getFrameHeight();
 		double blockY = this.getY();
 
-		return (int)(frameHeight / 2 + blockY);
+		return (int) (frameHeight / 2 + blockY);
 	}
-	
+
 }

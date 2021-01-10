@@ -7,13 +7,14 @@
 
 package frc.robot.subsystems;
 
-import java.util.concurrent.atomic.AtomicReference;
-
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.ColorMatch;
 import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorSensorV3;
-
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -22,10 +23,8 @@ import frc.robot.Constants;
 import frc.robot.Constants.ColorTargets;
 import frc.robot.Constants.ControlPanelConstants;
 import frc.robot.commands.AutoPanelColorTickTurn;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.DriverStation;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 public class ControlPanelController extends SubsystemBase {
 
@@ -61,7 +60,6 @@ public class ControlPanelController extends SubsystemBase {
 	}
 
 	/**
-	 * 
 	 * @return boolean True means that its is at the limit
 	 */
 	public boolean getUpper() {
@@ -70,7 +68,6 @@ public class ControlPanelController extends SubsystemBase {
 	}
 
 	/**
-	 * 
 	 * @return boolean True means that its is at the limit
 	 */
 	public boolean getLower() {
@@ -78,43 +75,43 @@ public class ControlPanelController extends SubsystemBase {
 		return !this.lowerLimit.get();
 	}
 
-	public void liftSpeed(double power){
+	public void liftSpeed(double power) {
 		this.panelLift.set(power);
 	}
 
-	public void turnSpeed(double power){
+	public void turnSpeed(double power) {
 		this.panelDriver.set(power * 0.75);
 	}
 
 	/**
 	 * Get the Color from the ColorMatchResult Class
-	 * 
+	 *
 	 * @return Closest Color
 	 */
-	public Color getColor(){
+	public Color getColor() {
 		ColorMatchResult returnColor = this.colorMatch.matchClosestColor(colorSensor.getColor());
 
 		return returnColor.color;
 	}
 
-	public Color GameColor(){
+	public Color GameColor() {
 		Color value = null;
 
-		if(gameData.length() > 0){
+		if (gameData.length() > 0) {
 			switch (gameData.charAt(0)) {
-				case 'B' :
+				case 'B':
 					value = ColorTargets.COLOR_BLUE;
 					break;
-				case 'G' :
+				case 'G':
 					value = ColorTargets.COLOR_GREEN;
 					break;
-				case 'R' :
+				case 'R':
 					value = ColorTargets.COLOR_RED;
 					break;
-				case 'Y' :
+				case 'Y':
 					value = ColorTargets.COLOR_YELLOW;
 					break;
-				default :
+				default:
 					value = null;
 					break;
 			}
@@ -129,7 +126,7 @@ public class ControlPanelController extends SubsystemBase {
 	@Override
 	public void periodic() {
 		this.gameData = DriverStation.getInstance().getGameSpecificMessage();
-		
+
 		// Save the Color to the Dashboard
 		String colorTag = ColorTargets.resolveColor(this.getColor());
 		this.colorSensorEntry.setString(colorTag);
@@ -138,14 +135,14 @@ public class ControlPanelController extends SubsystemBase {
 		// Save the Encoder Value to the Dashboard
 		this.colorEncoderEntry.setDouble(this.colorMatchCounter.get());
 
-		if(this.getUpper() == true && this.colorCommand.isScheduled() == false && this.colorCommandComplete.get() == false) {
+		if (this.getUpper() == true && this.colorCommand.isScheduled() == false && this.colorCommandComplete.get() == false) {
 			this.colorCommand.schedule();
 		}
-		else if(this.getUpper() == false && this.colorCommand.isScheduled() == true) {
+		else if (this.getUpper() == false && this.colorCommand.isScheduled() == true) {
 			this.colorCommand.cancel();
 		}
 
-		if(this.getLower() == true && this.colorCommandComplete.get() == true) {
+		if (this.getLower() == true && this.colorCommandComplete.get() == true) {
 			// Reset the Is Completed Commmand
 			this.colorCommandComplete.set(false);
 		}

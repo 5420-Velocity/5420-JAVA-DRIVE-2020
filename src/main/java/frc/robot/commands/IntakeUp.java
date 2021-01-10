@@ -13,49 +13,49 @@ import frc.robot.subsystems.Intake;
 
 public class IntakeUp extends CommandBase {
 
-  private Intake intake;
+	private Intake intake;
 
-  public IntakeUp(Intake intakeRun) {
-    this.intake = intakeRun;
-    addRequirements(intake);
-  }
+	public IntakeUp(Intake intakeRun) {
+		this.intake = intakeRun;
+		addRequirements(intake);
+	}
 
-  // Called when the command is initially scheduled.
-  @Override
-  public void initialize() {
-  }
+	// Called when the command is initially scheduled.
+	@Override
+	public void initialize() {
+	}
 
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
-    
-    if(intake.getEncoderValue() > 0){
-      intake.armRun(-0.8);
-    }
-    else{
-      intake.armRun(0);
-    }
+	// Called every time the scheduler runs while the command is scheduled.
+	@Override
+	public void execute() {
 
-    /** 
-     * new PIDCommand(
-          pidController,
-          () -> intake.getEncoderFromHighValue(),
-          0.0,
-          output -> intake.armRun(-output),
-          intake
-        )
-     */
-   
-  }
+		if (intake.getEncoderValue() > 0) {
+			intake.armRun(-0.8);
+		}
+		else {
+			intake.armRun(0);
+		}
 
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {
-  }
+		/**
+		 * new PIDCommand(
+		 pidController,
+		 () -> intake.getEncoderFromHighValue(),
+		 0.0,
+		 output -> intake.armRun(-output),
+		 intake
+		 )
+		 */
 
-  // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-    return false;
-  }
+	}
+
+	// Called once the command ends or is interrupted.
+	@Override
+	public void end(boolean interrupted) {
+	}
+
+	// Returns true when the command should end.
+	@Override
+	public boolean isFinished() {
+		return false;
+	}
 }

@@ -7,11 +7,11 @@
 
 package frc.robot.commands;
 
-import java.util.function.DoubleSupplier;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.LiftSubsystem;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.LiftSubsystem;
+
+import java.util.function.DoubleSupplier;
 
 public class LiftControl extends CommandBase {
 	/**
@@ -22,12 +22,12 @@ public class LiftControl extends CommandBase {
 	private DoubleSupplier inputUp;
 	private DoubleSupplier inputDown;
 
-	public LiftControl(LiftSubsystem subsystem, Intake intakeSubsystem , DoubleSupplier inputUp, DoubleSupplier inputDown) {
+	public LiftControl(LiftSubsystem subsystem, Intake intakeSubsystem, DoubleSupplier inputUp, DoubleSupplier inputDown) {
 		this.liftS = subsystem;
 		this.intakeSubsystem = intakeSubsystem;
 		this.inputDown = inputDown;
 		this.inputUp = inputUp;
-		
+
 		addRequirements(subsystem);
 	}
 
@@ -39,17 +39,17 @@ public class LiftControl extends CommandBase {
 	// Called every time the scheduler runs while the command is scheduled.
 	@Override
 	public void execute() {
-		if(inputUp.getAsDouble() >= 0.1){
+		if (inputUp.getAsDouble() >= 0.1) {
 			liftS.liftSpeed(-inputUp.getAsDouble());
 			this.intakeSubsystem.forceArmDown(true);
 		}
-		else if(inputDown.getAsDouble() >= 0.1){
+		else if (inputDown.getAsDouble() >= 0.1) {
 			liftS.liftSpeed(inputDown.getAsDouble());
 		}
-		else{
+		else {
 			liftS.liftSpeed(0);
 		}
-		
+
 	}
 
 	// Called once the command ends or is interrupted.

@@ -14,7 +14,7 @@ public class LimeLightAim extends CommandBase {
 	/**
 	 * Creates a new LimeLightAim.
 	 */
-	 private final Limelight limelight;
+	private final Limelight limelight;
 
 	public LimeLightAim(Limelight limeLight) {
 		// Use addRequirements() here to declare subsystem dependencies.

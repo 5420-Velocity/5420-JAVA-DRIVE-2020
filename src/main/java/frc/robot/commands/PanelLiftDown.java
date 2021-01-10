@@ -11,8 +11,8 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.ControlPanelController;
 
-import java.util.Date;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 
 public class PanelLiftDown extends CommandBase {
@@ -20,7 +20,7 @@ public class PanelLiftDown extends CommandBase {
 	private ControlPanelController panelControllerSubsystem;
 	private boolean isFinished = false;
 	private Date EStopCheckTime;
-	
+
 	public PanelLiftDown(ControlPanelController subsystem) {
 		this.panelControllerSubsystem = subsystem;
 	}
@@ -39,7 +39,7 @@ public class PanelLiftDown extends CommandBase {
 	@Override
 	public void execute() {
 		// Safety time out
-		if(new Date().after(EStopCheckTime) && this.panelControllerSubsystem.getLower() == false) {
+		if (new Date().after(EStopCheckTime) && this.panelControllerSubsystem.getLower() == false) {
 			// Quit Early, Must not be connected.
 			System.err.println("E-Stop >> Code Detected the lower limit on the control pannel isn't detected.");
 
@@ -47,10 +47,10 @@ public class PanelLiftDown extends CommandBase {
 		}
 
 		// Run till lower limit
-		if(this.panelControllerSubsystem.getLower() == false){
+		if (this.panelControllerSubsystem.getLower() == false) {
 			this.panelControllerSubsystem.liftSpeed(-1);
 		}
-		else{
+		else {
 			this.isFinished = true;
 		}
 	}

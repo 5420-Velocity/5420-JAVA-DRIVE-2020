@@ -11,23 +11,23 @@ import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 
 public class IntakePIDSubsystem extends PIDSubsystem {
-  /**
-   * Creates a new IntakePIDSubsystem.
-   */
-  public IntakePIDSubsystem() {
-    super(
-        // The PIDController used by the subsystem
-        new PIDController(0, 0, 0));
-  }
+	/**
+	 * Creates a new IntakePIDSubsystem.
+	 */
+	public IntakePIDSubsystem() {
+		super(
+			// The PIDController used by the subsystem
+			new PIDController(0, 0, 0));
+	}
 
-  @Override
-  public void useOutput(double output, double setpoint) {
-    // Use the output here
-  }
+	@Override
+	public void useOutput(double output, double setpoint) {
+		// Use the output here
+	}
 
-  @Override
-  public double getMeasurement() {
-    // Return the process variable measurement here
-    return 0;
-  }
+	@Override
+	public double getMeasurement() {
+		// Return the process variable measurement here
+		return 0;
+	}
 }

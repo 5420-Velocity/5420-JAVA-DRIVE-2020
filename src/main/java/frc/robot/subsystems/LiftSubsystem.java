@@ -12,21 +12,21 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class LiftSubsystem extends SubsystemBase {
-  /**
-   * Creates a new LiftSubsystem.
-   */
-  private VictorSP liftMotor = new VictorSP(Constants.LiftConstants.liftMotor);
+	/**
+	 * Creates a new LiftSubsystem.
+	 */
+	private VictorSP liftMotor = new VictorSP(Constants.LiftConstants.liftMotor);
 
-  public LiftSubsystem() {
+	public LiftSubsystem() {
 
-  }
+	}
 
-  public void liftSpeed(double power){
-    liftMotor.set(power);
-  }
+	public void liftSpeed(double power) {
+		liftMotor.set(power);
+	}
 
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-  }
+	@Override
+	public void periodic() {
+		// This method will be called once per scheduler run
+	}
 }

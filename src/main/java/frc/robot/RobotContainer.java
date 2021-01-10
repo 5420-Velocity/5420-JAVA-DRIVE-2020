@@ -1,39 +1,20 @@
 package frc.robot;
 
-import edu.wpi.first.wpilibj.Joystick;
-import frc.robot.Constants.ControllerMapConstants;
-import frc.robot.Constants.ControllerConstants;
-import frc.robot.Constants.IntakeConstants;
-import frc.robot.Constants.ShooterConstants;
-import frc.robot.commands.AutoPanelColorTickTurn;
-import frc.robot.commands.DoNothingAutoCommand;
-import frc.robot.commands.ParallelCommandGroup;
-import frc.robot.commands.JoystickDrive;
-
-import java.util.concurrent.atomic.AtomicReference;
-
-import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.Compressor;
-import frc.robot.commands.Shoot;
-import frc.robot.commands.LiftControl;
-import frc.robot.commands.PanelLiftDown;
-import frc.robot.commands.PanelLiftUp;
-import frc.robot.Constants.DriveTrainConstants;
-import frc.robot.subsystems.ChuteSubsystem;
-import frc.robot.subsystems.Limelight;
-import frc.robot.subsystems.ControlPanelController;
-import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.ShooterSubsystem;
-import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.LiftSubsystem;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.Constants.*;
+import frc.robot.commands.*;
+import frc.robot.subsystems.*;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -48,9 +29,9 @@ public class RobotContainer {
 	private final DriveTrain driveTrain = new DriveTrain();
 	private final ControlPanelController controlPanelController = new ControlPanelController();
 	public Compressor compressor = new Compressor(0);
-  	private final SendableChooser<Command> autoChooser = new SendableChooser<>();
+	private final SendableChooser<Command> autoChooser = new SendableChooser<>();
 
-	private final JoystickDrive joystickDrive = new JoystickDrive(driveTrain, 
+	private final JoystickDrive joystickDrive = new JoystickDrive(driveTrain,
 		() -> driverJoystick.getRawAxis(1),
 		() -> driverJoystick.getRawAxis(4),
 		driverJoystick
@@ -72,8 +53,8 @@ public class RobotContainer {
 
 	// Encoder PID
 	private PIDController pidController = new PIDController(
-		IntakeConstants.Proportional, 
-		IntakeConstants.Integral, 
+		IntakeConstants.Proportional,
+		IntakeConstants.Integral,
 		IntakeConstants.Derivative);
 
 	public final Limelight limeLight = new Limelight("one", ShooterConstants.knownArea, ShooterConstants.knownDistance);
@@ -99,7 +80,7 @@ public class RobotContainer {
 	/**
 	 * Configure the auto commands
 	 */
-	private void configureAutoChooser(){
+	private void configureAutoChooser() {
 
 		this.autoChooser.setDefaultOption("Do Nothing", new DoNothingAutoCommand());
 		this.autoChooser.addOption("Color Wheel Test", new SequentialCommandGroup(
@@ -107,16 +88,15 @@ public class RobotContainer {
 			new AutoPanelColorTickTurn(this.controlPanelController, new AtomicReference<Boolean>())
 		));
 
-    	SmartDashboard.putData("Auto Chooser", autoChooser);
+		SmartDashboard.putData("Auto Chooser", autoChooser);
 	}
 
 	/**
 	 * Configure PID Controlelrs that are stored in the current
-	 *  RobotContainer instance.
-	 * 
+	 * RobotContainer instance.
 	 */
 	private void configurePIDControllers() {
-		
+
 		this.pidController.setTolerance(0.05);
 		this.pidController.setIntegratorRange(-0.7, 0.7);
 
@@ -124,7 +104,6 @@ public class RobotContainer {
 
 	/**
 	 * Configure network table entries with the default values.
-	 * 
 	 */
 	private void configureNetworkTableBindings() {
 
@@ -132,19 +111,18 @@ public class RobotContainer {
 
 	/**
 	 * Define button to command mappings.
-	 * 
 	 */
 	private void configureButtonBindings() {
 
 		// Limelight ctrl
 		PIDController rangePIDController = new PIDController(
-          DriveTrainConstants.RangeP, 
-          DriveTrainConstants.RangeI, 
-		  DriveTrainConstants.RangeD);
+			DriveTrainConstants.RangeP,
+			DriveTrainConstants.RangeI,
+			DriveTrainConstants.RangeD);
 		PIDController turnPIDController = new PIDController(
-		  DriveTrainConstants.TurnP,
-		  DriveTrainConstants.TurnI,
-		  DriveTrainConstants.TurnD
+			DriveTrainConstants.TurnP,
+			DriveTrainConstants.TurnI,
+			DriveTrainConstants.TurnD
 		);
 
 		/**
@@ -152,10 +130,10 @@ public class RobotContainer {
 		 *  allowing one PID Command to actually set the motor value and use
 		 * the AtomicReference<Double> to hold the turn value.
 		 * Lambda functions only allow refrences not variables of direct types like doubles.
-		 * 
+		 *
 		 */
 		AtomicReference<Double> turnOutput = new AtomicReference<Double>();
-		
+
 		new JoystickButton(this.driverJoystick, ControllerMapConstants.Green_Button_ID)
 			// Enable the Limelight LED
 			.whenPressed(() -> this.limeLight.setLedMode(0))
@@ -165,8 +143,8 @@ public class RobotContainer {
 				// Turning
 				new PIDCommand(
 					turnPIDController,
-					limeLight::getTX, 
-					0.0, 
+					limeLight::getTX,
+					0.0,
 					output -> turnOutput.set(output),
 					driveTrain
 				),
@@ -175,14 +153,14 @@ public class RobotContainer {
 					rangePIDController,
 					() -> {
 						// If no target is found, Offset is Zero
-						if(this.limeLight.hasTarget() == false) return 0.0;
+						if (this.limeLight.hasTarget() == false) return 0.0;
 						return this.limeLight.getDistance() - Constants.ShooterConstants.rangeGoal;
 					},
-					0.0, 
+					0.0,
 					output -> {
 						System.out.println("Motor Value: Y" + turnOutput.get() + " X" + output);
 						driveTrain.arcadeDrive(output, turnOutput.get());
-					}, 
+					},
 					driveTrain
 				)
 			));
@@ -209,7 +187,7 @@ public class RobotContainer {
 		 */
 		new JoystickButton(this.operatorJoystick, Constants.ControllerMapConstants.Blue_Button_ID)
 			.whenPressed(() -> this.shooter.setSpeed(-0.65, -0.67))
-			.whenReleased(() -> this.shooter.setSpeed(0,0));
+			.whenReleased(() -> this.shooter.setSpeed(0, 0));
 
 		new JoystickButton(this.operatorJoystick, Constants.ControllerMapConstants.Left_Bumper)
 			.whenPressed(() -> this.chute.setLeft(-0.7))
@@ -218,7 +196,7 @@ public class RobotContainer {
 		new JoystickButton(this.operatorJoystick, Constants.ControllerMapConstants.Right_Bumper)
 			.whenPressed(() -> this.chute.setRight(0.7))
 			.whenReleased(() -> this.chute.setRight(0));
-		
+
 
 		/**
 		 * Setup the button event for the Intake on the Operator Controller
@@ -242,7 +220,6 @@ public class RobotContainer {
 
 	/**
 	 * Configure Default Commands for the Subsystems
-	 * 
 	 */
 	private void configureDefaultCommands() {
 		CommandScheduler scheduler = CommandScheduler.getInstance();
@@ -262,7 +239,7 @@ public class RobotContainer {
 			output -> intake.armRun(output),
 			this.intake
 		));
-		
+
 	}
 
 	/**

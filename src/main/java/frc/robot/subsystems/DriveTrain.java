@@ -8,13 +8,12 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.DriveTrainConstants;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 /**
  * Add your docs here.
@@ -33,7 +32,7 @@ public class DriveTrain extends SubsystemBase {
 
 	private DifferentialDrive drive;
 
-	public DriveTrain(){
+	public DriveTrain() {
 		this.shift(Constants.DriveTrainConstants.defaultGear);
 
 		LeftAT.configFactoryDefault();
@@ -58,25 +57,25 @@ public class DriveTrain extends SubsystemBase {
 		drive = new DifferentialDrive(LeftAT, RightAT);
 	}
 
-	public void zero(){
+	public void zero() {
 		LeftAT.getSensorCollection().setIntegratedSensorPosition(0, 5000);
 		RightAT.getSensorCollection().setIntegratedSensorPosition(0, 5000);
 	}
 
-	public void arcadeDrive(double speed, double rotation){
+	public void arcadeDrive(double speed, double rotation) {
 		drive.arcadeDrive(speed, rotation);
 	}
 
-	public double getLeftEncoder(){
+	public double getLeftEncoder() {
 		return LeftAT.getSelectedSensorPosition();
 	}
-	
-	public double getRightEncoder(){
+
+	public double getRightEncoder() {
 		return RightAT.getSelectedSensorPosition();
 	}
-	
-	public void shift(boolean state){
+
+	public void shift(boolean state) {
 		trans.set(state);
 	}
-    
+
 }

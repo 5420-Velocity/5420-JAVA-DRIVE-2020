@@ -3,7 +3,6 @@ package frc.robot;
 import com.revrobotics.ColorMatch;
 import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorSensorV3;
-
 import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SendableRegistry;
@@ -11,8 +10,8 @@ import edu.wpi.first.wpilibj.util.Color;
 
 /**
  * Converts a Color Sensor into a simple Encoder Interface
- *  that keep tracking using a counter.
- * 
+ * that keep tracking using a counter.
+ *
  * @author Noah Halatead <nhalstead00@gmail.com>
  */
 public class ColorMatchCounter implements Sendable, AutoCloseable {
@@ -35,7 +34,7 @@ public class ColorMatchCounter implements Sendable, AutoCloseable {
 	/**
 	 * Should only be called by the SendableBase
 	 * This is a private function to update the sensor values.
-	 * 
+	 *
 	 * @return The Current Count of the Color Sensor
 	 */
 	private int refreshData() {
@@ -78,7 +77,6 @@ public class ColorMatchCounter implements Sendable, AutoCloseable {
 
 	/**
 	 * Pushed to the Dashboard
-	 * 
 	 */
 	@Override
 	public void initSendable(SendableBuilder builder) {

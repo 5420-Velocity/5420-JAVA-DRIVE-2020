@@ -7,11 +7,10 @@
 
 package frc.robot.commands;
 
-import java.util.function.DoubleSupplier;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
-
 import frc.robot.subsystems.ControlPanelController;
+
+import java.util.function.DoubleSupplier;
 
 public class AutoPanelDefaultCommand extends CommandBase {
 
@@ -37,10 +36,10 @@ public class AutoPanelDefaultCommand extends CommandBase {
 	public void execute() {
 
 		// Lift Control
-		if(controlPanelController.getUpper() == true && liftInput.getAsDouble() > 0) {
+		if (controlPanelController.getUpper() == true && liftInput.getAsDouble() > 0) {
 			controlPanelController.liftSpeed(0);
 		}
-		else if(controlPanelController.getLower() == true && liftInput.getAsDouble() < 0) {
+		else if (controlPanelController.getLower() == true && liftInput.getAsDouble() < 0) {
 			controlPanelController.liftSpeed(0);
 		}
 		else {

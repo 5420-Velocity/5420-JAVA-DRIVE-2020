@@ -8,7 +8,6 @@
 package frc.robot;
 
 import com.revrobotics.ColorMatch;
-
 import edu.wpi.first.wpilibj.util.Color;
 import io.github.pseudoresonance.pixy2api.Pixy2;
 import io.github.pseudoresonance.pixy2api.Pixy2.LinkType;
@@ -52,7 +51,7 @@ public final class Constants {
 		public static final double rangeGoal = 110;
 		public static final double knownDistance = 99;
 		public static final double knownArea = 2.5;
-		
+
 		public static final int aimerMotor = 13;
 
 	}
@@ -75,7 +74,7 @@ public final class Constants {
 		public static final int liftMotor = 3;
 	}
 
-    public static final class DriveTrainConstants {
+	public static final class DriveTrainConstants {
 
 		// Left Motor Controller Map for the Talon CAN IDs
 		public static final int Left_A_ID = 1;
@@ -101,7 +100,7 @@ public final class Constants {
 	}
 
 	public static final class ColorTargets {
-		
+
 		public static final Color COLOR_BLUE = ColorMatch.makeColor(0.143, 0.427, 0.429);
 		public static final Color COLOR_GREEN = ColorMatch.makeColor(0.197, 0.561, 0.240);
 		public static final Color COLOR_RED = ColorMatch.makeColor(0.561, 0.232, 0.114);
@@ -110,14 +109,13 @@ public final class Constants {
 
 		/**
 		 * Retuns the string representation of the color
-		 *  instance we have.
-		 * 
+		 * instance we have.
 		 */
 		public static String resolveColor(Color color) {
-			if(color == COLOR_BLUE) return "blue";
-			if(color == COLOR_GREEN) return "green";
-			if(color == COLOR_RED) return "red";
-			if(color == COLOR_YELLOW) return "yellow";
+			if (color == COLOR_BLUE) return "blue";
+			if (color == COLOR_GREEN) return "green";
+			if (color == COLOR_RED) return "red";
+			if (color == COLOR_YELLOW) return "yellow";
 			return "unknown";
 		}
 
@@ -138,13 +136,13 @@ public final class Constants {
 	}
 
 	public static final class ControllerConstants {
-		
+
 		public static final int JOYSTICK_USB_DRIVER = 0;
 		public static final int JOYSTICK_USB_OPERATOR = 1;
 
 	}
-	
-	
+
+
 	public static final class ControllerMapConstants {
 
 		public static final int JOYSTICK_RIGHT_X_AXIS = 4;
@@ -156,7 +154,7 @@ public final class Constants {
 		public static final int Green_Button_ID = 1;
 		public static final int Yellow_Button_ID = 4;
 		public static final int Blue_Button_ID = 3;
-		
+
 		public static final int Left_Bumper = 5;
 		public static final int Right_Bumper = 6;
 		public static final int Right_Trigger = 3;

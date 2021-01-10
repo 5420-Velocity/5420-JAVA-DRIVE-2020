@@ -12,56 +12,55 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /**
  * CommandGroup
- * 
+ * <p>
  * This allows you to run commands in a command group
- *  in parrallel calling all of the common functions.
- * 
+ * in parrallel calling all of the common functions.
  */
 public class ParallelCommandGroup extends CommandBase {
 
-  private Command[] commands;
+	private Command[] commands;
 
-  /**
-   * Creates a new CommandGroup.
-   */
-  public ParallelCommandGroup(Command ...commands) {
-    this.commands = commands;
-  }
+	/**
+	 * Creates a new CommandGroup.
+	 */
+	public ParallelCommandGroup(Command... commands) {
+		this.commands = commands;
+	}
 
-  // Called when the command is initially scheduled.
-  @Override
-  public void initialize() {
-    // Initialize Command Group Items
-    for(Command command : this.commands) {
-      command.initialize();
-    }
-  }
+	// Called when the command is initially scheduled.
+	@Override
+	public void initialize() {
+		// Initialize Command Group Items
+		for (Command command : this.commands) {
+			command.initialize();
+		}
+	}
 
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
-    // Execute Commands in Command Group Item
-    for(Command command : this.commands) {
-      command.execute();
-    }
-  }
+	// Called every time the scheduler runs while the command is scheduled.
+	@Override
+	public void execute() {
+		// Execute Commands in Command Group Item
+		for (Command command : this.commands) {
+			command.execute();
+		}
+	}
 
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {
-    // Call End on the Command Group Items
-    for(Command command : this.commands) {
-      command.end(interrupted);
-    }
-  }
+	// Called once the command ends or is interrupted.
+	@Override
+	public void end(boolean interrupted) {
+		// Call End on the Command Group Items
+		for (Command command : this.commands) {
+			command.end(interrupted);
+		}
+	}
 
-  // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-    // Check to see if the commands are Finished
-    for(Command command : this.commands) {
-      if(command.isFinished() == false) return false;
-    }
-    return true;
-  }
+	// Returns true when the command should end.
+	@Override
+	public boolean isFinished() {
+		// Check to see if the commands are Finished
+		for (Command command : this.commands) {
+			if (command.isFinished() == false) return false;
+		}
+		return true;
+	}
 }

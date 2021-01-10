@@ -7,6 +7,9 @@
 
 package frc.robot;
 
+import io.github.pseudoresonance.pixy2api.Pixy2;
+import io.github.pseudoresonance.pixy2api.Pixy2CCC.Block;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -14,14 +17,11 @@ import java.util.TreeSet;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
-import io.github.pseudoresonance.pixy2api.Pixy2;
-import io.github.pseudoresonance.pixy2api.Pixy2CCC.Block;
-
 /**
  * This class, PixyAlgo, takes in the Pixy
- *  and exposes a few functions that make working with the
- *  pixy better in terms of getting the blocks that you want.
- * 
+ * and exposes a few functions that make working with the
+ * pixy better in terms of getting the blocks that you want.
+ *
  * @author Noah Halstead <nhalstead00@gmail.com>
  */
 public class PixyAlgo {
@@ -34,7 +34,7 @@ public class PixyAlgo {
 
 	/**
 	 * Returns all of the Objects within the view of the Pixy2
-	 * 
+	 *
 	 * @return All Blocks Found in the FOV
 	 */
 	public ArrayList<Block> getPixyBlocks() {
@@ -43,8 +43,8 @@ public class PixyAlgo {
 
 	/**
 	 * This function will get the largest (inherently the closest) object
-	 *  from the list of the blocks in the detected FOV.
-	 * 
+	 * from the list of the blocks in the detected FOV.
+	 *
 	 * @return Block that is the closest
 	 */
 	public Block getPixyLargest() {
@@ -59,7 +59,7 @@ public class PixyAlgo {
 		this.getPixyBlocks().forEach((block) -> {
 			int area = block.getWidth() * block.getHeight();
 
-			if(area > largestArea.get()) {
+			if (area > largestArea.get()) {
 				// Found a larger block!
 				largestBlock.set(block);
 				largestArea.set(area);
@@ -68,17 +68,17 @@ public class PixyAlgo {
 
 		return largestBlock.get();
 	}
-	
+
 	/**
 	 * This will return the block that is nearest based on the area and
-	 *  distance from 0 (center screen).
-	 * 
+	 * distance from 0 (center screen).
+	 * <p>
 	 * This function will convert the Pixy Blocks objects X and Y values to
-	 *  the offset from CENTER of the camera screen.
-	 * 
-	 * @link https://stackoverflow.com/a/30449464
+	 * the offset from CENTER of the camera screen.
+	 *
 	 * @return Block X Offset from the Nearest based on Area (distance away) and
-	 *   offset from 0 on the X target.
+	 * offset from 0 on the X target.
+	 * @link https://stackoverflow.com/a/30449464
 	 */
 	public BlockExtra getPixyBest() {
 		TreeSet<Integer> areaRank = new TreeSet<Integer>();
@@ -86,14 +86,14 @@ public class PixyAlgo {
 		ArrayList<BlockExtra> blocks = this.convertToBlockExtra(this.getPixyBlocks());
 
 		// Add Blocks to the TreeSets for the Area and the Distance from Zero
-		for(BlockExtra block : blocks){
+		for (BlockExtra block : blocks) {
 			areaRank.add(block.getArea());
 			zeroRank.add(Math.abs(block.getX()));
 		}
 
 		// Sort the list by the weight of area and the offset from
 		//  zero!
-		Collections.sort(blocks, new Comparator<BlockExtra>(){
+		Collections.sort(blocks, new Comparator<BlockExtra>() {
 			/**
 			 * Setup sorting to rank the blocks by the following conditions:
 			 *  - Block has a Larger Area
@@ -115,17 +115,17 @@ public class PixyAlgo {
 				// So having 1 will score High in the rank while 4 will be lower!
 				int zeroOffsetRank1 = zeroRank.headSet(block1.getX()).size();
 				int zeroOffsetRank2 = zeroRank.headSet(block2.getX()).size();
-				
+
 				// Create the Final Ranking Score given the rankings
 				int scoreBlock1 = areaRank1 + zeroOffsetRank1;
 				int scoreBlock2 = areaRank2 + zeroOffsetRank2;
 
 				// Decide the position of the block in the list
-				if(scoreBlock1 > scoreBlock2) {
+				if (scoreBlock1 > scoreBlock2) {
 					// Block 1 is a better choice, Move it up!
 					return 1;
 				}
-				else if(scoreBlock1 < scoreBlock2) {
+				else if (scoreBlock1 < scoreBlock2) {
 					// Block 2 is a better choice, Move Block 1 down!
 					return -1;
 				}
@@ -142,16 +142,16 @@ public class PixyAlgo {
 
 	/**
 	 * See `convertToBlockExtra` for more details on what this function does.
-	 * 
-	 * @see convertToBlockExtra
+	 *
 	 * @param blocks
 	 * @return Blocks that are extended to BlockExtra
+	 * @see convertToBlockExtra
 	 */
 	private ArrayList<BlockExtra> convertToBlockExtra(ArrayList<Block> blocks) {
 		// Convert All Blocks Given to BlockExtra
 		ArrayList<BlockExtra> blocksOutput = new ArrayList<BlockExtra>();
-		
-		for(Block block : blocks) {
+
+		for (Block block : blocks) {
 			blocksOutput.add(this.convertToBlockExtra(block));
 		}
 
@@ -160,7 +160,7 @@ public class PixyAlgo {
 
 	/**
 	 * Creates a block extra element with the extra function to help.
-	 * 
+	 *
 	 * @return Creates a new BlockExtra Element that extends Block
 	 */
 	private BlockExtra convertToBlockExtra(Block block) {

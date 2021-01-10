@@ -7,14 +7,14 @@
 
 package frc.robot.commands;
 
-import frc.robot.DPad;
-import frc.robot.subsystems.DriveTrain;
-import java.util.function.DoubleSupplier;
-
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.DPad;
+import frc.robot.subsystems.DriveTrain;
 
-public class JoystickDrive extends CommandBase  {
+import java.util.function.DoubleSupplier;
+
+public class JoystickDrive extends CommandBase {
 
 	private final DriveTrain driveTrain;
 	private final DoubleSupplier speed;
@@ -24,13 +24,12 @@ public class JoystickDrive extends CommandBase  {
 
 	/**
 	 * This function will get the input value on a scale of
-	 *  a curve using the Square Root Function
-	 * 
+	 * a curve using the Square Root Function
+	 *
 	 * @param double
 	 * @return Curved Value
 	 */
-	public static double getCurve(double input)
-	{
+	public static double getCurve(double input) {
 		double sign = Math.signum(input);
 
 		double value = Math.abs(input);
@@ -59,7 +58,7 @@ public class JoystickDrive extends CommandBase  {
 	}
 
 	public void toggleFlipped() {
-		if(this.isControlFlipped == true) {
+		if (this.isControlFlipped == true) {
 			this.setFlipped(false);
 		}
 		else {
@@ -73,27 +72,27 @@ public class JoystickDrive extends CommandBase  {
 		// Apply a Deadband to the Input mapped at 0.05
 		if (Math.abs(speed.getAsDouble()) > 0.05 || Math.abs(rotation.getAsDouble()) > 0.05) {
 
-			double controllerY = (-speed.getAsDouble()*0.9);
-			double controllerX = -rotation.getAsDouble()*0.6;
+			double controllerY = (-speed.getAsDouble() * 0.9);
+			double controllerX = -rotation.getAsDouble() * 0.6;
 
 			// Flip the controls of the drive forward and reverse code
-			if(this.isControlFlipped == true) controllerY = controllerY * -1;
+			if (this.isControlFlipped == true) controllerY = controllerY * -1;
 
 			// Apply a curve to the given input controls.
 			controllerY = JoystickDrive.getCurve(controllerY);
 
 			driveTrain.arcadeDrive(-controllerY, controllerX);
 		}
-		else if(DPad.up(DPADController)){
+		else if (DPad.up(DPADController)) {
 			driveTrain.arcadeDrive(0.4, 0);
 		}
-		else if(DPad.down(DPADController)){
+		else if (DPad.down(DPADController)) {
 			driveTrain.arcadeDrive(-0.4, 0);
 		}
-		else if(DPad.right(DPADController)){
+		else if (DPad.right(DPADController)) {
 			driveTrain.arcadeDrive(0, -0.4);
 		}
-		else if(DPad.left(DPADController)){
+		else if (DPad.left(DPADController)) {
 			driveTrain.arcadeDrive(0, 0.4);
 		}
 		else {
@@ -113,5 +112,5 @@ public class JoystickDrive extends CommandBase  {
 	public boolean isFinished() {
 		return false;
 	}
-	
+
 }

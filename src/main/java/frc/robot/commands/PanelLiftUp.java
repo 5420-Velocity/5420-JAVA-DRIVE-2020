@@ -11,8 +11,8 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.ControlPanelController;
 
-import java.util.Date;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 
 public class PanelLiftUp extends CommandBase {
@@ -20,7 +20,7 @@ public class PanelLiftUp extends CommandBase {
 	private ControlPanelController panelControllerSubsystem;
 	private boolean isFinished = false;
 	private Date EStopCheckTime;
-	
+
 	public PanelLiftUp(ControlPanelController subsystem) {
 		this.panelControllerSubsystem = subsystem;
 	}
@@ -39,7 +39,7 @@ public class PanelLiftUp extends CommandBase {
 	@Override
 	public void execute() {
 		// Safety time out
-		if(new Date().after(EStopCheckTime) && this.panelControllerSubsystem.getUpper() == false) {
+		if (new Date().after(EStopCheckTime) && this.panelControllerSubsystem.getUpper() == false) {
 			// Quit Early, Must not be connected.
 			System.err.println("E-Stop >> Code Detected the upper limit on the control pannel isn't detected.");
 
@@ -47,10 +47,10 @@ public class PanelLiftUp extends CommandBase {
 		}
 
 		// Run till upper limit
-		if(this.panelControllerSubsystem.getUpper() == false){
+		if (this.panelControllerSubsystem.getUpper() == false) {
 			this.panelControllerSubsystem.liftSpeed(1);
 		}
-		else{
+		else {
 			this.isFinished = true;
 		}
 	}
