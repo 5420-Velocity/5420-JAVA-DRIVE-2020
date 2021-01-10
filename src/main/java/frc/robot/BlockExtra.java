@@ -18,13 +18,13 @@ import io.github.pseudoresonance.pixy2api.Pixy2CCC.Block;
  */
 public class BlockExtra extends Block {
 
-	private Pixy2 pixy;
+	private final Pixy2 pixy;
 
 	/**
 	 * Helper Function to create the BlockExtra with Block Object
 	 *
-	 * @param pixy
-	 * @param block
+	 * @param pixy Pixy Instance
+	 * @param block Block Instance
 	 */
 	public BlockExtra(Pixy2 pixy, Block block) {
 		this(pixy, block.getSignature(), block.getX(), block.getY(), block.getWidth(), block.getHeight(), block.getAngle(), block.getIndex(), block.getAge());
@@ -38,7 +38,7 @@ public class BlockExtra extends Block {
 	/**
 	 * Get the Area of the Given Block
 	 *
-	 * @return
+	 * @return The total area of the object
 	 */
 	public Integer getArea() {
 		return this.getX() * this.getY();
