@@ -38,7 +38,7 @@ public class RobotContainer {
 	);
 
 	/**
-	 * Setup Intake Subsystm and the Extra Commands to Contorl It
+	 * Setup Intake Subsystem and the Extra Commands to Control It
 	 */
 	public final Intake intake = new Intake();
 	public final CharlesSubsystem charles = new CharlesSubsystem();
