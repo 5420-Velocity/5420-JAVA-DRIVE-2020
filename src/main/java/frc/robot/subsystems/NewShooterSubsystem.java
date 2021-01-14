@@ -23,7 +23,7 @@ public class NewShooterSubsystem extends SubsystemBase {
 		//  slowly adjust to the target speed over time.
 		shooterMotorOne.configOpenloopRamp(1);
 		shooterMotorTwo.configOpenloopRamp(1);
-
+		shooterMotorTwo.setInverted(true);
 	}
 
 	/**
@@ -33,9 +33,9 @@ public class NewShooterSubsystem extends SubsystemBase {
 	 * @param frontMotor Speed Value for the Front Motor
 	 * @param feed Motor Speed for the Feed   
 	 */
-	public void setSpeed(double rearMotor, double frontMotor, double feed) {
-		shooterMotorOne.set(rearMotor);
-		shooterMotorTwo.set(frontMotor);
+	public void setSpeed(double motorSpeed, double feed) {
+		shooterMotorOne.set(motorSpeed);
+		shooterMotorTwo.set(motorSpeed); // This motor is inverted above
 		feedMotor.set(feed);
 	}
 
