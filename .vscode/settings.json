@@ -1,5 +1,6 @@
 {
   "java.configuration.updateBuildConfiguration": "automatic",
+  "java.server.launchMode": "Standard",
   "files.exclude": {
     "**/.git": true,
     "**/.svn": true,
@@ -10,10 +11,11 @@
     "**/.classpath": true,
     "**/.project": true,
     "**/.settings": true,
-    "**/.factorypath": true
+    "**/.factorypath": true,
+    "**/*~": true
   },
   "editor.insertSpaces": false,
   "telemetry.enableTelemetry": false,
   "files.autoSave": "afterDelay",
-  "files.autoSaveDelay": 5000
+  "files.autoSaveDelay": 2000
 }
