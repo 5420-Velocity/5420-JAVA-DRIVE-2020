@@ -8,7 +8,6 @@
 package frc.robot;
 
 import com.revrobotics.ColorMatch;
-import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.util.Color;
 import io.github.pseudoresonance.pixy2api.Pixy2;
 import io.github.pseudoresonance.pixy2api.Pixy2.LinkType;
