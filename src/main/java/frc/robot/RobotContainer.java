@@ -3,11 +3,14 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj.controller.RamseteController;
+import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
+import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.*;
@@ -259,6 +262,28 @@ public class RobotContainer {
 	 * @return the command to run in autonomous
 	 */
 	public Command getAutonomousCommand() {
+
+		RamseteCommand ramseteCommand = new RamseteCommand(
+			exampleTrajectory,
+			this.driveTrain::getPose,
+			new RamseteController(AutoConstants.kRamseteB, AutoConstants.kRamseteZeta),
+			new SimpleMotorFeedforward(Constants.DriveTrainConstants.ksVolts,
+				Constants.DriveTrainConstants.kvVoltSecondsPerMeter,
+				Constants.DriveTrainConstants.kaVoltSecondsSquaredPerMeter),
+				Constants.DriveTrainConstants.kDriveKinematics,
+			this.driveTrain::getWheelSpeeds,
+			new PIDController(Constants.DriveTrainConstants.kPDriveVel, 0, 0),
+			new PIDController(Constants.DriveTrainConstants.kPDriveVel, 0, 0),
+			// RamseteCommand passes volts to the callback
+			this.driveTrain::tankDriveVolts,
+			this.driveTrain
+		);
+	
+		// Reset odometry to the starting pose of the trajectory.
+		this.driveTrain.resetOdometry(exampleTrajectory.getInitialPose());
+	
+		// Run path following command, then stop at the end.
+		return ramseteCommand.andThen(() -> this.driveTrain.tankDriveVolts(0, 0));
 		return this.autoChooser.getSelected();
 	}
 

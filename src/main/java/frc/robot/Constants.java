@@ -22,6 +22,11 @@ import io.github.pseudoresonance.pixy2api.Pixy2.LinkType;
  */
 public final class Constants {
 
+	public static final class AutoConstants{
+		public static final double kRamseteB = 0;
+		public static final double kRamseteZeta = 0;
+	}
+
 	public static final class IntakeConstants {
 
 		public static final double highTarget = 15; // Encoder Position for high position
@@ -112,6 +117,14 @@ public final class Constants {
 			public static final int Right_A_ID = 3;
 			public static final int Right_B_ID = 4;
 		}
+
+		//path values
+		public static final double ksVolts = 0;
+		public static final double kvVoltSecondsPerMeter = 0;
+		public static final double kaVoltSecondsSquaredPerMeter = 0;
+		public static final double kDriveKinematics = 0;
+		public static final double kPDriveVel = 0;
+
 
 		// PID values
 		public static final double RangeP = 0.03;
