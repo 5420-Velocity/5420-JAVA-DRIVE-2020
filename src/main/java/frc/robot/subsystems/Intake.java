@@ -16,6 +16,7 @@ import frc.robot.Constants;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.PixyAlgo;
 import io.github.pseudoresonance.pixy2api.Pixy2;
+import io.github.pseudoresonance.pixy2api.Pixy2CCC;
 import io.github.pseudoresonance.pixy2api.Pixy2CCC.Block;
 
 import java.util.ArrayList;
@@ -30,7 +31,7 @@ public class Intake extends SubsystemBase {
 	private final NetworkTableEntry ntEncoderValue = NetworkTableInstance.getDefault().getEntry("Ball Lift Encoder Value");
 	private final NetworkTableEntry ntPixyStatus = NetworkTableInstance.getDefault().getEntry("Pixy Status");
 	private final NetworkTableEntry ntPixyBlocks = NetworkTableInstance.getDefault().getEntry("Pixy Blocks");
-	private final Pixy2 pixy = Pixy2.createInstance(IntakeConstants.pixyLinkType);
+	private final Pixy2 pixy = Pixy2.createInstance(IntakeConstants.pixyLink);
 	private final PixyAlgo pixyAlgo = new PixyAlgo(pixy);
 	private boolean forceUpperlimitDown = false;
 	private int pixyCachedLoop = 0;
@@ -49,7 +50,10 @@ public class Intake extends SubsystemBase {
 		encoder.setConnectedFrequencyThreshold(975);
 
 		// Tries to Communicate with the Pixy at this moment
-		this.pixy.init(IntakeConstants.pixyLinkPort);
+		this.pixy.init();
+		this.pixy.setLamp((byte) 1, (byte) 1);
+		this.pixy.setLED(129, 183, 219);
+		// this.pixy.init(IntakeConstants.pixyLinkPort);
 	}
 
 	public double getEncoderValue() {
@@ -134,7 +138,7 @@ public class Intake extends SubsystemBase {
 		// Push Encoder Value to the Dashboard via NetworkTables.
 		this.ntEncoderValue.setDouble(this.getEncoderValue());
 
-		if (this.pixyCachedLoop == 0) {
+//		if (this.pixyCachedLoop == 0) {
 			/**
 			 * Must be called in order for the subsystem to request
 			 *  blocks from the pixy.
@@ -142,7 +146,7 @@ public class Intake extends SubsystemBase {
 			 *  return the previous results received in this request.
 			 *
 			 */
-			int pixyStatus = this.pixy.getCCC().getBlocks(false, 0, 8);
+			int pixyStatus = this.pixy.getCCC().getBlocks(false, Pixy2CCC.CCC_SIG1, 8);
 
 			/**
 			 * Read response from the Pixy Class to update the network tables
@@ -163,15 +167,16 @@ public class Intake extends SubsystemBase {
 					this.ntPixyBlocks.setDouble(pixyStatus);
 					this.ntPixyStatus.setString("Operational");
 			}
-		}
-		else if (this.pixyCachedLoop == 120) {
-			// Reset the Counter one 120 has been hit
-			this.pixyCachedLoop = 0;
-		}
-		else {
-			// Update the loop that allowed a skip of updating the Pixy Data
-			this.pixyCachedLoop++;
-		}
+//		}
+//		else if (this.pixyCachedLoop == 120) {
+//			// Reset the Counter one 120 has been hit
+//			this.pixyCachedLoop = 0;
+//		}
+//		else {
+//			// Update the loop that allowed a skip of updating the Pixy Data
+//			this.pixyCachedLoop++;
+//		}
+
 
 	}
 
