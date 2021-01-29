@@ -10,7 +10,8 @@ package frc.robot;
 import com.revrobotics.ColorMatch;
 import edu.wpi.first.wpilibj.util.Color;
 import io.github.pseudoresonance.pixy2api.Pixy2;
-import io.github.pseudoresonance.pixy2api.Pixy2.LinkType;
+import io.github.pseudoresonance.pixy2api.links.Link;
+import io.github.pseudoresonance.pixy2api.links.SPILink;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -47,7 +48,7 @@ public final class Constants {
 			public static final int intakeMotor = 9;
 		}
 
-		public static final LinkType pixyLinkType = LinkType.SPI;
+		public static final Link pixyLink = new SPILink();
 		public static final int pixyLinkPort = Pixy2.PIXY_DEFAULT_ARGVAL;
 
 	}

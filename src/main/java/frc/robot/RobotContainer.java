@@ -1,12 +1,16 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.RamseteController;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.trajectory.Trajectory;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
@@ -17,6 +21,8 @@ import frc.robot.Constants.*;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -228,6 +234,15 @@ public class RobotContainer {
 
 		new JoystickButton(this.operatorJoystick, ControllerMapConstants.Left_Bumper);
 		//loading
+//
+//		String trajectoryJSON = "paths/YourPath.wpilib.json";
+//		Trajectory trajectory = new Trajectory();
+//		try {
+//			Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
+//			trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+//		} catch (IOException ex) {
+//			DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
+//		}
 
 
 	}
