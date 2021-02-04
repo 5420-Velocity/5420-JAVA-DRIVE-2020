@@ -83,6 +83,8 @@ public class DriveTrain extends SubsystemBase {
 	}
 
 	public double tankDriveVolts(double left, double right) {
+		this.LeftAT.setVoltage(left);
+		this.RightAT.setVoltage(right);
 		return 0;
 	}
 
