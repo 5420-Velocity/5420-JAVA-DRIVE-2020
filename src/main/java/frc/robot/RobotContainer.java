@@ -233,16 +233,16 @@ public class RobotContainer {
 			.whenReleased(() -> this.intake.intakeMove(0));
 
 		new JoystickButton(this.operatorJoystick, ControllerMapConstants.Left_Bumper);
-		//loading
-//
-//		String trajectoryJSON = "paths/YourPath.wpilib.json";
-//		Trajectory trajectory = new Trajectory();
-//		try {
-//			Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
-//			trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
-//		} catch (IOException ex) {
-//			DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
-//		}
+
+
+		String trajectoryJSON = "paths/YourPath.wpilib.json";
+		Trajectory trajectory = new Trajectory();
+		try {
+			Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
+			trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+		} catch (IOException ex) {
+			DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
+		}
 
 
 	}
