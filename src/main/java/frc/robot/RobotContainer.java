@@ -278,14 +278,24 @@ public class RobotContainer {
 	 */
 	public Command getAutonomousCommand() {
 
+		String trajectoryJSON = "paths/YourPath.wpilib.json";
+		Trajectory trajectory = new Trajectory();
+
+		try {
+			Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
+			trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+		} catch (IOException ex) {
+			DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
+		}
+
 		RamseteCommand ramseteCommand = new RamseteCommand(
-			exampleTrajectory,
+			trajectory,
 			this.driveTrain::getPose,
 			new RamseteController(AutoConstants.kRamseteB, AutoConstants.kRamseteZeta),
 			new SimpleMotorFeedforward(Constants.DriveTrainConstants.ksVolts,
-				Constants.DriveTrainConstants.kvVoltSecondsPerMeter,
+					Constants.DriveTrainConstants.kvVoltSecondsPerMeter,
 				Constants.DriveTrainConstants.kaVoltSecondsSquaredPerMeter),
-				Constants.DriveTrainConstants.kDriveKinematics,
+			Constants.DriveTrainConstants.kDriveKinematics,
 			this.driveTrain::getWheelSpeeds,
 			new PIDController(Constants.DriveTrainConstants.kPDriveVel, 0, 0),
 			new PIDController(Constants.DriveTrainConstants.kPDriveVel, 0, 0),
@@ -295,11 +305,11 @@ public class RobotContainer {
 		);
 	
 		// Reset odometry to the starting pose of the trajectory.
-		this.driveTrain.resetOdometry(exampleTrajectory.getInitialPose());
+		this.driveTrain.resetOdometry(trajectory.getInitialPose());
 	
 		// Run path following command, then stop at the end.
 		return ramseteCommand.andThen(() -> this.driveTrain.tankDriveVolts(0, 0));
-		return this.autoChooser.getSelected();
+		// return this.autoChooser.getSelected();
 	}
 
 }

@@ -12,6 +12,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.DriveTrainConstants;
@@ -80,6 +81,15 @@ public class DriveTrain extends SubsystemBase {
 
 	public Pose2d getPose() {
 		return null;
+	}
+
+	public DifferentialDriveWheelSpeeds getWheelSpeeds() {
+		
+		return null;
+	}
+
+	public void resetOdometry(Pose2d pose) {
+
 	}
 
 	public double tankDriveVolts(double left, double right) {

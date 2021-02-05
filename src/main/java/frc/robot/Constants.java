@@ -8,6 +8,7 @@
 package frc.robot;
 
 import com.revrobotics.ColorMatch;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.util.Color;
 import io.github.pseudoresonance.pixy2api.Pixy2;
 import io.github.pseudoresonance.pixy2api.links.Link;
@@ -123,8 +124,8 @@ public final class Constants {
 		public static final double ksVolts = 0;
 		public static final double kvVoltSecondsPerMeter = 0;
 		public static final double kaVoltSecondsSquaredPerMeter = 0;
-		public static final double kDriveKinematics = 0;
 		public static final double kPDriveVel = 0;
+		public static final DifferentialDriveKinematics kDriveKinematics = null;
 
 
 		// PID values
