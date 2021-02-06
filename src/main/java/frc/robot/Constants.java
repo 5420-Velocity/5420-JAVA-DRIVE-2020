@@ -120,7 +120,7 @@ public final class Constants {
 			public static final int Right_B_ID = 4;
 		}
 
-		//path values
+		// Path values
 		public static final double ksVolts = 0;
 		public static final double kvVoltSecondsPerMeter = 0;
 		public static final double kaVoltSecondsSquaredPerMeter = 0;
