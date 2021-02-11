@@ -74,7 +74,7 @@ public final class Constants {
 		public static final class CAN {
 			public static final int shooterOne = 14;
 			public static final int shooterTwo = 15;
-			public static final int feedMotor = 3;
+			public static final int feedMotor = 16;
 		}
 
 	}
@@ -118,7 +118,20 @@ public final class Constants {
 			// Right Motor Controller Map for the Talon CAN IDs
 			public static final int Right_A_ID = 3;
 			public static final int Right_B_ID = 4;
+
+			//gyro
+			public static final int gyro = 9;
 		}
+		
+			// Left Motor Encoders
+			public static final int Left_A_Encoder = 4;
+			public static final int Left_B_Encoder = 5;
+			public static final boolean L_Reversed = false;
+
+			// Right Motor Encoders
+			public static final int Right_A_Encoder = 4;
+			public static final int Right_B_Encoder = 5;
+			public static final boolean R_Reversed = true;
 
 		// Path values
 		public static final double ksVolts = 0;
@@ -150,16 +163,16 @@ public final class Constants {
 	public static final class charlesConstants {
 
 		public static final class CAN {
-			public static final int charlesMotor = 8;
+			public static final int charlesMotor = 750;
 		}
 
 		public static final class DIO {
-			public static final int encoderPort = 8; // TODO: Temporary Fix
+			public static final int encoderPort = 751; // TODO: Temporary Fix
 		}
 
-		public static final int charlesColorSensor = 3;
-		public static final double ticksPerBall = 20;
-		public static final double initEncoderValue = 20;
+		public static final int charlesColorSensor = 752;
+		public static final double ticksPerBall = 753;
+		public static final double initEncoderValue = 754;
 
 		public static final Slot[] slots = new Slot[]{
 			new Slot(0, 0, 10),
