@@ -63,10 +63,10 @@ private final Encoder m_rightEncoder =
 		RightAT.configFactoryDefault();
 		RightBT.configFactoryDefault();
 
-		LeftAT.setNeutralMode(NeutralMode.Brake);
-		LeftBT.setNeutralMode(NeutralMode.Brake);
-		RightAT.setNeutralMode(NeutralMode.Brake);
-		RightBT.setNeutralMode(NeutralMode.Brake);
+		LeftAT.setNeutralMode(NeutralMode.Coast);
+		LeftBT.setNeutralMode(NeutralMode.Coast);
+		RightAT.setNeutralMode(NeutralMode.Coast);
+		RightBT.setNeutralMode(NeutralMode.Coast);
 
 		LeftAT.configOpenloopRamp(1);
 		LeftBT.configOpenloopRamp(1);
