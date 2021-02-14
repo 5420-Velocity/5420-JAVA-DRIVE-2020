@@ -16,11 +16,11 @@ import java.util.function.DoubleSupplier;
 
 public class JoystickDrive extends CommandBase {
 
-	private final DriveTrain driveTrain;
-	private final DoubleSupplier speed;
-	private final DoubleSupplier rotation;
-	private final Joystick DPADController;
-	private boolean isControlFlipped = false;
+	protected final DriveTrain driveTrain;
+	protected final DoubleSupplier speed;
+	protected final DoubleSupplier rotation;
+	protected final Joystick DPADController;
+	protected boolean isControlFlipped = false;
 
 	/**
 	 * This function will get the input value on a scale of
