@@ -41,11 +41,50 @@ public class RobotContainer {
 	public Compressor compressor = new Compressor(0);
 	private final SendableChooser<Command> autoChooser = new SendableChooser<>();
 
-	private final JoystickDrive joystickDrive = new JoystickDrive(driveTrain,
+	// private final JoystickDrive joystickDrive = new JoystickDrive(driveTrain,
+	// 	// Arcade
+	// 	() -> driverJoystick.getRawAxis(5),
+	// 	() -> driverJoystick.getRawAxis(4),
+	// 	driverJoystick
+	// );
+
+	// USB PS2 Controllers
+	private final JoystickDrive joystickDrive = new JoystickDriveTankdrive(driveTrain,
+		// Split Arcade
+		() -> driverJoystick.getRawButton(1),
 		() -> driverJoystick.getRawAxis(1),
-		() -> driverJoystick.getRawAxis(4),
-		driverJoystick
+		() -> operatorJoystick.getRawAxis(1),
+		driverJoystick,
+		operatorJoystick
 	);
+
+	// private final JoystickDrive joystickDrive = new JoystickDrive(driveTrain,
+	// 	// Arcade w/ Expo
+	// 	() -> Math.pow(driverJoystick.getRawAxis(5), 3) + 2 * driverJoystick.getRawAxis(5),
+	// 	() -> Math.pow(driverJoystick.getRawAxis(4), 3) + 2 * driverJoystick.getRawAxis(4),
+	// 	driverJoystick
+	// );
+
+	// private final JoystickDrive joystickDrive = new JoystickDriveArcadeSplit(driveTrain,
+	// 	// Split Arcade
+	// 	() -> driverJoystick.getRawAxis(1),
+	// 	() -> driverJoystick.getRawAxis(4),
+	// 	driverJoystick
+	// );
+
+	// private final JoystickDrive joystickDrive = new JoystickDriveTankdrive(driveTrain,
+	// 	// Split Arcade
+	// 	() -> driverJoystick.getRawAxis(5),
+	// 	() -> driverJoystick.getRawAxis(1),
+	// 	driverJoystick
+	// );
+
+	// private final JoystickDrive joystickDrive = new JoystickDriveTankdriveLocked(driveTrain,
+	// 	// Split Arcade
+	// 	() -> driverJoystick.getRawAxis(1),
+	// 	() -> driverJoystick.getRawAxis(4),
+	// 	driverJoystick
+	// );
 
 	/**
 	 * Setup Intake Subsystem and the Extra Commands to Control It
@@ -63,9 +102,9 @@ public class RobotContainer {
 	// 	() -> operatorJoystick.getRawButton(4)
 	// );
 
-	private final NewShoot newShoot = new NewShoot(charles, newShooter,
-		() -> operatorJoystick.getRawButton(Constants.ControllerMapConstants.Blue_Button_ID)
-	);
+	// private final NewShoot newShoot = new NewShoot(charles, newShooter,
+	// 	() -> operatorJoystick.getRawButton(Constants.ControllerMapConstants.Blue_Button_ID)
+	// );
 
 	// Encoder PID
 	private final PIDController pidController = new PIDController(
@@ -206,7 +245,7 @@ public class RobotContainer {
 			.whenReleased(() -> this.newShooter.setSpeed(0, 0));
 
 		new JoystickButton(this.operatorJoystick, Constants.ControllerMapConstants.Left_Bumper)
-			.whenPressed(() -> this.chute.setLeft(-0.65))
+			.whenPressed(() -> this.chute.setLeft(-0.6))
 			.whenReleased(() -> this.chute.setLeft(0));
 
 		new JoystickButton(this.operatorJoystick, Constants.ControllerMapConstants.Right_Bumper)
@@ -219,7 +258,7 @@ public class RobotContainer {
 		 */
 		new JoystickButton(this.operatorJoystick, ControllerMapConstants.Green_Button_ID)
 			// Go Down on Button Press
-			.whenPressed(() -> this.intake.intakeMove(-1.0))
+			.whenPressed(() -> this.intake.intakeMove(1.0))
 			.whenHeld(
 				new PIDCommand(
 					this.pidController,
@@ -232,18 +271,15 @@ public class RobotContainer {
 			// Turn off Motor
 			.whenReleased(() -> this.intake.intakeMove(0));
 
-		new JoystickButton(this.operatorJoystick, ControllerMapConstants.Left_Bumper);
 
-
-		String trajectoryJSON = "paths/YourPath.wpilib.json";
-		Trajectory trajectory = new Trajectory();
-		try {
-			Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
-			trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
-		} catch (IOException ex) {
-			DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
-		}
-
+		// String trajectoryJSON = "paths/YourPath.wpilib.json";
+		// Trajectory trajectory = new Trajectory();
+		// try {
+		// 	Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
+		// 	trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+		// } catch (IOException ex) {
+		// 	DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
+		// }
 
 	}
 
