@@ -25,7 +25,7 @@ import java.util.function.Predicate;
 
 public class CharlesSubsystem extends SubsystemBase {
 
-	private final DutyCycleEncoder encoder = new DutyCycleEncoder(Constants.charlesConstants.DIO.encoderPort);
+	// private final DutyCycleEncoder encoder = new DutyCycleEncoder(Constants.charlesConstants.DIO.encoderPort);
 	private final WPI_TalonSRX charlesMotor = new WPI_TalonSRX(charlesConstants.CAN.charlesMotor);
 	private final ColorSensorV3 charlesColorSensor = new ColorSensorV3(Constants.ColorTargets.I2C.ColorSensor);
 	private final ColorMatch colorMatch = new ColorMatch();
@@ -38,12 +38,13 @@ public class CharlesSubsystem extends SubsystemBase {
 
 	}
 
-	public double getEncoder() {
-		return this.encoder.get();
-	}
+	// public double getEncoder() {
+	// 	return this.encoder.get();
+	// }
 
 	public int getIndex() throws UnindexPositionException {
-		double currentEncoderPosition = this.encoder.getDistance();
+		// double currentEncoderPosition = this.encoder.getDistance();
+		double currentEncoderPosition = 0;
 
 		for (Slot slot : Constants.charlesConstants.slots) {
 			if (slot.inBetween(currentEncoderPosition)) {
@@ -70,7 +71,7 @@ public class CharlesSubsystem extends SubsystemBase {
 	 * Rest the encoder
 	 */
 	public void reset() {
-		this.encoder.reset();
+		// this.encoder.reset();
 	}
 
 	public Color getColor() {
@@ -78,7 +79,8 @@ public class CharlesSubsystem extends SubsystemBase {
 	}
 
 	public void encoderRun(double target) {
-		if (encoder.get() < target) {
+		// if (this.encoder.getDistance() < target) {
+		if (0 < target) {
 			charlesMotor.set(0.3);
 		}
 		else {
