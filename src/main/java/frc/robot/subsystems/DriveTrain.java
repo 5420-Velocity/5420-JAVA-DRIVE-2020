@@ -79,11 +79,6 @@ public class DriveTrain extends SubsystemBase {
 		);
 	}
 
-	public void zero() {
-		LeftAT.getSensorCollection().setIntegratedSensorPosition(0, 800);
-		RightAT.getSensorCollection().setIntegratedSensorPosition(0, 800);
-	}
-
 	public void arcadeDrive(double speed, double rotation) {
 		drive.arcadeDrive(speed, rotation);
 	}
@@ -147,7 +142,8 @@ public class DriveTrain extends SubsystemBase {
 	 * Resets the drive encoders to currently read a position of 0.
 	 */
 	public void resetEncoders() {
-		
+		LeftAT.getSensorCollection().setIntegratedSensorPosition(0, 800);
+		RightAT.getSensorCollection().setIntegratedSensorPosition(0, 800);
 	}
 
 	/**
@@ -156,8 +152,7 @@ public class DriveTrain extends SubsystemBase {
    * @return the average of the two encoder readings
    */
   public double getAverageEncoderDistance() {
-	// return (m_leftEncoder.getDistance() + m_rightEncoder.getDistance()) / 2.0;
-	return 0;
+	return (this.getLeftEncoderPosition() + this.getRightEncoderPosition()) / 2.0;
   }
 
   /**
