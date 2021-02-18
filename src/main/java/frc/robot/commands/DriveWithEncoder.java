@@ -32,7 +32,7 @@ public class DriveWithEncoder extends CommandBase {
 
 		this.pidCommand = new PIDCommand(
 			drivePidController,
-			() -> (this.encoderTarget - this.driveTrain.getLeftEncoder()),
+			() -> (this.encoderTarget - this.driveTrain.getLeftEncoderPosition()),
 			0.0,
 			output -> this.driveTrain.arcadeDrive(output, 0),
 			this.driveTrain
