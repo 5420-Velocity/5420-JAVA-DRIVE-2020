@@ -17,13 +17,13 @@ public class LiftControl extends CommandBase {
 	/**
 	 * Creates a new liftControl.
 	 */
-	private final LiftSubsystem liftS;
+	private final LiftSubsystem liftSubsystem;
 	private final Intake intakeSubsystem;
 	private final DoubleSupplier inputUp;
 	private final DoubleSupplier inputDown;
 
 	public LiftControl(LiftSubsystem subsystem, Intake intakeSubsystem, DoubleSupplier inputUp, DoubleSupplier inputDown) {
-		this.liftS = subsystem;
+		this.liftSubsystem = subsystem;
 		this.intakeSubsystem = intakeSubsystem;
 		this.inputDown = inputDown;
 		this.inputUp = inputUp;
@@ -40,14 +40,14 @@ public class LiftControl extends CommandBase {
 	@Override
 	public void execute() {
 		if (inputUp.getAsDouble() >= 0.1) {
-			liftS.liftSpeed(-inputUp.getAsDouble());
+			liftSubsystem.liftSpeed(-inputUp.getAsDouble());
 			this.intakeSubsystem.forceArmDown(true);
 		}
 		else if (inputDown.getAsDouble() >= 0.1) {
-			liftS.liftSpeed(inputDown.getAsDouble());
+			liftSubsystem.liftSpeed(inputDown.getAsDouble());
 		}
 		else {
-			liftS.liftSpeed(0);
+			liftSubsystem.liftSpeed(0);
 		}
 
 	}

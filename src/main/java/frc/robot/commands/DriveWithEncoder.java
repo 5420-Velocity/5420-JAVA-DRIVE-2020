@@ -44,7 +44,7 @@ public class DriveWithEncoder extends CommandBase {
 	// Called when the command is initially scheduled.
 	@Override
 	public void initialize() {
-		this.driveTrain.zero();
+		this.driveTrain.resetEncoders();
 
 		// Start the PID Command to run the task.
 		this.pidCommand.schedule();

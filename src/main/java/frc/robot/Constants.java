@@ -12,9 +12,9 @@ import com.revrobotics.ColorMatch;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.util.Color;
-import io.github.pseudoresonance.pixy2api.Pixy2;
 import io.github.pseudoresonance.pixy2api.links.Link;
 import io.github.pseudoresonance.pixy2api.links.SPILink;
+import edu.wpi.first.wpilibj.I2C.Port;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -52,7 +52,7 @@ public final class Constants {
 		}
 
 		public static final Link pixyLink = new SPILink();
-		public static final int pixyLinkPort = Pixy2.PIXY_DEFAULT_ARGVAL;
+		public static final int pixyLinkPort = SPI.Port.kOnboardCS0.value;
 
 	}
 
@@ -123,7 +123,7 @@ public final class Constants {
 		}
 
 		// Gyro
-		public static final edu.wpi.first.wpilibj.SPI.Port Port = SPI.Port.kOnboardCS1;
+		public static final SPI.Port Port = SPI.Port.kOnboardCS1;
 
 		// Path values
 		public static final double ksVolts = 0;
@@ -174,7 +174,7 @@ public final class Constants {
 	public static final class ColorTargets {
 
 		public static final class I2C {
-			public static final edu.wpi.first.wpilibj.I2C.Port ColorSensor = edu.wpi.first.wpilibj.I2C.Port.kMXP;
+			public static final Port ColorSensor = Port.kMXP;
 		}
 
 		public static final Color COLOR_BLUE = ColorMatch.makeColor(0.143, 0.427, 0.429);

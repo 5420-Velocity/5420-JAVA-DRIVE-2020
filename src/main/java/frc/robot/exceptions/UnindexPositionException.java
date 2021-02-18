@@ -11,6 +11,8 @@ package frc.robot.exceptions;
  * Add your docs here.
  */
 public class UnindexPositionException extends Exception {
+  
+	static final long serialVersionUID = 123;
 
 	public UnindexPositionException() {
 		this(-1);
