@@ -9,13 +9,12 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-import com.ctre.phoenix.sensors.PigeonIMU;
-import edu.wpi.first.wpilibj.Encoder;
+
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
-import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -39,21 +38,11 @@ public class DriveTrain extends SubsystemBase {
 
 	private DifferentialDrive drive;
 
-	// The left-side drive encoder
-	private final Encoder m_leftEncoder =
-	new Encoder(DriveTrainConstants.Left_A_Encoder, DriveTrainConstants.Left_B_Encoder,
-				DriveTrainConstants.L_Reversed);
-
-// The right-side drive encoder
-private final Encoder m_rightEncoder =
-	new Encoder(DriveTrainConstants.Right_A_Encoder, DriveTrainConstants.Right_B_Encoder,
-				DriveTrainConstants.R_Reversed);
-
 	// Odometry class for tracking robot pose
 	private final DifferentialDriveOdometry m_odometry;
 
 	// The gyro sensor
-	private final PigeonIMU m_gyro = new PigeonIMU(Constants.DriveTrainConstants.CAN.gyro);
+	private final ADXRS450_Gyro m_gyro = new ADXRS450_Gyro(Constants.DriveTrainConstants.Port);
 
 	public DriveTrain() {
 		this.shift(Constants.DriveTrainConstants.defaultGear);
@@ -83,17 +72,24 @@ private final Encoder m_rightEncoder =
 		@Override
 	public void periodic() {
 		// Update the odometry in the periodic block
-		m_odometry.update(m_gyro.getRotation2d (), m_leftEncoder.getDistance(),
-						m_rightEncoder.getDistance());
+		m_odometry.update(
+			m_gyro.getRotation2d (),
+			this.getLeftEncoderPosition(),
+			this.getRightEncoderPosition()
+		);
 	}
 
 	public void zero() {
-		LeftAT.getSensorCollection().setIntegratedSensorPosition(0, 5000);
-		RightAT.getSensorCollection().setIntegratedSensorPosition(0, 5000);
+		LeftAT.getSensorCollection().setIntegratedSensorPosition(0, 800);
+		RightAT.getSensorCollection().setIntegratedSensorPosition(0, 800);
 	}
 
 	public void arcadeDrive(double speed, double rotation) {
 		drive.arcadeDrive(speed, rotation);
+	}
+
+	public void tankDrive(double leftSpeed, double rightSpeed) {
+		drive.tankDrive(leftSpeed, rightSpeed);
 	}
 
 	public double getLeftEncoderPosition() {
@@ -123,7 +119,11 @@ private final Encoder m_rightEncoder =
 	 * @return The current wheel speeds.
 	 */
 	public DifferentialDriveWheelSpeeds getWheelSpeeds() {
-		return new DifferentialDriveWheelSpeeds(m_leftEncoder.getRate(), m_rightEncoder.getRate());
+		// return new DifferentialDriveWheelSpeeds(0, 0);
+		return new DifferentialDriveWheelSpeeds(
+			this.LeftAT.getSensorCollection().getIntegratedSensorVelocity(),
+			this.RightAT.getSensorCollection().getIntegratedSensorVelocity()
+		);
 	}
 
 		/**
@@ -147,8 +147,7 @@ private final Encoder m_rightEncoder =
 	 * Resets the drive encoders to currently read a position of 0.
 	 */
 	public void resetEncoders() {
-		m_leftEncoder.reset();
-		m_rightEncoder.reset();
+		
 	}
 
 	/**
@@ -157,25 +156,8 @@ private final Encoder m_rightEncoder =
    * @return the average of the two encoder readings
    */
   public double getAverageEncoderDistance() {
-    return (m_leftEncoder.getDistance() + m_rightEncoder.getDistance()) / 2.0;
-  }
-
-  /**
-   * Gets the left drive encoder.
-   *
-   * @return the left drive encoder
-   */
-  public Encoder getLeftEncoder() {
-    return m_leftEncoder;
-  }
-
-  /**
-   * Gets the right drive encoder.
-   *
-   * @return the right drive encoder
-   */
-  public Encoder getRightEncoder() {
-    return m_rightEncoder;
+	// return (m_leftEncoder.getDistance() + m_rightEncoder.getDistance()) / 2.0;
+	return 0;
   }
 
   /**
