@@ -8,6 +8,8 @@
 package frc.robot;
 
 import com.revrobotics.ColorMatch;
+
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.util.Color;
 import io.github.pseudoresonance.pixy2api.Pixy2;
@@ -118,20 +120,10 @@ public final class Constants {
 			// Right Motor Controller Map for the Talon CAN IDs
 			public static final int Right_A_ID = 3;
 			public static final int Right_B_ID = 4;
-
-			//gyro
-			public static final int gyro = 9;
 		}
-		
-			// Left Motor Encoders
-			public static final int Left_A_Encoder = 4;
-			public static final int Left_B_Encoder = 5;
-			public static final boolean L_Reversed = false;
 
-			// Right Motor Encoders
-			public static final int Right_A_Encoder = 4;
-			public static final int Right_B_Encoder = 5;
-			public static final boolean R_Reversed = true;
+		// Gyro
+		public static final edu.wpi.first.wpilibj.SPI.Port Port = SPI.Port.kOnboardCS1;
 
 		// Path values
 		public static final double ksVolts = 0;
@@ -164,10 +156,6 @@ public final class Constants {
 
 		public static final class CAN {
 			public static final int charlesMotor = 750;
-		}
-
-		public static final class DIO {
-			public static final int encoderPort = 751; // TODO: Temporary Fix
 		}
 
 		public static final int charlesColorSensor = 752;
