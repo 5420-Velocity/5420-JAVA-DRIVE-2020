@@ -66,22 +66,27 @@ public class JoystickDrive extends CommandBase {
 		}
 	}
 
+	public void executeDrive() {
+		double controllerY = (-speed.getAsDouble() * 0.95);
+		double controllerX = -rotation.getAsDouble() * 0.7;
+
+		// Flip the controls of the drive forward and reverse code
+		if (this.isControlFlipped == true) controllerY = controllerY * -1;
+
+		// Apply a curve to the given input controls.
+		controllerY = JoystickDrive.getCurve(controllerY);
+
+		// driveTrain.arcadeDrive(-controllerY, controllerX);
+		driveTrain.tankDrive(controllerX, controllerY);
+	}
+
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	public void execute() {
-		// Apply a Deadband to the Input mapped at 0.05
-		if (Math.abs(speed.getAsDouble()) > 0.05 || Math.abs(rotation.getAsDouble()) > 0.05) {
 
-			double controllerY = (-speed.getAsDouble() * 0.9);
-			double controllerX = -rotation.getAsDouble() * 0.6;
-
-			// Flip the controls of the drive forward and reverse code
-			if (this.isControlFlipped == true) controllerY = controllerY * -1;
-
-			// Apply a curve to the given input controls.
-			controllerY = JoystickDrive.getCurve(controllerY);
-
-			driveTrain.arcadeDrive(-controllerY, controllerX);
+		// Apply a Deadband to the Input mapped at 0.03
+		if (Math.abs(speed.getAsDouble()) > 0.03 || Math.abs(rotation.getAsDouble()) > 0.03) {
+			this.executeDrive();
 		}
 		else if (DPad.up(DPADController)) {
 			driveTrain.arcadeDrive(0.4, 0);
