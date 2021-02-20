@@ -5,5 +5,5 @@
   "maxAcceleration": 69.0,
   "wheelBase": 10.0,
   "gameName": "Bounce Path",
-  "outputDir": "../../PathWeaver_output"
+  "outputDir": "../../src/main/deploy/pathweaver"
 }
