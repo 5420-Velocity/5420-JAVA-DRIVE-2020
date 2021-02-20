@@ -29,8 +29,8 @@ public class JoystickDriveTankdrive extends JoystickDrive {
 	public void executeDrive() {
 
 		// Use the Tank Drive
-		double leftDrive = (rotation.getAsDouble() * 0.95);
-		double rightDrive = (speed.getAsDouble() * 0.95);
+		double leftDrive = (rotation.getAsDouble() * 0.80);
+		double rightDrive = (speed.getAsDouble() * 0.80);
 
 		// Flip the controls of the drive forward and reverse code
 		if (this.isControlFlipped == true) leftDrive = leftDrive * -1;

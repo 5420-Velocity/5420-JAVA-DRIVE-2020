@@ -9,6 +9,7 @@ package frc.robot;
 
 import com.revrobotics.ColorMatch;
 
+import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.util.Color;
@@ -93,6 +94,9 @@ public final class Constants {
 			public static final int ControlPanelDriver = 5;
 			public static final int ControlPanelLift = 7;
 		}
+
+		
+		public static final I2C.Port ColorSensorPort = I2C.Port.kOnboard;
 
 		public static final class DIO {
 			// Upper and lower limits for the panel controller lift

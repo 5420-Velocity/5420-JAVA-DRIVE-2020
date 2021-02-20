@@ -15,7 +15,6 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.ColorMatchCounter;
@@ -30,8 +29,7 @@ public class ControlPanelController extends SubsystemBase {
 
 	private final WPI_TalonSRX panelDriver = new WPI_TalonSRX(ControlPanelConstants.CAN.ControlPanelDriver);
 	private final WPI_TalonSRX panelLift = new WPI_TalonSRX(ControlPanelConstants.CAN.ControlPanelLift);
-	private final I2C.Port ColorSensor = I2C.Port.kOnboard;
-	private final ColorSensorV3 colorSensor = new ColorSensorV3(ColorSensor);
+	private final ColorSensorV3 colorSensor = new ColorSensorV3(ControlPanelConstants.ColorSensorPort);
 	private final ColorMatch colorMatch = new ColorMatch();
 	private final ColorMatchCounter colorMatchCounter = new ColorMatchCounter(colorSensor, colorMatch);
 	private final NetworkTableEntry colorEncoderEntry = NetworkTableInstance.getDefault().getEntry(Constants.NetworkTableEntries.COLOR_ENCODER_VALUE);
