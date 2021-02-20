@@ -30,7 +30,7 @@ public class JoystickDriveArcadeSplit extends JoystickDrive {
 		controllerY = JoystickDrive.getCurve(controllerY);
 
 		// driveTrain.arcadeDrive(-controllerY, controllerX);
-		driveTrain.tankDrive(controllerX, controllerY);
+		driveTrain.arcadeDrive(controllerY, controllerX);
 	}
 
 }
