@@ -50,7 +50,7 @@ public class Intake extends SubsystemBase {
 		encoder.setConnectedFrequencyThreshold(975);
 
 		// Tries to Communicate with the Pixy at this moment
-		this.pixy.init(IntakeConstants.pixyLinkPort);
+		this.pixy.init(IntakeConstants.pixyLinkPort.value);
 		this.pixy.setLamp((byte) 1, (byte) 1);
 		this.pixy.setLED(129, 183, 219);
 	}
