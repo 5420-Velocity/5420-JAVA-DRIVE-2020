@@ -37,7 +37,7 @@ public class RobotContainer {
 	private final Joystick driverJoystick = new Joystick(ControllerConstants.JOYSTICK_USB_DRIVER);
 	private final Joystick operatorJoystick = new Joystick(ControllerConstants.JOYSTICK_USB_OPERATOR);
 	private final DriveTrain driveTrain = new DriveTrain();
-	private final ControlPanelController controlPanelController = new ControlPanelController();
+	// private final ControlPanelController controlPanelController = new ControlPanelController();
 	public Compressor compressor = new Compressor(0);
 	private final SendableChooser<Command> autoChooser = new SendableChooser<>();
 
@@ -48,15 +48,15 @@ public class RobotContainer {
 	// 	driverJoystick
 	// );
 
-	// USB PS2 Controllers
-	private final JoystickDrive joystickDrive = new JoystickDriveTankdrive(driveTrain,
-		// Split Arcade
-		() -> driverJoystick.getRawButton(1),
-		() -> driverJoystick.getRawAxis(1),
-		() -> operatorJoystick.getRawAxis(1),
-		driverJoystick,
-		operatorJoystick
-	);
+	// // USB PS2 Controllers
+	// private final JoystickDrive joystickDrive = new JoystickDriveTankdrive(driveTrain,
+	// 	// Split Arcade
+	// 	() -> driverJoystick.getRawButton(1),
+	// 	() -> driverJoystick.getRawAxis(1),
+	// 	() -> operatorJoystick.getRawAxis(1),
+	// 	driverJoystick,
+	// 	operatorJoystick
+	// );
 
 	// private final JoystickDrive joystickDrive = new JoystickDrive(driveTrain,
 	// 	// Arcade w/ Expo
@@ -65,12 +65,12 @@ public class RobotContainer {
 	// 	driverJoystick
 	// );
 
-	// private final JoystickDrive joystickDrive = new JoystickDriveArcadeSplit(driveTrain,
-	// 	// Split Arcade
-	// 	() -> driverJoystick.getRawAxis(1),
-	// 	() -> driverJoystick.getRawAxis(4),
-	// 	driverJoystick
-	// );
+	private final JoystickDrive joystickDrive = new JoystickDriveArcadeSplit(driveTrain,
+		// Split Arcade
+		() -> driverJoystick.getRawAxis(1),
+		() -> driverJoystick.getRawAxis(4),
+		driverJoystick
+	);
 
 	// private final JoystickDrive joystickDrive = new JoystickDriveTankdrive(driveTrain,
 	// 	// Split Arcade
@@ -91,7 +91,6 @@ public class RobotContainer {
 	 */
 	public final Intake intake = new Intake();
 	public final CharlesSubsystem charles = new CharlesSubsystem();
-	private final ShooterSubsystem shooter = new ShooterSubsystem();
 	private final NewShooterSubsystem newShooter = new NewShooterSubsystem();
 	private final LiftSubsystem lift = new LiftSubsystem();
 	private final ChuteSubsystem chute = new ChuteSubsystem();
@@ -138,10 +137,10 @@ public class RobotContainer {
 	private void configureAutoChooser() {
 
 		this.autoChooser.setDefaultOption("Do Nothing", new DoNothingAutoCommand());
-		this.autoChooser.addOption("Color Wheel Test", new SequentialCommandGroup(
-			new PanelLiftUp(this.controlPanelController),
-			new AutoPanelColorTickTurn(this.controlPanelController, new AtomicReference<Boolean>())
-		));
+		// this.autoChooser.addOption("Color Wheel Test", new SequentialCommandGroup(
+		// 	new PanelLiftUp(this.controlPanelController),
+		// 	new AutoPanelColorTickTurn(this.controlPanelController, new AtomicReference<Boolean>())
+		// ));
 
 		SmartDashboard.putData("Auto Chooser", autoChooser);
 	}
@@ -220,11 +219,11 @@ public class RobotContainer {
 				)
 			));
 
-		new JoystickButton(this.operatorJoystick, Constants.ControllerMapConstants.Joystick_Left_Button)
-			.whenPressed(new PanelLiftDown(controlPanelController));
+		// new JoystickButton(this.operatorJoystick, Constants.ControllerMapConstants.Joystick_Left_Button)
+		// 	.whenPressed(new PanelLiftDown(controlPanelController));
 
-		new JoystickButton(this.operatorJoystick, Constants.ControllerMapConstants.Joystick_Right_Button)
-			.whenPressed(new PanelLiftUp(controlPanelController));
+		// new JoystickButton(this.operatorJoystick, Constants.ControllerMapConstants.Joystick_Right_Button)
+		// 	.whenPressed(new PanelLiftUp(controlPanelController));
 
 		/**
 		 * Setup Button Events for the Shooter on the Driver Controller
