@@ -10,6 +10,8 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 
 import edu.wpi.first.wpilibj.Solenoid;
@@ -44,6 +46,8 @@ public class DriveTrain extends SubsystemBase {
 	// The gyro sensor
 	private final ADXRS450_Gyro m_gyro = new ADXRS450_Gyro(Constants.DriveTrainConstants.Port);
 
+	private final NetworkTableEntry gyroEntry = NetworkTableInstance.getDefault().getEntry(Constants.NetworkTableEntries.GYRO_VALUE);
+
 	public DriveTrain() {
 		this.shift(Constants.DriveTrainConstants.defaultGear);
 
@@ -77,6 +81,8 @@ public class DriveTrain extends SubsystemBase {
 			this.getLeftEncoderPosition(),
 			this.getRightEncoderPosition()
 		);
+
+		this.gyroEntry.setNumber(this.m_gyro.getAngle());
 	}
 
 	public void arcadeDrive(double speed, double rotation) {

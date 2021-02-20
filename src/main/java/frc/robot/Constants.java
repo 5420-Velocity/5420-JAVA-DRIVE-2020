@@ -215,6 +215,7 @@ public final class Constants {
 		public static final String COLOR_ENCODER_VALUE = "Color Encoder Value";
 		public static final String ENCODER_VALUE = "Encoder";
 		public static final String FMSCOLOR_VALUE = "FMS Goal Color";
+		public static final String GYRO_VALUE = "Gyro Value";
 
 	}
 
