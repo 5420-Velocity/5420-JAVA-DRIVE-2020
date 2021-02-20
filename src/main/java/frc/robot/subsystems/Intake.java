@@ -127,7 +127,7 @@ public class Intake extends SubsystemBase {
 	}
 
 	public void intakeMove(double power) {
-		intakeMotor.set(power);
+		intakeMotor.set(-power);
 	}
 
 	@Override

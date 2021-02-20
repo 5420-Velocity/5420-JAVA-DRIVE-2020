@@ -39,7 +39,7 @@ public class NewShoot extends CommandBase {
 	public void execute() {
 		// Shooting
 		if (startShoot.getAsBoolean()) {
-			shooter.setSpeed(-0.6, 0);
+			shooter.setSpeed(-0.55, 0);
 			this.charles.nextFilledLocation();
 		}
 		else {
