@@ -20,7 +20,7 @@ public class JoystickDrive extends CommandBase {
 	protected final DoubleSupplier speed;
 	protected final DoubleSupplier rotation;
 	protected final Joystick DPADController;
-	protected boolean isControlFlipped = false;
+	protected boolean isControlFlipped = true;
 
 	/**
 	 * This function will get the input value on a scale of
