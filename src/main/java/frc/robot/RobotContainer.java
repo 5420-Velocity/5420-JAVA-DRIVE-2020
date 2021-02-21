@@ -67,8 +67,8 @@ public class RobotContainer {
 
 	private final JoystickDrive joystickDrive = new JoystickDriveArcadeSplit(driveTrain,
 		// Split Arcade
-		() -> driverJoystick.getRawAxis(1),
-		() -> driverJoystick.getRawAxis(4),
+		() -> this.applyCurve(driverJoystick.getRawAxis(1)),
+		() -> this.applyCurve(driverJoystick.getRawAxis(4)),
 		driverJoystick
 	);
 
@@ -168,6 +168,10 @@ public class RobotContainer {
 
 	}
 
+	private double applyCurve(double value) {
+		return value;
+	}
+
 	/**
 	 * Define button to command mappings.
 	 */
@@ -217,8 +221,14 @@ public class RobotContainer {
 					},
 					0.0,
 					output -> {
-						System.out.println("Motor Value: Y" + turnOutput.get() + " X" + output);
-						driveTrain.arcadeDrive(output, turnOutput.get());
+						double turnSpeed = turnOutput.get();
+						double outSpeed = output;
+
+						// Set a max speed
+						if (turnSpeed > 0.4) turnSpeed = 0.4;
+						if (outSpeed > 0.4) outSpeed = 0.4;
+
+						driveTrain.arcadeDrive(outSpeed, turnSpeed);
 					},
 					driveTrain
 				)
@@ -262,7 +272,7 @@ public class RobotContainer {
 		 */
 		new JoystickButton(this.operatorJoystick, ControllerMapConstants.Green_Button_ID)
 			// Go Down on Button Press
-			.whenPressed(() -> this.intake.intakeMove(1.0))
+			.whenPressed(() -> this.intake.intakeMove(-1.0))
 			.whenHeld(
 				new PIDCommand(
 					this.pidController,

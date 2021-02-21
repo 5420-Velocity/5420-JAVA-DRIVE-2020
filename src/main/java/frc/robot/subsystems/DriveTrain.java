@@ -114,7 +114,7 @@ public class DriveTrain extends SubsystemBase {
 		return m_odometry.getPoseMeters();
 	}
 
-		/**
+	/**
 	 * Returns the current wheel speeds of the robot.
 	 *
 	 * @return The current wheel speeds.
@@ -127,7 +127,7 @@ public class DriveTrain extends SubsystemBase {
 		);
 	}
 
-		/**
+	/**
 	 * Resets the odometry to the specified pose.
 	 *
 	 * @param pose The pose to which to set the odometry.
@@ -142,7 +142,6 @@ public class DriveTrain extends SubsystemBase {
 		this.RightAT.setVoltage(right);
 		return 0;
 	}
-
 	
 	/**
 	 * Resets the drive encoders to currently read a position of 0.
@@ -153,47 +152,47 @@ public class DriveTrain extends SubsystemBase {
 	}
 
 	/**
-   * Gets the average distance of the two encoders.
-   *
-   * @return the average of the two encoder readings
-   */
-  public double getAverageEncoderDistance() {
-	return (this.getLeftEncoderPosition() + this.getRightEncoderPosition()) / 2.0;
-  }
+	 * Gets the average distance of the two encoders.
+	 *
+	 * @return the average of the two encoder readings
+	 */
+	public double getAverageEncoderDistance() {
+		return (this.getLeftEncoderPosition() + this.getRightEncoderPosition()) / 2.0;
+	}
 
-  /**
-   * Sets the max output of the drive.  Useful for scaling the drive to drive more slowly.
-   *
-   * @param maxOutput the maximum output to which the drive will be constrained
-   */
-  public void setMaxOutput(double maxOutput) {
-    drive.setMaxOutput(maxOutput);
-  }
+	/**
+	 * Sets the max output of the drive.  Useful for scaling the drive to drive more slowly.
+	 *
+	 * @param maxOutput the maximum output to which the drive will be constrained
+	 */
+	public void setMaxOutput(double maxOutput) {
+		drive.setMaxOutput(maxOutput);
+	}
 
-  /**
-   * Zeroes the heading of the robot.
-   */
-  public void zeroHeading() {
-    m_gyro.reset();
-  }
+	/**
+	 * Zeroes the heading of the robot.
+	 */
+	public void zeroHeading() {
+		m_gyro.reset();
+	}
 
-  /**
-   * Returns the heading of the robot.
-   *
-   * @return the robot's heading in degrees, from -180 to 180
-   */
-  public double getHeading() {
-    return m_gyro.getRotation2d().getDegrees();
-  }
+	/**
+	 * Returns the heading of the robot.
+	 *
+	 * @return the robot's heading in degrees, from -180 to 180
+	 */
+	public double getHeading() {
+		return m_gyro.getRotation2d().getDegrees();
+	}
 
-  /**
-   * Returns the turn rate of the robot.
-   *
-   * @return The turn rate of the robot, in degrees per second
-   */
-  public double getTurnRate() {
-    return -m_gyro.getRate();
-  }
+	/**
+	 * Returns the turn rate of the robot.
+	 *
+	 * @return The turn rate of the robot, in degrees per second
+	 */
+	public double getTurnRate() {
+		return -m_gyro.getRate();
+	}
 }
 
 

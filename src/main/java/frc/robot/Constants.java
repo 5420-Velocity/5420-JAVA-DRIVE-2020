@@ -53,7 +53,7 @@ public final class Constants {
 		}
 
 		public static final Link pixyLink = new SPILink();
-		public static final SPI.Port pixyLinkPort = SPI.Port.kOnboardCS1;
+		public static final SPI.Port pixyLinkPort = SPI.Port.kOnboardCS0;
 	}
 
 	public static final class ShooterConstants {
@@ -126,7 +126,7 @@ public final class Constants {
 		}
 
 		// Gyro
-		public static final SPI.Port Port = SPI.Port.kOnboardCS0;
+		public static final SPI.Port Port = SPI.Port.kOnboardCS1;
 
 		// Path values
 		public static final double ksVolts = 0;
