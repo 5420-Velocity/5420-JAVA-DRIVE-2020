@@ -257,7 +257,7 @@ public class RobotContainer {
 		 */
 		new JoystickButton(this.operatorJoystick, ControllerMapConstants.Green_Button_ID)
 			// Go Down on Button Press
-			.whenPressed(() -> this.intake.intakeMove(1.0))
+			.whenPressed(() -> this.intake.intakeMove(-1.0))
 			.whenHeld(
 				new PIDCommand(
 					this.pidController,
