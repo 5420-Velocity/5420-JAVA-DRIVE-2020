@@ -69,7 +69,9 @@ public class RobotContainer {
 		// Split Arcade
 		() -> this.applyCurve(driverJoystick.getRawAxis(1)),
 		() -> this.applyCurve(driverJoystick.getRawAxis(4)),
-		driverJoystick
+		driverJoystick,
+		() -> driverJoystick.getRawAxis(2),
+		() -> driverJoystick.getRawAxis(3)
 	);
 
 	// private final JoystickDrive joystickDrive = new JoystickDriveTankdrive(driveTrain,

@@ -14,23 +14,61 @@ import java.util.function.DoubleSupplier;
 
 public class JoystickDriveArcadeSplit extends JoystickDrive {
 
+	DoubleSupplier leanLeft;
+	DoubleSupplier leanRight;
+
 	public JoystickDriveArcadeSplit(DriveTrain driveTrain, DoubleSupplier speed, DoubleSupplier rotation, Joystick DPADController) {
 		super(driveTrain, speed, rotation, DPADController);
+		this.leanLeft = () -> 0;
+		this.leanRight = () -> 0;
+	}
+
+	public JoystickDriveArcadeSplit(DriveTrain driveTrain, DoubleSupplier speed, DoubleSupplier rotation, Joystick DPADController, DoubleSupplier leanLeft, DoubleSupplier leanRight) {
+		super(driveTrain, speed, rotation, DPADController);
+		this.leanLeft = leanLeft;
+		this.leanRight = leanRight;
+	}
+
+	@Override
+	public boolean shouldDrive() {
+		return (
+			Math.abs(speed.getAsDouble()) > 0.03
+			|| Math.abs(rotation.getAsDouble()) > 0.03
+			|| this.leanLeft.getAsDouble() > 0.1
+			|| this.leanRight.getAsDouble() > 0.1
+		);
 	}
 
 	@Override
 	public void executeDrive() {
-		double controllerY = (-super.speed.getAsDouble() * 0.95);
-		double controllerX = -rotation.getAsDouble() * 0.7;
+		double fast = 0.7;
+		double slow = 0.5;
 
 		// Flip the controls of the drive forward and reverse code
-		if (this.isControlFlipped == true) controllerY = controllerY * -1;
+		if (this.isControlFlipped == true) {
+			slow = -0.7;
+			fast = -0.4;
+		}
 
-		// Apply a curve to the given input controls.
-		controllerY = JoystickDrive.getCurve(controllerY);
+		if (this.leanLeft.getAsDouble() > 0.1) {
+			driveTrain.tankDrive(fast, slow);
+		}
+		else if (this.leanRight.getAsDouble() > 0.1) {
+			driveTrain.tankDrive(slow, fast);
+		}
+		else {
+			double controllerY = (-super.speed.getAsDouble() * 0.95);
+			double controllerX = -rotation.getAsDouble() * 0.7;
 
-		// driveTrain.arcadeDrive(-controllerY, controllerX);
-		driveTrain.arcadeDrive(controllerY, controllerX);
+			// Flip the controls of the drive forward and reverse code
+			if (this.isControlFlipped == true) controllerY = controllerY * -1;
+
+			// Apply a curve to the given input controls.
+			controllerY = JoystickDrive.getCurve(controllerY);
+
+			// driveTrain.arcadeDrive(-controllerY, controllerX);
+			driveTrain.arcadeDrive(controllerY, controllerX);
+		}
 	}
 
 }

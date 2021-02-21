@@ -66,6 +66,10 @@ public class JoystickDrive extends CommandBase {
 		}
 	}
 
+	public boolean shouldDrive() {
+		return Math.abs(speed.getAsDouble()) > 0.03 || Math.abs(rotation.getAsDouble()) > 0.03;
+	}
+
 	public void executeDrive() {
 		double controllerY = (-speed.getAsDouble() * 0.95);
 		double controllerX = -rotation.getAsDouble() * 0.7;
@@ -85,7 +89,7 @@ public class JoystickDrive extends CommandBase {
 	public void execute() {
 
 		// Apply a Deadband to the Input mapped at 0.03
-		if (Math.abs(speed.getAsDouble()) > 0.03 || Math.abs(rotation.getAsDouble()) > 0.03) {
+		if (this.shouldDrive()) {
 			this.executeDrive();
 		}
 		else if (DPad.up(DPADController)) {
