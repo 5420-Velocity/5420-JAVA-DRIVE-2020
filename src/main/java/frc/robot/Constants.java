@@ -137,9 +137,9 @@ public final class Constants {
 
 
 		// PID values
-		public static final double RangeP = 0.03;
-		public static final double RangeI = 0.035;
-		public static final double RangeD = 0.002;
+		public static final double RangeP = 0.0;
+		public static final double RangeI = 0.0;
+		public static final double RangeD = 0.0;
 
 		public static final double TurnP = 0.04;
 		public static final double TurnI = 0.01;

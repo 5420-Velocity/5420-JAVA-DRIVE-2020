@@ -41,24 +41,26 @@ public class JoystickDriveArcadeSplit extends JoystickDrive {
 
 	@Override
 	public void executeDrive() {
+		// Intake forward
 		double fast = 0.7;
 		double slow = 0.5;
 
 		// Flip the controls of the drive forward and reverse code
 		if (this.isControlFlipped == true) {
-			slow = -0.7;
-			fast = -0.4;
+			// Shooter forward
+			slow = -0.85;
+			fast = -0.35;
 		}
 
-		if (this.leanLeft.getAsDouble() > 0.1) {
+		if (this.leanLeft.getAsDouble() > 0.5) {
 			driveTrain.tankDrive(fast, slow);
 		}
-		else if (this.leanRight.getAsDouble() > 0.1) {
+		else if (this.leanRight.getAsDouble() > 0.5) {
 			driveTrain.tankDrive(slow, fast);
 		}
 		else {
-			double controllerY = (-super.speed.getAsDouble() * 0.95);
-			double controllerX = -rotation.getAsDouble() * 0.7;
+			double controllerY = (-super.speed.getAsDouble() * 0.85);
+			double controllerX = -rotation.getAsDouble() * 0.6;
 
 			// Flip the controls of the drive forward and reverse code
 			if (this.isControlFlipped == true) controllerY = controllerY * -1;
