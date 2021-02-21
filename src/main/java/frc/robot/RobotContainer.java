@@ -142,6 +142,11 @@ public class RobotContainer {
 		// 	new AutoPanelColorTickTurn(this.controlPanelController, new AtomicReference<Boolean>())
 		// ));
 
+		
+		this.autoChooser.addOption("Barrel Racing", new AutoCommand(this.driveTrain, "PathWeaver/Barrel Racing/Groups/AutoNav.json"));
+		this.autoChooser.addOption("Bounce Path", new AutoCommand(this.driveTrain, "paths/YourPath.wpilib.json"));
+		this.autoChooser.addOption("Slolom Path", new AutoCommand(this.driveTrain, "paths/YourPath.wpilib.json"));
+
 		SmartDashboard.putData("Auto Chooser", autoChooser);
 	}
 
@@ -312,39 +317,7 @@ public class RobotContainer {
 	 * @return the command to run in autonomous
 	 */
 	public Command getAutonomousCommand() {
-
-		String trajectoryJSON = "paths/YourPath.wpilib.json";
-		Trajectory trajectory = new Trajectory();
-
-		try {
-			Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
-			trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
-		} catch (IOException ex) {
-			DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
-		}
-
-		RamseteCommand ramseteCommand = new RamseteCommand(
-			trajectory,
-			this.driveTrain::getPose,
-			new RamseteController(AutoConstants.kRamseteB, AutoConstants.kRamseteZeta),
-			new SimpleMotorFeedforward(Constants.DriveTrainConstants.ksVolts,
-					Constants.DriveTrainConstants.kvVoltSecondsPerMeter,
-				Constants.DriveTrainConstants.kaVoltSecondsSquaredPerMeter),
-			Constants.DriveTrainConstants.kDriveKinematics,
-			this.driveTrain::getWheelSpeeds,
-			new PIDController(Constants.DriveTrainConstants.kPDriveVel, 0, 0),
-			new PIDController(Constants.DriveTrainConstants.kPDriveVel, 0, 0),
-			// RamseteCommand passes volts to the callback
-			this.driveTrain::tankDriveVolts,
-			this.driveTrain
-		);
-	
-		// Reset odometry to the starting pose of the trajectory.
-		this.driveTrain.resetOdometry(trajectory.getInitialPose());
-	
-		// Run path following command, then stop at the end.
-		return ramseteCommand.andThen(() -> this.driveTrain.tankDriveVolts(0, 0));
-		// return this.autoChooser.getSelected();
+		return this.autoChooser.getSelected();
 	}
 
 }
