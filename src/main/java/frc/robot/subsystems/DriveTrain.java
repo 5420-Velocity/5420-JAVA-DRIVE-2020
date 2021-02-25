@@ -93,6 +93,10 @@ public class DriveTrain extends SubsystemBase {
 		drive.tankDrive(leftSpeed, rightSpeed);
 	}
 
+	public void tankDriveInverted(double leftSpeed, double rightSpeed) {
+		drive.tankDrive(rightSpeed, leftSpeed);
+	}
+
 	public double getLeftEncoderPosition() {
 		return LeftAT.getSelectedSensorPosition();
 	}

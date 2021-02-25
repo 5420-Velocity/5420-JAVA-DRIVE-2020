@@ -153,6 +153,10 @@ public final class Constants {
 		public static final int transmission = 0;
 		public static final boolean defaultGear = false;
 
+		// Autonomous values
+		public static final double FastPower = 0.7; 
+		public static final double SlowPower = 0.4;
+
 	}
 
 	public static final class charlesConstants {

@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.DPad;
 import frc.robot.subsystems.DriveTrain;
@@ -87,7 +88,6 @@ public class JoystickDrive extends CommandBase {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	public void execute() {
-
 		// Apply a Deadband to the Input mapped at 0.03
 		if (this.shouldDrive()) {
 			this.executeDrive();
@@ -108,6 +108,9 @@ public class JoystickDrive extends CommandBase {
 			// Set the motor to zero, Its not out of the deadband
 			driveTrain.arcadeDrive(0, 0);
 		}
+
+		SmartDashboard.putBoolean("Inverted", this.isControlFlipped);
+		SmartDashboard.putString("Front", this.isControlFlipped ? "Shooter" : "Intake");
 
 	}
 

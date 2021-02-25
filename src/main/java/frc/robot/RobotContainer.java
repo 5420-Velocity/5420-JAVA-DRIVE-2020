@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.*;
 import frc.robot.commands.*;
+import frc.robot.commands.TurnWithTime.Side;
 import frc.robot.subsystems.*;
 
 import java.io.IOException;

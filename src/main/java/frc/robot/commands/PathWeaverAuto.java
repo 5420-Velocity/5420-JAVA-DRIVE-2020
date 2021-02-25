@@ -23,12 +23,12 @@ import frc.robot.Constants;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.subsystems.DriveTrain;
 
-public class AutoCommand extends CommandBase {
+public class PathWeaverAuto extends CommandBase {
   private DriveTrain driveTrain;
   private CommandBase finalCommand;
   private Trajectory trajectory = new Trajectory();
 
-  public AutoCommand(DriveTrain driveTrain, String trajectoryJSON) {
+  public PathWeaverAuto(DriveTrain driveTrain, String trajectoryJSON) {
     this.driveTrain = driveTrain;
     addRequirements(driveTrain);
     
