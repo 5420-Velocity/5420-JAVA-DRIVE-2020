@@ -139,15 +139,16 @@ public class RobotContainer {
 	private void configureAutoChooser() {
 
 		this.autoChooser.setDefaultOption("Do Nothing", new DoNothingAutoCommand());
-		// this.autoChooser.addOption("Color Wheel Test", new SequentialCommandGroup(
-		// 	new PanelLiftUp(this.controlPanelController),
-		// 	new AutoPanelColorTickTurn(this.controlPanelController, new AtomicReference<Boolean>())
-		// ));
+		this.autoChooser.addOption("AutoNav", new SequentialCommandGroup(
+			//new TurnWithTime(this.driveTrain, 2000, Side.Left),
+			//new TurnWithTime(this.driveTrain, 4000, Side.Right),
+			new DriveWithEncoder(this.driveTrain, 5)
+		));
 
 		
-		this.autoChooser.addOption("Barrel Racing", new AutoCommand(this.driveTrain, "PathWeaver/Barrel Racing/Groups/AutoNav.json"));
-		this.autoChooser.addOption("Bounce Path", new AutoCommand(this.driveTrain, "paths/YourPath.wpilib.json"));
-		this.autoChooser.addOption("Slolom Path", new AutoCommand(this.driveTrain, "paths/YourPath.wpilib.json"));
+		this.autoChooser.addOption("Barrel Racing", new PathWeaverAuto(this.driveTrain, "PathWeaver/Barrel Racing/Groups/AutoNav.json"));
+		this.autoChooser.addOption("Bounce Path", new PathWeaverAuto(this.driveTrain, "paths/YourPath.wpilib.json"));
+		this.autoChooser.addOption("Slolom Path", new PathWeaverAuto(this.driveTrain, "paths/YourPath.wpilib.json"));
 
 		SmartDashboard.putData("Auto Chooser", autoChooser);
 	}
@@ -203,38 +204,38 @@ public class RobotContainer {
 			// Enable the Limelight LED
 			.whenPressed(() -> this.limeLight.setLedMode(0))
 			// Disable the Limelight LED
-			.whenReleased(() -> this.limeLight.setLedMode(1))
-			.whenHeld(new ParallelCommandGroup(
-				// Turning
-				new PIDCommand(
-					turnPIDController,
-					limeLight::getTX,
-					0.0,
-					output -> turnOutput.set(output),
-					driveTrain
-				),
-				// Range
-				new PIDCommand(
-					rangePIDController,
-					() -> {
-						// If no target is found, Offset is Zero
-						if (!this.limeLight.hasTarget()) return 0.0;
-						return this.limeLight.getDistance() - Constants.ShooterConstants.rangeGoal;
-					},
-					0.0,
-					output -> {
-						double turnSpeed = turnOutput.get();
-						double outSpeed = output;
+			.whenReleased(() -> this.limeLight.setLedMode(1));
+			// .whenHeld(new ParallelCommandGroup(
+			// 	// Turning
+			// 	new PIDCommand(
+			// 		turnPIDController,
+			// 		limeLight::getTX,
+			// 		0.0,
+			// 		output -> turnOutput.set(output),
+			// 		driveTrain
+			// 	),
+			// 	// Range
+			// 	new PIDCommand(
+			// 		rangePIDController,
+			// 		() -> {
+			// 			// If no target is found, Offset is Zero
+			// 			if (!this.limeLight.hasTarget()) return 0.0;
+			// 			return this.limeLight.getDistance() - Constants.ShooterConstants.rangeGoal;
+			// 		},
+			// 		0.0,
+			// 		output -> {
+			// 			double turnSpeed = turnOutput.get();
+			// 			double outSpeed = output;
 
-						// Set a max speed
-						if (turnSpeed > 0.4) turnSpeed = 0.4;
-						if (outSpeed > 0.4) outSpeed = 0.4;
+			// 			// Set a max speed
+			// 			if (turnSpeed > 0.4) turnSpeed = 0.4;
+			// 			if (outSpeed > 0.4) outSpeed = 0.4;
 
-						driveTrain.arcadeDrive(outSpeed, turnSpeed);
-					},
-					driveTrain
-				)
-			));
+			// 			driveTrain.arcadeDrive(outSpeed, 0);//replace 0 with turnspeed
+			// 		},
+			// 		driveTrain
+			// 	)
+			// ));
 
 		// new JoystickButton(this.operatorJoystick, Constants.ControllerMapConstants.Joystick_Left_Button)
 		// 	.whenPressed(new PanelLiftDown(controlPanelController));

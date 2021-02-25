@@ -44,6 +44,7 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void disabledInit() {
+		this.m_robotContainer.limeLight.setLedMode(1);
 	}
 
 	@Override
@@ -98,6 +99,7 @@ public class Robot extends TimedRobot {
 		// Cancels all running commands at the start of test mode.
 		CommandScheduler.getInstance().cancelAll();
 		m_robotContainer.compressor.setClosedLoopControl(true);
+		this.m_robotContainer.limeLight.setLedMode(3);
 	}
 
 	/**
