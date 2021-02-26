@@ -38,6 +38,10 @@ public class RobotContainer {
 	private final Joystick driverJoystick = new Joystick(ControllerConstants.JOYSTICK_USB_DRIVER);
 	private final Joystick operatorJoystick = new Joystick(ControllerConstants.JOYSTICK_USB_OPERATOR);
 	private final DriveTrain driveTrain = new DriveTrain();
+	private final PIDController drivePidController = new PIDController(
+		DriveTrainConstants.EncoderP,
+		DriveTrainConstants.EncoderI,
+		DriveTrainConstants.EncoderD);
 	// private final ControlPanelController controlPanelController = new ControlPanelController();
 	public Compressor compressor = new Compressor(0);
 	private final SendableChooser<Command> autoChooser = new SendableChooser<>();
@@ -143,7 +147,13 @@ public class RobotContainer {
 		this.autoChooser.addOption("AutoNav", new SequentialCommandGroup(
 			//new TurnWithTime(this.driveTrain, 2000, Side.Left),
 			//new TurnWithTime(this.driveTrain, 4000, Side.Right),
-			new DriveWithEncoder(this.driveTrain, 5)
+			new ResetOdometry(this.driveTrain),
+			new PIDCommand(
+			drivePidController,
+			() -> (10 - this.driveTrain.getLeftEncoderPosition()),
+			0.0,
+			output -> this.driveTrain.arcadeDrive(output * 0.5, 0),
+			this.driveTrain)
 		));
 
 		
