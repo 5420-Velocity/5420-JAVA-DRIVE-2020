@@ -12,7 +12,7 @@ import frc.robot.subsystems.DriveTrain;
 
 import java.util.function.DoubleSupplier;
 import java.util.function.BooleanSupplier;
-import frc.robot.DPad;
+import frc.robot.utils.DPad;
 
 public class JoystickDriveTankdrive extends JoystickDrive {
 
