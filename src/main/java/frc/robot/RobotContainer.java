@@ -21,10 +21,13 @@ import frc.robot.Constants.*;
 import frc.robot.commands.*;
 import frc.robot.commands.TurnWithTime.Side;
 import frc.robot.subsystems.*;
+import frc.robot.utils.JoystickDPad;
+import frc.robot.utils.DPad.Position;
 
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.DoubleSupplier;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -266,11 +269,30 @@ public class RobotContainer {
 			.whenPressed(() -> this.joystickDrive.toggleFlipped());
 
 		/**
+		 * Used to dynamically adjust the speed used for shooting.
+		 */
+		AtomicReference<Double> shooterSpeed = new AtomicReference<Double>(0.65);
+
+		/**
 		 * Setup Button Events for the Shooter on the Operator Controller
 		 */
 		new JoystickButton(this.operatorJoystick, Constants.ControllerMapConstants.Blue_Button_ID)
-			.whenPressed(() -> this.newShooter.setSpeed(0.65, 0))
+			.whileHeld(() -> this.newShooter.setSpeed(shooterSpeed.get(), 0))
 			.whenReleased(() -> this.newShooter.setSpeed(0, 0));
+
+		new JoystickDPad(this.operatorJoystick, Position.kUp)
+			.whenPressed(() -> {
+				double increaseBy = 0.05;
+				double newSpeed = shooterSpeed.get() + increaseBy;
+				shooterSpeed.set(newSpeed);
+			});
+
+		new JoystickDPad(this.operatorJoystick, Position.kDown)
+			.whenPressed(() -> {
+				double decreaseBy = -0.05;
+				double newSpeed = shooterSpeed.get() + decreaseBy;
+				shooterSpeed.set(newSpeed);
+			});
 
 		new JoystickButton(this.operatorJoystick, Constants.ControllerMapConstants.Left_Bumper)
 			.whenPressed(() -> this.chute.setLeft(-0.6))
@@ -279,7 +301,6 @@ public class RobotContainer {
 		new JoystickButton(this.operatorJoystick, Constants.ControllerMapConstants.Right_Bumper)
 			.whenPressed(() -> this.chute.setRight(0.7))
 			.whenReleased(() -> this.chute.setRight(0));
-
 
 		/**
 		 * Setup the button event for the Intake on the Operator Controller
