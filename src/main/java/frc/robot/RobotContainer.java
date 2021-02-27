@@ -282,21 +282,24 @@ public class RobotContainer {
 
 		new JoystickDPad(this.operatorJoystick, Position.kUp)
 			.whenPressed(() -> {
-				double increaseBy = 0.05;
+				double increaseBy = 0.025;
 				double newSpeed = shooterSpeed.get() + increaseBy;
 				shooterSpeed.set(newSpeed);
 			});
 
 		new JoystickDPad(this.operatorJoystick, Position.kDown)
 			.whenPressed(() -> {
-				double decreaseBy = -0.05;
+				double decreaseBy = -0.025;
 				double newSpeed = shooterSpeed.get() + decreaseBy;
 				shooterSpeed.set(newSpeed);
 			});
 
-		new JoystickButton(this.operatorJoystick, Constants.ControllerMapConstants.Left_Bumper)
-			.whenPressed(() -> this.chute.setLeft(-0.6))
-			.whenReleased(() -> this.chute.setLeft(0));
+		// new JoystickButton(this.operatorJoystick, Constants.ControllerMapConstants.Left_Bumper)
+		// 	.whenPressed(() -> this.chute.setLeft(-0.6))
+		// 	.whenReleased(() -> this.chute.setLeft(0));
+
+		new JoystickButton(this.operatorJoystick, Constants.ControllerMapConstants.Yellow_Button_ID)
+			.whileActiveOnce(new AutoShoot(this.newShooter, this.chute, shooterSpeed));	
 
 		new JoystickButton(this.operatorJoystick, Constants.ControllerMapConstants.Right_Bumper)
 			.whenPressed(() -> this.chute.setRight(0.7))
