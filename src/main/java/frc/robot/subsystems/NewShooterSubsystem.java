@@ -9,6 +9,8 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -24,6 +26,7 @@ public class NewShooterSubsystem extends SubsystemBase {
 		shooterMotorOne.configOpenloopRamp(1);
 		shooterMotorTwo.configOpenloopRamp(1);
 		shooterMotorTwo.setInverted(true);
+		SmartDashboard.setDefaultNumber("shooterSpeed", 0);
 	}
 
 	/**
@@ -36,6 +39,7 @@ public class NewShooterSubsystem extends SubsystemBase {
 	public void setSpeed(double motorSpeed, double feed) {
 		shooterMotorOne.set(motorSpeed);
 		shooterMotorTwo.set(motorSpeed); // This motor is inverted above
+		SmartDashboard.putNumber("shooterSpeed", motorSpeed);
 		feedMotor.set(feed);
 	}
 
