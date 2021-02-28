@@ -298,7 +298,7 @@ public class RobotContainer {
 		// 	.whenPressed(() -> this.chute.setLeft(-0.6))
 		// 	.whenReleased(() -> this.chute.setLeft(0));
 
-		new JoystickButton(this.operatorJoystick, Constants.ControllerMapConstants.Yellow_Button_ID)
+		new JoystickButton(this.operatorJoystick, Constants.ControllerMapConstants.Left_Bumper)
 			.whileActiveOnce(new AutoShoot(this.newShooter, this.chute, shooterSpeed));	
 
 		new JoystickButton(this.operatorJoystick, Constants.ControllerMapConstants.Right_Bumper)
