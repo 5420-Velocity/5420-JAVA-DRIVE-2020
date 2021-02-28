@@ -160,9 +160,9 @@ public class RobotContainer {
 		));
 
 		
-		this.autoChooser.addOption("Barrel Racing", new PathWeaverAuto(this.driveTrain, "PathWeaver/Barrel Racing/Groups/AutoNav.json"));
-		this.autoChooser.addOption("Bounce Path", new PathWeaverAuto(this.driveTrain, "paths/YourPath.wpilib.json"));
-		this.autoChooser.addOption("Slolom Path", new PathWeaverAuto(this.driveTrain, "paths/YourPath.wpilib.json"));
+		// this.autoChooser.addOption("Barrel Racing", new PathWeaverAuto(this.driveTrain, "PathWeaver/Barrel Racing/Groups/AutoNav.json"));
+		// this.autoChooser.addOption("Bounce Path", new PathWeaverAuto(this.driveTrain, "paths/YourPath.wpilib.json"));
+		// this.autoChooser.addOption("Slolom Path", new PathWeaverAuto(this.driveTrain, "paths/YourPath.wpilib.json"));
 
 		SmartDashboard.putData("Auto Chooser", autoChooser);
 	}
