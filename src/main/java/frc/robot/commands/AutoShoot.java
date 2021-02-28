@@ -26,6 +26,7 @@ public class AutoShoot extends CommandBase {
 	private AtomicReference<Double> speedRef;
 	private boolean feeding = false;
 	private Date currentDeadline;
+	private boolean isFinished = false;
 
 	public AutoShoot(NewShooterSubsystem newShooter, ChuteSubsystem subsystem, double speedValue) {
 		this(newShooter, subsystem, new AtomicReference<Double>(speedValue));
@@ -43,9 +44,11 @@ public class AutoShoot extends CommandBase {
 	@Override
 	public void initialize() {
 
+		this.isFinished = false;
+
 		int rampUpTime = 1800; // Delay Time
-		int feedTime = 800; // On Time
-		int feedTimeSpace = 800; // Off Time
+		int feedTime = 700; // On Time
+		int feedTimeSpace = 1300; // Off Time
 		int ballCount = 3;
 
 		Calendar calculateDate = GregorianCalendar.getInstance();
@@ -96,6 +99,11 @@ public class AutoShoot extends CommandBase {
 				if (this.feeding == true) {
 					this.feeding = false;
 					this.shooterSubsystem.setRight(0.0);
+
+					// Rotinue is Complete, Mark Command is finished.
+					if (this.shootInterval.size() == 0) {
+						this.isFinished = true;
+					}
 				}
 				else {
 					// Not Feeding, Turn the motor on to feed
@@ -116,6 +124,6 @@ public class AutoShoot extends CommandBase {
 	// Returns true when the command should end.
 	@Override
 	public boolean isFinished() {
-		return this.shootInterval.size() == 0;
+		return this.isFinished;
 	}
 }
