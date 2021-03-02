@@ -150,13 +150,16 @@ public class RobotContainer {
 		this.autoChooser.addOption("AutoNav", new SequentialCommandGroup(
 			//new TurnWithTime(this.driveTrain, 2000, Side.Left),
 			//new TurnWithTime(this.driveTrain, 4000, Side.Right),
-			new ResetOdometry(this.driveTrain),
-			new PIDCommand(
-			drivePidController,
-			() -> (10 - this.driveTrain.getLeftEncoderPosition()),
-			0.0,
-			output -> this.driveTrain.arcadeDrive(output * 0.5, 0),
-			this.driveTrain)
+			// new ResetOdometry(this.driveTrain),
+			// new PIDCommand(
+			// drivePidController,
+			// () -> (10 - this.driveTrain.getLeftEncoderPosition()),
+			// 0.0,
+			// output -> this.driveTrain.arcadeDrive(output * 0.5, 0),
+			// this.driveTrain)
+
+			// Record distance in inches, then update constants.botSpeedAtPower
+			new DriveWithTime(this.driveTrain, 1000, 0.5)
 		));
 
 		

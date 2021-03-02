@@ -48,6 +48,12 @@ public class DriveTrain extends SubsystemBase {
 
 	private final NetworkTableEntry gyroEntry = NetworkTableInstance.getDefault().getEntry(Constants.NetworkTableEntries.GYRO_VALUE);
 
+	// For lean method
+	public enum Side {
+		Left, 
+		Right;
+	  }
+
 	public DriveTrain() {
 		this.shift(Constants.DriveTrainConstants.defaultGear);
 
@@ -87,6 +93,23 @@ public class DriveTrain extends SubsystemBase {
 
 	public void arcadeDrive(double speed, double rotation) {
 		drive.arcadeDrive(speed, rotation);
+	}
+
+	// Need to implement flipped control capability
+	// Radius in inches, time in seconds, side is either "Left" or "Right"
+	public void lean(double radius, double time, Side side){
+		double innerCircumference = radius * 2 * 3.14;
+		double outerCircumference = (radius + Constants.DriveTrainConstants.botWidth) * 2 * 3.14;
+
+		double innerPower = (innerCircumference / time) * Constants.DriveTrainConstants.botSpeedAtPower;
+		double outerPower = (outerCircumference / time) * Constants.DriveTrainConstants.botSpeedAtPower;
+
+		if(side == Side.Left){
+			tankDrive(innerPower, outerPower);
+		  }
+		else if(side == Side.Right){
+			tankDrive(outerPower, innerPower);
+		}
 	}
 
 	public void tankDrive(double leftSpeed, double rightSpeed) {
