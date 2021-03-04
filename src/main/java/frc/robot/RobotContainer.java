@@ -73,13 +73,22 @@ public class RobotContainer {
 	// 	driverJoystick
 	// );
 
-	private final JoystickDrive joystickDrive = new JoystickDriveArcadeSplit(driveTrain,
-		// Split Arcade
-		() -> this.applyCurve(driverJoystick.getRawAxis(1)),
-		() -> this.applyCurve(driverJoystick.getRawAxis(4)),
-		driverJoystick,
-		() -> driverJoystick.getRawAxis(2),
-		() -> driverJoystick.getRawAxis(3)
+	// private final JoystickDrive joystickDrive = new JoystickDriveArcadeSplit(driveTrain,
+	// 	// Split Arcade
+	// 	() -> this.applyCurve(driverJoystick.getRawAxis(1)),
+	// 	() -> this.applyCurve(driverJoystick.getRawAxis(4)),
+	// 	driverJoystick,
+	// 	() -> driverJoystick.getRawAxis(2),
+	// 	() -> driverJoystick.getRawAxis(3)
+	// );
+
+	private final JoystickDrive joystickDrive = new JoystickDriveLean(driveTrain,
+	// Split Arcade
+	() -> this.applyCurve(driverJoystick.getRawAxis(1)),
+	() -> this.applyCurve(driverJoystick.getRawAxis(4)),
+	driverJoystick,
+	() -> driverJoystick.getRawAxis(2),
+	() -> driverJoystick.getRawAxis(3)
 	);
 
 	// private final JoystickDrive joystickDrive = new JoystickDriveTankdrive(driveTrain,
@@ -159,7 +168,6 @@ public class RobotContainer {
 			// this.driveTrain)
 
 			// Record distance in inches, then update constants.botSpeedAtPower
-			new DriveWithTime(this.driveTrain, 1000, 0.5)
 		));
 
 		

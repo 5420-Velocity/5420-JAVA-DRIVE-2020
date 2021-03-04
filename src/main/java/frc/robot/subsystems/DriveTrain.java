@@ -97,7 +97,7 @@ public class DriveTrain extends SubsystemBase {
 
 	// Need to implement flipped control capability
 	// Radius in inches, time in seconds, side is either "Left" or "Right"
-	public void lean(double radius, double time, Side side){
+	public void leanTime(double radius, double time, Side side){
 		double innerCircumference = radius * 2 * 3.14;
 		double outerCircumference = (radius + Constants.DriveTrainConstants.botWidth) * 2 * 3.14;
 
@@ -108,6 +108,21 @@ public class DriveTrain extends SubsystemBase {
 			tankDrive(innerPower, outerPower);
 		  }
 		else if(side == Side.Right){
+			tankDrive(outerPower, innerPower);
+		}
+	}
+
+	public void leanPower(double radius, double innerPower, Side side)
+	{
+		double innerSpeed = innerPower / Constants.DriveTrainConstants.botSpeedAtPower;
+		double circumference = (radius + Constants.DriveTrainConstants.botWidth)* 2 * Math.PI;
+		double time = (radius * 2 * Math.PI) / innerSpeed;
+		double outerPower = (circumference / time) * Constants.DriveTrainConstants.botSpeedAtPower;
+
+		if(side == Side.Left){
+			tankDrive(innerPower, outerPower);
+		}
+		else{
 			tankDrive(outerPower, innerPower);
 		}
 	}
