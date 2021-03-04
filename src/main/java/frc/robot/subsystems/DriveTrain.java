@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.DriveTrainConstants;
@@ -87,7 +88,7 @@ public class DriveTrain extends SubsystemBase {
 			this.getLeftEncoderPosition(),
 			this.getRightEncoderPosition()
 		);
-
+		SmartDashboard.putNumber("Left Encoder", this.getLeftEncoderPosition() / 6);
 		this.gyroEntry.setNumber(this.m_gyro.getAngle());
 	}
 
@@ -189,8 +190,8 @@ public class DriveTrain extends SubsystemBase {
 	 * Resets the drive encoders to currently read a position of 0.
 	 */
 	public void resetEncoders() {
-		LeftAT.getSensorCollection().setIntegratedSensorPosition(0, 800);
-		RightAT.getSensorCollection().setIntegratedSensorPosition(0, 800);
+		LeftAT.setSelectedSensorPosition(0, 0, 10);
+		RightAT.setSelectedSensorPosition(0, 0, 10);
 	}
 
 
