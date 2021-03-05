@@ -19,7 +19,6 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.*;
 import frc.robot.commands.*;
-import frc.robot.commands.TurnWithTime.Side;
 import frc.robot.subsystems.*;
 import frc.robot.utils.JoystickDPad;
 import frc.robot.utils.DPad.Position;
@@ -36,6 +35,11 @@ import java.util.function.DoubleSupplier;
  * (including subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
+
+	public enum Side {
+		Left, 
+		Right;
+	}
 
 	// The robot's subsystems and commands are defined here..
 	private final Joystick driverJoystick = new Joystick(ControllerConstants.JOYSTICK_USB_DRIVER);
@@ -154,21 +158,20 @@ public class RobotContainer {
 	 * Configure the auto commands
 	 */
 	private void configureAutoChooser() {
-
+		//positive power is intake forward
 		this.autoChooser.setDefaultOption("Do Nothing", new DoNothingAutoCommand());
-		this.autoChooser.addOption("AutoNav", new SequentialCommandGroup(
-			//new TurnWithTime(this.driveTrain, 2000, Side.Left),
-			//new TurnWithTime(this.driveTrain, 4000, Side.Right),
-			new ResetOdometry(this.driveTrain),
-			new PIDCommand(
-				drivePidController,
-				() -> (30000 - (this.driveTrain.getLeftEncoderPosition() / 6)),
-				0.0,
-				output -> this.driveTrain.arcadeDrive(-output * 0.4, 0)
-			)
-			// this.driveTrain)
-
-			// Record distance in inches, then update constants.botSpeedAtPower
+		this.autoChooser.addOption("Barrel Racing", new SequentialCommandGroup(
+			new DriveWithTime(this.driveTrain, 1900, -0.75),
+			new LeanWithTime(this.driveTrain, 6800, Side.Right, -0.3),
+			new DriveWithTime(this.driveTrain, 2000, -0.75),
+			new LeanWithTime(this.driveTrain, 6800, Side.Left, -0.3)
+			// new ResetOdometry(this.driveTrain),
+			// new PIDCommand(
+			// 	drivePidController,
+			// 	() -> (30000 - (this.driveTrain.getLeftEncoderPosition() / 6)),
+			// 	0.0,
+			// 	output -> this.driveTrain.arcadeDrive(-output * 0.4, 0)
+			// )
 		));
 
 		

@@ -9,7 +9,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Joystick;
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.DriveTrain.Side;
+import frc.robot.RobotContainer.Side;
 
 import java.util.function.DoubleSupplier;
 

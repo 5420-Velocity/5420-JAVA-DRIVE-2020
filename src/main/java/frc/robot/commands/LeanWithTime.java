@@ -16,19 +16,21 @@ import frc.robot.Constants;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.RobotContainer.Side;
 
-public class TurnWithTime extends CommandBase {
+public class LeanWithTime extends CommandBase {
   
   private final DriveTrain driveTrain;
   private final int duration;
   private final Side side;
+  private final double power;
 
   private boolean isFinished = false;
 	private Date completedAt;
 
-  public TurnWithTime(DriveTrain Subsystem, int duration, Side side) {
+  public LeanWithTime(DriveTrain Subsystem, int duration, Side side, double innerPower) {
     this.driveTrain = Subsystem;
     this.duration = duration;
     this.side = side;
+    this.power = innerPower;
 
     addRequirements(Subsystem);
   }
@@ -53,10 +55,10 @@ public class TurnWithTime extends CommandBase {
     }
 
     if(this.side == Side.Left){
-      driveTrain.tankDriveInverted(Constants.DriveTrainConstants.SlowPower, Constants.DriveTrainConstants.FastPower);
+      driveTrain.leanPower(18, power, Side.Left);;
     }
     else if(this.side == Side.Right){
-      driveTrain.tankDriveInverted(Constants.DriveTrainConstants.FastPower, Constants.DriveTrainConstants.SlowPower);
+      driveTrain.leanPower(18, power, Side.Right);;
     }
   }
 

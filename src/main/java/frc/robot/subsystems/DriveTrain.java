@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.DriveTrainConstants;
+import frc.robot.RobotContainer.Side;
 
 /**
  * Add your docs here.
@@ -48,12 +49,6 @@ public class DriveTrain extends SubsystemBase {
 	private final ADXRS450_Gyro m_gyro = new ADXRS450_Gyro(Constants.DriveTrainConstants.Port);
 
 	private final NetworkTableEntry gyroEntry = NetworkTableInstance.getDefault().getEntry(Constants.NetworkTableEntries.GYRO_VALUE);
-
-	// For lean method
-	public enum Side {
-		Left, 
-		Right;
-	  }
 
 	public DriveTrain() {
 		this.shift(Constants.DriveTrainConstants.defaultGear);
