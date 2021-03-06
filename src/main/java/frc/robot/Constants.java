@@ -147,7 +147,7 @@ public final class Constants {
 
 		public static final double EncoderP = 0.06;
 		public static final double EncoderI = 0.0;
-		public static final double EncoderD = 0.00; //0.000245
+		public static final double EncoderD = 0.00;
 
 		// Trans Solenoid
 		public static final int transmission = 0;

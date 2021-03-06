@@ -171,16 +171,16 @@ public class RobotContainer {
 			new ResetOdometry(this.driveTrain),
 			new PIDCommand(
 				drivePidController,
-				() -> (60 - Math.abs(this.driveTrain.getLeftEncoderPosition() / 1660)),
-				0.0,
+				() -> {
+					System.out.print("Getting Value in PID Loop");
+					System.out.println(Math.abs(this.driveTrain.getLeftEncoderPosition() / 1660));
+					return Math.abs(this.driveTrain.getLeftEncoderPosition() / 1660);
+				},
+				60,
 				output -> {
-					double outSpeed = output;
-
-					if (outSpeed > 0.4) {
-						outSpeed = 0.4;
-					}
-
-					this.driveTrain.arcadeDrive(outSpeed, 0);
+					System.out.print("Setting Motor Speed Output");
+					System.out.println(-output);
+					this.driveTrain.tankDrive(-output, -output);
 				}
 			)
 		));

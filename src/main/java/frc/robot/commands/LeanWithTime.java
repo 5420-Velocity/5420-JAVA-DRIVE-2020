@@ -19,16 +19,16 @@ import frc.robot.RobotContainer.Side;
 public class LeanWithTime extends CommandBase {
   
   private final DriveTrain driveTrain;
-  private final int duration;
+  private final double distance;
   private final Side side;
   private final double power;
 
   private boolean isFinished = false;
 	private Date completedAt;
 
-  public LeanWithTime(DriveTrain Subsystem, int duration, Side side, double innerPower) {
+  public LeanWithTime(DriveTrain Subsystem, double distance, Side side, double innerPower) {
     this.driveTrain = Subsystem;
-    this.duration = duration;
+    this.distance = distance;
     this.side = side;
     this.power = innerPower;
 
@@ -38,8 +38,11 @@ public class LeanWithTime extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    double speed = power / Constants.DriveTrainConstants.botSpeedAtPower;
+    double duration = distance / speed;
+
     Calendar calculateDate = GregorianCalendar.getInstance();
-		calculateDate.add(GregorianCalendar.MILLISECOND, this.duration);
+		calculateDate.add(GregorianCalendar.MILLISECOND, (int)duration);
 		this.completedAt = calculateDate.getTime();
 
 		this.isFinished = false;
@@ -55,10 +58,10 @@ public class LeanWithTime extends CommandBase {
     }
 
     if(this.side == Side.Left){
-      driveTrain.leanPower(20, power, Side.Left);;
+      driveTrain.leanPower(20, power, Side.Left);
     }
     else if(this.side == Side.Right){
-      driveTrain.leanPower(20, power, Side.Right);;
+      driveTrain.leanPower(20, power, Side.Right);
     }
   }
 

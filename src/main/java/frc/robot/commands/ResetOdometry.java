@@ -22,7 +22,6 @@ public class ResetOdometry extends CommandBase {
   @Override
   public void initialize() {
     this.driveTrain.resetEncoders();
-    isFinished();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -31,14 +30,10 @@ public class ResetOdometry extends CommandBase {
 
   }
 
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {
-  }
-
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
     return true;
   }
+
 }
