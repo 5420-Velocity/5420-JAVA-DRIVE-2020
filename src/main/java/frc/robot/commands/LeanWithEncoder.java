@@ -7,28 +7,24 @@
 
 package frc.robot.commands;
 
-import java.util.Date;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.RobotContainer.Side;
 
-public class LeanWithTime extends CommandBase {
+public class LeanWithEncoder extends CommandBase {
   
   private final DriveTrain driveTrain;
-  private final int duration;
+  private final double radius;
   private final Side side;
   private final double power;
 
   private boolean isFinished = false;
-	private Date completedAt;
+  private double target;
 
-  public LeanWithTime(DriveTrain Subsystem, int duration, Side side, double innerPower) {
+  public LeanWithEncoder(DriveTrain Subsystem, double radius, Side side, double innerPower) {
     this.driveTrain = Subsystem;
-    this.duration = duration;
+    this.radius = radius;
     this.side = side;
     this.power = innerPower;
 
@@ -38,9 +34,7 @@ public class LeanWithTime extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    Calendar calculateDate = GregorianCalendar.getInstance();
-		calculateDate.add(GregorianCalendar.MILLISECOND, this.duration);
-		this.completedAt = calculateDate.getTime();
+    target = (radius * 2 * Math.PI) * Constants.DriveTrainConstants.ticksPerInch;
 
 		this.isFinished = false;
   }
@@ -48,17 +42,17 @@ public class LeanWithTime extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (new Date().after(completedAt)) {
-      driveTrain.tankDrive(0, 0);
-      this.isFinished = true;
-      return;
-    }
+    driveTrain.leanPower(this.radius, this.power, this.side);
 
     if(this.side == Side.Left){
-      driveTrain.leanPower(20, power, Side.Left);;
+      if(driveTrain.getLeftEncoderPosition() >= target){
+        this.isFinished = true;
+      }
     }
     else if(this.side == Side.Right){
-      driveTrain.leanPower(20, power, Side.Right);;
+      if(driveTrain.getRightEncoderPosition() >= target){
+        this.isFinished = true;
+      }    
     }
   }
 
