@@ -161,10 +161,12 @@ public class RobotContainer {
 		//positive power is intake forward
 		this.autoChooser.setDefaultOption("Do Nothing", new DoNothingAutoCommand());
 		this.autoChooser.addOption("Barrel Racing", new SequentialCommandGroup(
-			new DriveWithTime(this.driveTrain, 1900, -0.75),
-			new LeanWithTime(this.driveTrain, 6800, Side.Right, -0.3),
-			new DriveWithTime(this.driveTrain, 2000, -0.75),
-			new LeanWithTime(this.driveTrain, 6800, Side.Left, -0.3)
+			new DriveWithTime(this.driveTrain, 4800, -0.5),
+			new LeanWithTime(this.driveTrain, 5400, Side.Right, -0.3),
+			new DriveWithTime(this.driveTrain, 3700, -0.5),
+			new LeanWithTime(this.driveTrain, 5300, Side.Left, -0.3),
+			new DriveWithTime(this.driveTrain, 3700, -0.5),
+			new LeanWithTime(this.driveTrain, 5600, Side.Right, -0.3)
 			// new ResetOdometry(this.driveTrain),
 			// new PIDCommand(
 			// 	drivePidController,

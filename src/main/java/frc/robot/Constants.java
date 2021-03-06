@@ -158,6 +158,7 @@ public final class Constants {
 		public static final double SlowPower = 0.4;
 		public static final double botSpeedAtPower = 0.5/27.5; //0.5 power at 27.5 inches per second.
 		public static final double botWidth = 22;
+		public static final double ticksPerInch = 100;
 
 	}
 
