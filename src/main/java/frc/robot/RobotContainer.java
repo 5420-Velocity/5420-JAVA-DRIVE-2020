@@ -176,6 +176,14 @@ public class RobotContainer {
 			// )
 		));
 
+		this.autoChooser.addOption("Bounce Path", new SequentialCommandGroup(
+			new DriveWithTime(this.driveTrain, 1500, -0.75),
+			new LeanWithTime(this.driveTrain, 1000, Side.Right, -0.3),
+			new DriveWithTime(this.driveTrain, 2000, -0.75),
+			new LeanWithTime(this.driveTrain, 6800, Side.Left, -0.3)
+			
+		));
+
 		
 		// this.autoChooser.addOption("Barrel Racing", new PathWeaverAuto(this.driveTrain, "PathWeaver/Barrel Racing/Groups/AutoNav.json"));
 		// this.autoChooser.addOption("Bounce Path", new PathWeaverAuto(this.driveTrain, "paths/YourPath.wpilib.json"));
