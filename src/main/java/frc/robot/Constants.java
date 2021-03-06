@@ -59,9 +59,9 @@ public final class Constants {
 	public static final class ShooterConstants {
 
 		// Target range for the limelight to drive the bot
-		public static final double rangeGoal = 110; //find limelight area at 14.5 feet
-		public static final double knownDistance = 175.5;
-		public static final double knownArea = 1.393;
+		public static final double rangeGoal = 150;
+		public static final double knownDistance = 134.0;
+		public static final double knownArea = 1.542;
 
 		public static final class CAN {
 			public static final int shooterOut = 6;
@@ -137,15 +137,15 @@ public final class Constants {
 
 
 		// PID values
-		public static final double RangeP = 0.08;
+		public static final double RangeP = 0.04;
 		public static final double RangeI = 0.0;
-		public static final double RangeD = 0.001;
+		public static final double RangeD = 0.00;
 
 		public static final double TurnP = 0.04;
 		public static final double TurnI = 0.01;
 		public static final double TurnD = 0.002;
 
-		public static final double EncoderP = 0.06;
+		public static final double EncoderP = 0.12;
 		public static final double EncoderI = 0.0;
 		public static final double EncoderD = 0.00; //0.000245
 
