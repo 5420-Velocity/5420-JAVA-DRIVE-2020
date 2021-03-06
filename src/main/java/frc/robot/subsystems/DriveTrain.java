@@ -50,12 +50,6 @@ public class DriveTrain extends SubsystemBase {
 
 	private final NetworkTableEntry gyroEntry = NetworkTableInstance.getDefault().getEntry(Constants.NetworkTableEntries.GYRO_VALUE);
 
-	// For lean method
-	public enum Side {
-		Left, 
-		Right;
-	}
-
 	public DriveTrain() {
 		this.shift(Constants.DriveTrainConstants.defaultGear);
 
