@@ -87,7 +87,6 @@ public class RobotContainer {
 	// );
 
 	private final JoystickDrive joystickDrive = new JoystickDriveLean(driveTrain,
-	// Split Arcade
 		// Split Arcade
 		() -> this.applyCurve(driverJoystick.getRawAxis(1)),
 		() -> this.applyCurve(driverJoystick.getRawAxis(4)),
@@ -246,44 +245,70 @@ public class RobotContainer {
 		 * Lambda functions only allow references not variables of direct types like doubles.
 		 *
 		 */
-		AtomicReference<Double> turnOutput = new AtomicReference<Double>();
+		AtomicReference<Double> turnOutput = new AtomicReference<Double>(0.0);
 
 		new JoystickButton(this.driverJoystick, ControllerMapConstants.Green_Button_ID)
 			// Enable the Limelight LED
 			.whenPressed(() -> this.limeLight.setLedMode(0))
 			// Disable the Limelight LED
-			.whenReleased(() -> this.limeLight.setLedMode(1));
-			// .whenHeld(new ParallelCommandGroup(
-			// 	// Turning
-			// 	new PIDCommand(
-			// 		turnPIDController,
-			// 		limeLight::getTX,
-			// 		0.0,
-			// 		output -> turnOutput.set(output),
-			// 		driveTrain
-			// 	),
-			// 	// Range
-			// 	new PIDCommand(
-			// 		rangePIDController,
-			// 		() -> {
-			// 			// If no target is found, Offset is Zero
-			// 			if (!this.limeLight.hasTarget()) return 0.0;
-			// 			return this.limeLight.getDistance() - Constants.ShooterConstants.rangeGoal;
-			// 		},
-			// 		0.0,
-			// 		output -> {
-			// 			double turnSpeed = turnOutput.get();
-			// 			double outSpeed = output;
+			.whenReleased(() -> this.limeLight.setLedMode(1))
+			.whenHeld(new SequentialCommandGroup(
+				new ParallelCommandGroup(
+					// Range
+					new FinishablePIDCommand(
+						rangePIDController,
+						() -> {
+							// If no target is found, Offset is Zero
+							if (!this.limeLight.hasTarget()) return 0.0;
+							return this.limeLight.getDistance();
+						},
+						Constants.ShooterConstants.rangeGoal,
+						output -> {
+							double turnSpeed = turnOutput.get();
+							double outSpeed = output;
 
-			// 			// Set a max speed
-			// 			if (turnSpeed > 0.4) turnSpeed = 0.4;
-			// 			if (outSpeed > 0.4) outSpeed = 0.4;
+							// Set a max speed
+							if (turnSpeed > 0.4) turnSpeed = 0.4;
+							if (outSpeed > 0.6) outSpeed = 0.4;
 
-			// 			driveTrain.arcadeDrive(outSpeed, 0);//replace 0 with turnspeed
-			// 		},
-			// 		driveTrain
-			// 	)
-			// ));
+							driveTrain.arcadeDrive(outSpeed, turnSpeed); // replace 0 with turnspeed
+						},
+						(Double output) -> {
+							// Check LL to see if the values are "stable" or "within range" of our goal.
+							// Return true will kill this command.
+
+							System.out.println(Math.abs(output));
+							if (Math.abs(output) < 0.04) {
+								System.out.println("Range Done");
+								return true;
+							}
+							return false;
+						},
+						driveTrain
+					),
+					// Turning
+					new FinishablePIDCommand(
+						turnPIDController,
+						() -> {
+							// If no target is found, Offset is Zero
+							if (!this.limeLight.hasTarget()) return 0.0;
+							return limeLight.getTX();
+						},
+						0.0,
+						output -> turnOutput.set(output),
+						(Double output) -> {
+							// Check LL to see if the values are "stable" or "within range" of our goal.
+							// Return true will kill this command.
+							if (Math.abs(output) < 0.04) {
+								return true;
+							}
+							return false;
+						},
+						driveTrain
+					)
+				),
+				new AutoShoot(this.newShooter, this.chute, 0.6)
+			));
 
 		// new JoystickButton(this.operatorJoystick, Constants.ControllerMapConstants.Joystick_Left_Button)
 		// 	.whenPressed(new PanelLiftDown(controlPanelController));
