@@ -83,7 +83,7 @@ public class DriveTrain extends SubsystemBase {
 			this.getLeftEncoderPosition(),
 			this.getRightEncoderPosition()
 		);
-		SmartDashboard.putNumber("Left Encoder", this.getLeftEncoderPosition() / 6);
+		SmartDashboard.putNumber("Left Encoder", this.getLeftEncoderPosition() / 1660);
 		this.gyroEntry.setNumber(this.m_gyro.getAngle());
 	}
 

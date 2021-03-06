@@ -161,19 +161,27 @@ public class RobotContainer {
 		//positive power is intake forward
 		this.autoChooser.setDefaultOption("Do Nothing", new DoNothingAutoCommand());
 		this.autoChooser.addOption("Barrel Racing", new SequentialCommandGroup(
-			new DriveWithTime(this.driveTrain, 4800, -0.5),
-			new LeanWithTime(this.driveTrain, 5400, Side.Right, -0.3),
-			new DriveWithTime(this.driveTrain, 3700, -0.5),
-			new LeanWithTime(this.driveTrain, 5300, Side.Left, -0.3),
-			new DriveWithTime(this.driveTrain, 3700, -0.5),
-			new LeanWithTime(this.driveTrain, 5600, Side.Right, -0.3)
-			// new ResetOdometry(this.driveTrain),
-			// new PIDCommand(
-			// 	drivePidController,
-			// 	() -> (30000 - (this.driveTrain.getLeftEncoderPosition() / 6)),
-			// 	0.0,
-			// 	output -> this.driveTrain.arcadeDrive(-output * 0.4, 0)
-			// )
+			// new DriveWithTime(this.driveTrain, 4800, -0.5),
+			// new LeanWithTime(this.driveTrain, 5400, Side.Right, -0.3),
+			// new DriveWithTime(this.driveTrain, 3700, -0.5),
+			// new LeanWithTime(this.driveTrain, 5300, Side.Left, -0.3),
+			// new DriveWithTime(this.driveTrain, 3700, -0.5),
+			// new LeanWithTime(this.driveTrain, 5600, Side.Right, -0.3)
+			new ResetOdometry(this.driveTrain),
+			new PIDCommand(
+				drivePidController,
+				() -> (60 - Math.abs(this.driveTrain.getLeftEncoderPosition() / 1660)),
+				0.0,
+				output -> {
+					double outSpeed = output;
+
+					if (outSpeed > 0.4) {
+						outSpeed = 0.4;
+					}
+
+					this.driveTrain.arcadeDrive(outSpeed, 0);
+				}
+			)
 		));
 
 		this.autoChooser.addOption("Bounce Path", new SequentialCommandGroup(
@@ -297,6 +305,9 @@ public class RobotContainer {
 		 * Used to dynamically adjust the speed used for shooting.
 		 */
 		AtomicReference<Double> shooterSpeed = new AtomicReference<Double>(0.65);
+
+		new JoystickButton(this.operatorJoystick, Constants.ControllerMapConstants.Yellow_Button_ID)
+		.whenPressed(() -> this.driveTrain.resetEncoders());
 
 		/**
 		 * Setup Button Events for the Shooter on the Operator Controller
