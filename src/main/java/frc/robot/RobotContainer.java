@@ -88,11 +88,12 @@ public class RobotContainer {
 
 	private final JoystickDrive joystickDrive = new JoystickDriveLean(driveTrain,
 	// Split Arcade
-	() -> this.applyCurve(driverJoystick.getRawAxis(1)),
-	() -> this.applyCurve(driverJoystick.getRawAxis(4)),
-	driverJoystick,
-	() -> driverJoystick.getRawAxis(2),
-	() -> driverJoystick.getRawAxis(3)
+		// Split Arcade
+		() -> this.applyCurve(driverJoystick.getRawAxis(1)),
+		() -> this.applyCurve(driverJoystick.getRawAxis(4)),
+		driverJoystick,
+		() -> driverJoystick.getRawAxis(2),
+		() -> driverJoystick.getRawAxis(3)
 	);
 
 	// private final JoystickDrive joystickDrive = new JoystickDriveTankdrive(driveTrain,

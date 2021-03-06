@@ -19,7 +19,6 @@ public class DriveWithEncoder extends CommandBase {
 	private final double encoderTarget;
 	private final PIDController drivePidController;
 	private final PIDCommand pidCommand;
-	private double currentLocation;
 
 	public DriveWithEncoder(DriveTrain subsystem, double targetDistance) {
 		this.driveTrain = subsystem;
@@ -53,9 +52,9 @@ public class DriveWithEncoder extends CommandBase {
 	// Called every time the scheduler runs while the command is scheduled.
 	@Override
 	public void execute() {
-		if (this.currentLocation == 4) {
-			// TODO
-		}
+		
+		this.pidCommand.execute();
+
 	}
 
 	// Called once the command ends or is interrupted.
@@ -69,6 +68,6 @@ public class DriveWithEncoder extends CommandBase {
 	// Returns true when the command should end.
 	@Override
 	public boolean isFinished() {
-		return false;
+		return this.pidCommand.isFinished();
 	}
 }

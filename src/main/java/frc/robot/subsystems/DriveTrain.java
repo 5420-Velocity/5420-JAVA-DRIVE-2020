@@ -50,6 +50,12 @@ public class DriveTrain extends SubsystemBase {
 
 	private final NetworkTableEntry gyroEntry = NetworkTableInstance.getDefault().getEntry(Constants.NetworkTableEntries.GYRO_VALUE);
 
+	// For lean method
+	public enum Side {
+		Left, 
+		Right;
+	}
+
 	public DriveTrain() {
 		this.shift(Constants.DriveTrainConstants.defaultGear);
 
@@ -75,7 +81,7 @@ public class DriveTrain extends SubsystemBase {
 		m_odometry = new DifferentialDriveOdometry(m_gyro.getRotation2d());
 	}
 
-		@Override
+	@Override
 	public void periodic() {
 		// Update the odometry in the periodic block
 		m_odometry.update(
@@ -100,10 +106,10 @@ public class DriveTrain extends SubsystemBase {
 		double innerPower = (innerCircumference / time) * Constants.DriveTrainConstants.botSpeedAtPower;
 		double outerPower = (outerCircumference / time) * Constants.DriveTrainConstants.botSpeedAtPower;
 
-		if(side == Side.Left){
+		if(side == Side.Left) {
 			tankDrive(innerPower, outerPower);
-		  }
-		else if(side == Side.Right){
+		}
+		else if(side == Side.Right) {
 			tankDrive(outerPower, innerPower);
 		}
 	}
