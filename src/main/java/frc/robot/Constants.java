@@ -34,8 +34,8 @@ public final class Constants {
 
 	public static final class IntakeConstants {
 
-		public static final double highTarget = 15; // Encoder Position for high position
-		public static final double middleTarget = 15; // Encoder position for middle position
+		public static final double highTarget = 7; // Encoder Position for high position
+		public static final double middleTarget = 7; // Encoder position for middle position
 		public static final double lowTarget = 25.5; // Encoder Position for low position
 
 		// PID Control Values
