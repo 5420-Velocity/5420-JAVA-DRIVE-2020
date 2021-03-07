@@ -247,6 +247,9 @@ public class RobotContainer {
 		 */
 		AtomicReference<Double> turnOutput = new AtomicReference<Double>(0.0);
 
+		SmartDashboard.setDefaultBoolean("Range Complete", false);
+		SmartDashboard.setDefaultBoolean("Turing Complete", false);
+
 		new JoystickButton(this.driverJoystick, ControllerMapConstants.Green_Button_ID)
 			// Enable the Limelight LED
 			.whenPressed(() -> this.limeLight.setLedMode(0))
@@ -271,17 +274,18 @@ public class RobotContainer {
 							if (turnSpeed > 0.4) turnSpeed = 0.4;
 							if (outSpeed > 0.6) outSpeed = 0.4;
 
-							driveTrain.arcadeDrive(outSpeed, turnSpeed); // replace 0 with turnspeed
+							driveTrain.arcadeDrive(outSpeed, turnSpeed);
 						},
-						(Double output) -> {
+						FinishablePIDCommand.ConsumeValueType.Offset,
+						output -> {
 							// Check LL to see if the values are "stable" or "within range" of our goal.
 							// Return true will kill this command.
 
-							System.out.println(Math.abs(output));
-							if (Math.abs(output) < 0.04) {
-								System.out.println("Range Done");
+							if (Math.abs(output) < 0.06) {
+								SmartDashboard.putBoolean("Range Complete", true);
 								return true;
 							}
+							SmartDashboard.putBoolean("Range Complete", false);
 							return false;
 						},
 						driveTrain
@@ -295,13 +299,16 @@ public class RobotContainer {
 							return limeLight.getTX();
 						},
 						0.0,
-						output -> turnOutput.set(output),
-						(Double output) -> {
+						turnOutput::set,
+						FinishablePIDCommand.ConsumeValueType.Offset,
+						output -> {
 							// Check LL to see if the values are "stable" or "within range" of our goal.
 							// Return true will kill this command.
-							if (Math.abs(output) < 0.04) {
+							if (Math.abs(output) < 0.06) {
+								SmartDashboard.putBoolean("Turning Complete", true);
 								return true;
 							}
+							SmartDashboard.putBoolean("Turning Complete", false);
 							return false;
 						},
 						driveTrain
@@ -325,7 +332,7 @@ public class RobotContainer {
 
 		// Update the command settings to flip the controls
 		new JoystickButton(this.driverJoystick, Constants.ControllerMapConstants.Red_Button_ID)
-			.whenPressed(() -> this.joystickDrive.toggleFlipped());
+			.whenPressed(this.joystickDrive::toggleFlipped);
 
 		/**
 		 * Used to dynamically adjust the speed used for shooting.
@@ -333,7 +340,7 @@ public class RobotContainer {
 		AtomicReference<Double> shooterSpeed = new AtomicReference<Double>(0.65);
 
 		new JoystickButton(this.operatorJoystick, Constants.ControllerMapConstants.Yellow_Button_ID)
-		.whenPressed(() -> this.driveTrain.resetEncoders());
+		.whenPressed(this.driveTrain::resetEncoders);
 
 		/**
 		 * Setup Button Events for the Shooter on the Operator Controller
@@ -376,9 +383,9 @@ public class RobotContainer {
 			.whenHeld(
 				new PIDCommand(
 					this.pidController,
-					() -> this.intake.getEncoderFromLowValue(),
+					this.intake::getEncoderFromLowValue,
 					0.0,
-					output -> this.intake.armSpeed(output),
+					this.intake::armSpeed,
 					this.intake
 				)
 			)
@@ -413,9 +420,9 @@ public class RobotContainer {
 		// Go Up By Default
 		scheduler.setDefaultCommand(this.intake, new PIDCommand(
 			this.pidController,
-			() -> this.intake.getEncoderFromHighValue(),
+			this.intake::getEncoderFromHighValue,
 			0.0,
-			output -> intake.armSpeed(output),
+			intake::armSpeed,
 			this.intake
 		));
 
