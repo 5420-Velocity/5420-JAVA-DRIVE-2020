@@ -64,7 +64,9 @@ public class FinishablePIDCommand extends PIDCommand {
 			Subsystem... requirements) {
 		super(controller, measurementSource, setpoint, useOutput, requirements);
 
-		// Override the Pairent's "useOutput" DoubleConsumer so we can
+		requireNonNullParam(completeSupplier, "command", "FinishablePIDCommand");
+
+		// Override the Parent's "useOutput" DoubleConsumer so we can
 		//  capture the value so we can cache it to be used later.
 		// We store that copied value an atomic value to get later.
 		super.m_useOutput = (value) -> {
@@ -77,8 +79,6 @@ public class FinishablePIDCommand extends PIDCommand {
 			this.atomicSource.set(value);
 			return value;
 		};
-
-		requireNonNullParam(completeSupplier, "command", "FinishablePIDCommand");
 
 		this.completeSupplier = completeSupplier;
 		this.valueType = type;
