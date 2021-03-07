@@ -1,10 +1,3 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2019 FIRST. All Rights Reserved.														 */
-/* Open Source Software - may be modified and shared by FRC teams. The code	 */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.																															 */
-/*----------------------------------------------------------------------------*/
-
 package frc.robot.subsystems;
 
 import edu.wpi.first.networktables.NetworkTable;
@@ -42,12 +35,20 @@ public class Limelight extends SubsystemBase {
 		String tableName = limelightSuffix.isEmpty() ? "" : ("-" + limelightSuffix.toLowerCase());
 
 		this.table = NetworkTableInstance.getDefault().getTable("limelight" + tableName);
-		this.limelightDistance = SmartDashboard.getEntry("Limelight Distance " + tableName);
+		this.limelightDistance = SmartDashboard.getEntry("limelight" + tableName + "-dx");
 
 		this.knownArea = knownArea;
 		this.knownDistance = knownDistance;
 
 		this.limelightDistance.setDefaultDouble(0.0);
+	}
+
+	/**
+	 * 
+	 * @return Aprox Distance away from the Target in View with only 2 decimal places
+	 */
+	public double getDistance() {
+		return this.getDistance(2);
 	}
 
 	/**
@@ -60,18 +61,21 @@ public class Limelight extends SubsystemBase {
 	 * Pass the 2 values in as a constant and it will return the % of the
 	 * selected KnownDistance.
 	 *
-	 * @return The Aprox Distance away from the Target in View with only 2 decimal places
+	 * @param precision Total Decimal Place precision.
+	 * @return Aprox Distance away from the Target in View with only n decimal places
 	 * @link http://docs.limelightvision.io/en/latest/cs_estimating_distance.html#using-area-to-estimate-distance
 	 */
-	public double getDistance() {
-		// 0.02 is the small threshold of 0
-		if (Math.abs(this.getArea()) < 0.02) {
+	public double getDistance(int precision) {
+		double scale = Math.pow(10, precision);
+
+		// 0.01 is the small threshold of 0
+		if (Math.abs(this.getArea()) < 0.01) {
 			return 0.0;
 		}
 
 		double k = this.knownDistance * Math.sqrt(this.knownArea);
 		double v = k / Math.sqrt(this.getArea());
-		return (double) Math.round(v * 100) / 100;
+		return (double) Math.round(v * scale) / scale;
 	}
 
 	public double getTX() {
@@ -143,4 +147,5 @@ public class Limelight extends SubsystemBase {
 		// Set the Limelight Distance Value from the calculated Value
 		this.limelightDistance.setDouble(this.getDistance());
 	}
+
 }
