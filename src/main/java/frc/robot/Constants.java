@@ -141,9 +141,9 @@ public final class Constants {
 		public static final double RangeI = 0.0;
 		public static final double RangeD = 0.00;
 
-		public static final double TurnP = 0.04;
-		public static final double TurnI = 0.01;
-		public static final double TurnD = 0.002;
+		public static final double TurnP = 0.14;
+		public static final double TurnI = 0.0;
+		public static final double TurnD = 0.01;
 
 		public static final double EncoderP = 0.12;
 		public static final double EncoderI = 0.0;
