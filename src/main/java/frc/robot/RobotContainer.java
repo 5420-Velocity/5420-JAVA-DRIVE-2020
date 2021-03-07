@@ -277,11 +277,11 @@ public class RobotContainer {
 							driveTrain.arcadeDrive(outSpeed, turnSpeed);
 						},
 						FinishablePIDCommand.ConsumeValueType.Offset,
-						output -> {
+						offset -> {
 							// Check LL to see if the values are "stable" or "within range" of our goal.
 							// Return true will kill this command.
 
-							if (Math.abs(output) < 0.06) {
+							if (Math.abs(offset) < 1) {
 								SmartDashboard.putBoolean("Range Complete", true);
 								return true;
 							}
@@ -301,10 +301,10 @@ public class RobotContainer {
 						0.0,
 						turnOutput::set,
 						FinishablePIDCommand.ConsumeValueType.Offset,
-						output -> {
+						offset -> {
 							// Check LL to see if the values are "stable" or "within range" of our goal.
 							// Return true will kill this command.
-							if (Math.abs(output) < 0.06) {
+							if (Math.abs(offset) < 1) {
 								SmartDashboard.putBoolean("Turning Complete", true);
 								return true;
 							}
