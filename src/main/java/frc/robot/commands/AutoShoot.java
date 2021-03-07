@@ -48,8 +48,8 @@ public class AutoShoot extends CommandBase {
 		this.feeding = false;
 
 		int rampUpTime = 1800; // Delay Time
-		int feedTime = 700; // On Time
-		int feedTimeSpace = 1500; // Off Time
+		int feedTime = 600; // On Time
+		int feedTimeSpace = 1000; // Off Time
 		int ballCount = 3;
 
 		Calendar calculateDate = GregorianCalendar.getInstance();
