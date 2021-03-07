@@ -63,6 +63,15 @@ public final class Constants {
 		public static final double knownDistance = 134.0;
 		public static final double knownArea = 1.542;
 
+		// If you are having trouble figuring out what the angle a1 is,
+		//  you can also use the above equation to solve for a1.
+		// Just put your robot at a known distance (measuring from the
+		//  lens of your camera) and solve the same equation for a1.
+		public static final double h1 = 16;
+		public static final double h2 = 85.5;
+		public static final double a1 = 0;
+		public static final double a2 = 0;
+
 		public static final class CAN {
 			public static final int shooterOut = 6;
 			public static final int shooterIn = 0;

@@ -5,6 +5,7 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class Limelight extends SubsystemBase {
 
@@ -60,22 +61,53 @@ public class Limelight extends SubsystemBase {
 	 * then look at the limelight's web interface for the `ta` value.
 	 * Pass the 2 values in as a constant and it will return the % of the
 	 * selected KnownDistance.
+	 * </p>
 	 *
 	 * @param precision Total Decimal Place precision.
-	 * @return Aprox Distance away from the Target in View with only n decimal places
+	 * @return Approx Distance away from the Target in View with only n decimal places
 	 * @link http://docs.limelightvision.io/en/latest/cs_estimating_distance.html#using-area-to-estimate-distance
 	 */
 	public double getDistance(int precision) {
 		double scale = Math.pow(10, precision);
+		double area = this.getArea();
 
 		// 0.01 is the small threshold of 0
-		if (Math.abs(this.getArea()) < 0.01) {
+		if (Math.abs(area) < 0.01) {
 			return 0.0;
 		}
 
 		double k = this.knownDistance * Math.sqrt(this.knownArea);
-		double v = k / Math.sqrt(this.getArea());
+		double v = k / Math.sqrt(area);
 		return (double) Math.round(v * scale) / scale;
+	}
+
+	public double getDistanceNew() {
+		return getDistanceNew(2);
+	}
+
+	/**
+	 * Return the Distance from the Target
+	 * Both Params should be constant, Both Known Values
+	 * The KnownArea is based off of the KnownDistance
+	 *
+	 * @param precision Total Decimal Place precision.
+	 * @return Approx Distance away from the Target in View with only n decimal places
+	 * @link https://docs.limelightvision.io/en/latest/cs_estimating_distance.html
+	 */
+	public double getDistanceNew(int precision) {
+		double scale = Math.pow(10, precision);
+		double area = this.getArea();
+
+		// 0.01 is the small threshold of 0
+		if (Math.abs(area) < 0.01) {
+			return 0.0;
+		}
+
+		// d = (h2-h1) / tan(a1+a2)
+		double d = (Constants.ShooterConstants.h2 - Constants.ShooterConstants.h1)
+				/ Math.tan(Constants.ShooterConstants.a1 + Constants.ShooterConstants.a2);
+
+		return (double) Math.round(d * scale) / scale;
 	}
 
 	public double getTX() {
