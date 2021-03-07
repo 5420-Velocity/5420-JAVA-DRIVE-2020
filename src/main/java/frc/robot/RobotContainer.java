@@ -351,14 +351,14 @@ public class RobotContainer {
 
 		new JoystickDPad(this.operatorJoystick, Position.kUp)
 			.whenPressed(() -> {
-				double increaseBy = 0.025;
+				double increaseBy = 0.01;
 				double newSpeed = shooterSpeed.get() + increaseBy;
 				shooterSpeed.set(newSpeed);
 			});
 
 		new JoystickDPad(this.operatorJoystick, Position.kDown)
 			.whenPressed(() -> {
-				double decreaseBy = -0.025;
+				double decreaseBy = -0.01;
 				double newSpeed = shooterSpeed.get() + decreaseBy;
 				shooterSpeed.set(newSpeed);
 			});
