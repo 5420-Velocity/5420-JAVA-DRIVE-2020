@@ -45,6 +45,7 @@ public class AutoShoot extends CommandBase {
 	public void initialize() {
 
 		this.isFinished = false;
+		this.feeding = false;
 
 		int rampUpTime = 1800; // Delay Time
 		int feedTime = 700; // On Time
@@ -56,6 +57,11 @@ public class AutoShoot extends CommandBase {
 		this.speedRampUpTime = calculateDate.getTime();
 
 		int timelinePosition = rampUpTime;
+
+		// This is needed to set the correct interval.
+		Calendar sacrificialInit = GregorianCalendar.getInstance();
+		sacrificialInit.add(GregorianCalendar.MILLISECOND, timelinePosition);
+		this.shootInterval.add(sacrificialInit.getTime());
 
 		// Store the times of when to trigger the shooting
 		for (int i = 0; i < ballCount; i++) {
@@ -96,11 +102,11 @@ public class AutoShoot extends CommandBase {
 			if (this.currentDeadline != null && new Date().after(this.currentDeadline)) {
 				this.currentDeadline = null;
 
-				if (this.feeding == true) {
+				if (this.feeding) {
 					this.feeding = false;
 					this.shooterSubsystem.setRight(0.0);
 
-					// Rotinue is Complete, Mark Command is finished.
+					// Routine is Complete, Mark Command is finished.
 					if (this.shootInterval.size() == 0) {
 						this.isFinished = true;
 					}
