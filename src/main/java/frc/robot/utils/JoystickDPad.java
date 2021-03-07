@@ -14,7 +14,7 @@ public class JoystickDPad extends Button {
    * Creates a joystick DPad for triggering commands.
    *
    * @param joystick The GenericHID object that has the button (e.g. Joystick, KinectStick, etc)
-   * @param buttonNumber The button number (see {@link GenericHID#getRawButton(int) }
+   * @param pos The button number (see {@link GenericHID#getRawButton(int) }
    */
   public JoystickDPad(GenericHID joystick, DPad.Position pos) {
     requireNonNullParam(joystick, "joystick", "JoystickDPad");
