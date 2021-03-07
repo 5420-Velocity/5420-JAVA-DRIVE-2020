@@ -18,15 +18,15 @@ import frc.robot.subsystems.DriveTrain;
 public class DriveWithTime extends CommandBase {
 
   private final DriveTrain driveTrain;
-  private final int duration;
+  private final double distance;
   private final double Power;
 
   private boolean isFinished = false;
 	private Date completedAt;
 
-  public DriveWithTime(DriveTrain Subsystem, int duration, double power) {
+  public DriveWithTime(DriveTrain Subsystem, double distance, double power) {
     this.driveTrain = Subsystem;
-    this.duration = duration;
+    this.distance = distance;
     this.Power = power;
 
     addRequirements(Subsystem);
@@ -35,8 +35,12 @@ public class DriveWithTime extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+
+    double speed = Power / Constants.DriveTrainConstants.botSpeedAtPower;
+    double duration = distance / speed;
+
     Calendar calculateDate = GregorianCalendar.getInstance();
-		calculateDate.add(GregorianCalendar.MILLISECOND, this.duration);
+		calculateDate.add(GregorianCalendar.MILLISECOND, (int)duration);
 		this.completedAt = calculateDate.getTime();
 
 		this.isFinished = false;
