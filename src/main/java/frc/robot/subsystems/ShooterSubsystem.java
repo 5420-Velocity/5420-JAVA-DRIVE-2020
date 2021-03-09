@@ -27,6 +27,7 @@ public class ShooterSubsystem extends SubsystemBase {
 		// Don't allow the power to be X instantly, make it
 		//  slowly adjust to the target speed over time.
 		shooterMotorFront.configOpenloopRamp(1);
+		
 	}
 
 	/**

@@ -12,6 +12,7 @@ public class Limelight extends SubsystemBase {
 	private double knownArea = 0;
 	private double knownDistance = 0;
 	private final NetworkTableEntry limelightDistance;
+	private final NetworkTableEntry limelightDistanceNew;
 
 	private final NetworkTable table;
 
@@ -37,6 +38,7 @@ public class Limelight extends SubsystemBase {
 
 		this.table = NetworkTableInstance.getDefault().getTable("limelight" + tableName);
 		this.limelightDistance = SmartDashboard.getEntry("limelight" + tableName + "-dx");
+		this.limelightDistanceNew = SmartDashboard.getEntry("limelight" + tableName + "-dx-new");
 
 		this.knownArea = knownArea;
 		this.knownDistance = knownDistance;
@@ -105,7 +107,7 @@ public class Limelight extends SubsystemBase {
 
 		// d = (h2-h1) / tan(a1+a2)
 		double d = (Constants.ShooterConstants.h2 - Constants.ShooterConstants.h1)
-				/ Math.tan(Constants.ShooterConstants.a1 + Constants.ShooterConstants.a2);
+				/ Math.tan(Constants.ShooterConstants.a1 + this.getTY());
 
 		return (double) Math.round(d * scale) / scale;
 	}
@@ -178,6 +180,8 @@ public class Limelight extends SubsystemBase {
 	public void periodic() {
 		// Set the Limelight Distance Value from the calculated Value
 		this.limelightDistance.setDouble(this.getDistance());
+		this.limelightDistanceNew.setDouble(this.getDistanceNew());
+
 	}
 
 }

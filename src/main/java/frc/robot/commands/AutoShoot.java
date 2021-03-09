@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ChuteSubsystem;
@@ -23,17 +24,20 @@ public class AutoShoot extends CommandBase {
 	private final NewShooterSubsystem newShooter;
 	private Date speedRampUpTime;
 	private LinkedList<Date> shootInterval = new LinkedList<Date>();
-	private AtomicReference<Double> speedRef;
+	private DoubleSupplier speedRef;
 	private boolean feeding = false;
 	private Date currentDeadline;
 	private boolean isFinished = false;
 
 	public AutoShoot(NewShooterSubsystem newShooter, ChuteSubsystem subsystem, double speedValue) {
-		this(newShooter, subsystem, new AtomicReference<Double>(speedValue));
+		this(newShooter, subsystem, () -> speedValue);
 	}
 
+	public AutoShoot(NewShooterSubsystem newShooter, ChuteSubsystem subsystem, AtomicReference<Double> speedValue) {
+		this(newShooter, subsystem, () -> speedValue.get());
+	}
 
-	public AutoShoot(NewShooterSubsystem newShooter, ChuteSubsystem subsystem, AtomicReference<Double> speedRef) {
+	public AutoShoot(NewShooterSubsystem newShooter, ChuteSubsystem subsystem, DoubleSupplier speedRef) {
 		this.newShooter = newShooter;
 		this.shooterSubsystem = subsystem;
 		this.speedRef = speedRef;
@@ -46,10 +50,11 @@ public class AutoShoot extends CommandBase {
 
 		this.isFinished = false;
 		this.feeding = false;
+		this.currentDeadline = null;
 
 		int rampUpTime = 1800; // Delay Time
-		int feedTime = 600; // On Time
-		int feedTimeSpace = 1000; // Off Time
+		int feedTime = 700; // On Time
+		int feedTimeSpace = 1100; // Off Time
 		int ballCount = 3;
 
 		Calendar calculateDate = GregorianCalendar.getInstance();
@@ -84,9 +89,11 @@ public class AutoShoot extends CommandBase {
 	@Override
 	public void execute() {
 
-		this.newShooter.setSpeed(this.speedRef.get(), 0);
+		this.newShooter.setSpeed(this.speedRef.getAsDouble(), 0);
 
 		if (this.speedRampUpTime != null) {
+			this.shooterSubsystem.setRight(0.0);
+
 			// We can run the speed ramp.
 			if (new Date().after(this.speedRampUpTime)) {
 				this.speedRampUpTime = null;

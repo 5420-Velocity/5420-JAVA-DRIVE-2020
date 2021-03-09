@@ -10,6 +10,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -19,6 +20,12 @@ public class NewShooterSubsystem extends SubsystemBase {
 	private final WPI_TalonFX shooterMotorOne = new WPI_TalonFX(Constants.NewShooterConstants.CAN.shooterOne);
 	private final WPI_TalonFX shooterMotorTwo = new WPI_TalonFX(Constants.NewShooterConstants.CAN.shooterTwo);
 	private final WPI_TalonSRX feedMotor = new WPI_TalonSRX(Constants.NewShooterConstants.CAN.feedMotor);
+	private final Solenoid shooterCover = new Solenoid(Constants.NewShooterConstants.shooterCover);
+
+	public enum coverState{
+		Up, 
+		Down;
+	}
 
 	public NewShooterSubsystem() {
 		// Don't allow the power to be X instantly, make it
@@ -41,6 +48,15 @@ public class NewShooterSubsystem extends SubsystemBase {
 		shooterMotorTwo.set(motorSpeed); // This motor is inverted above
 		SmartDashboard.putNumber("shooterSpeed", motorSpeed);
 		feedMotor.set(feed);
+	}
+
+	public void coverSet(coverState state){
+		if(state == coverState.Up) {
+			shooterCover.set(true);
+		}
+		else if(state == coverState.Down){
+			shooterCover.set(false);
+		}
 	}
 
 	@Override

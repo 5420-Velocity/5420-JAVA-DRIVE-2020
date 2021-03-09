@@ -17,9 +17,11 @@ import edu.wpi.first.wpilibj2.command.PIDCommand;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpiutil.math.MathUtil;
 import frc.robot.Constants.*;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
+import frc.robot.subsystems.NewShooterSubsystem.coverState;
 import frc.robot.utils.JoystickDPad;
 import frc.robot.utils.DPad.Position;
 
@@ -178,6 +180,7 @@ public class RobotContainer {
 				60,
 				output -> {
 					System.out.print("Setting Motor Speed Output");
+					//MathUtil.clamp(output, -0.5, 0.5);
 					System.out.println(-output);
 					this.driveTrain.tankDrive(-output, -output);
 				}
@@ -250,6 +253,11 @@ public class RobotContainer {
 		SmartDashboard.setDefaultBoolean("Range Complete", false);
 		SmartDashboard.setDefaultBoolean("Turing Complete", false);
 
+		new JoystickButton(this.operatorJoystick, ControllerMapConstants.Red_Button_ID)
+			.whenPressed(() -> this.newShooter.coverSet(coverState.Up))
+			.whenReleased(() -> this.newShooter.coverSet(coverState.Down));
+
+
 		new JoystickButton(this.driverJoystick, ControllerMapConstants.Green_Button_ID)
 			// Enable the Limelight LED
 			.whenPressed(() -> this.limeLight.setLedMode(0))
@@ -314,7 +322,18 @@ public class RobotContainer {
 						driveTrain
 					)
 				),
-				new AutoShoot(this.newShooter, this.chute, 0.6)
+				new AutoShoot(this.newShooter, this.chute, () -> {
+					if(this.limeLight.getDistance() < 90) {
+						this.newShooter.coverSet(coverState.Up);
+						double speed = (0.01/30) * this.limeLight.getDistance() + 0.313;
+						return speed;
+					} 
+					else {
+						this.newShooter.coverSet(coverState.Down);
+						double speed = (0.04/3000) * Math.pow(this.limeLight.getDistance() - 170, 2) + 0.46;
+						return speed;
+					}
+				})
 			));
 
 		// new JoystickButton(this.operatorJoystick, Constants.ControllerMapConstants.Joystick_Left_Button)
