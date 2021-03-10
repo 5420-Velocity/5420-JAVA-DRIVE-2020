@@ -163,28 +163,9 @@ public class RobotContainer {
 		//positive power is intake forward
 		this.autoChooser.setDefaultOption("Do Nothing", new DoNothingAutoCommand());
 		this.autoChooser.addOption("Barrel Racing", new SequentialCommandGroup(
-			// new DriveWithTime(this.driveTrain, 4800, -0.5),
-			// new LeanWithTime(this.driveTrain, 5400, Side.Right, -0.3),
-			// new DriveWithTime(this.driveTrain, 3700, -0.5),
-			// new LeanWithTime(this.driveTrain, 5300, Side.Left, -0.3),
-			// new DriveWithTime(this.driveTrain, 3700, -0.5),
-			// new LeanWithTime(this.driveTrain, 5600, Side.Right, -0.3)
-			new ResetOdometry(this.driveTrain),
-			new PIDCommand(
-				drivePidController,
-				() -> {
-					System.out.print("Getting Value in PID Loop");
-					System.out.println(Math.abs(this.driveTrain.getLeftEncoderPosition() / 1660));
-					return Math.abs(this.driveTrain.getLeftEncoderPosition() / 1660);
-				},
-				60,
-				output -> {
-					System.out.print("Setting Motor Speed Output");
-					//MathUtil.clamp(output, -0.5, 0.5);
-					System.out.println(-output);
-					this.driveTrain.tankDrive(-output, -output);
-				}
-			)
+			new RunnableCommand(() -> driveTrain.setSetpoint(100)),
+			new RunnableCommand(driveTrain::enable),
+			new RunnableCommand(driveTrain::onTarget)
 		));
 
 		this.autoChooser.addOption("Bounce Path", new SequentialCommandGroup(

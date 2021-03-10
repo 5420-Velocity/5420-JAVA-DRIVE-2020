@@ -7,20 +7,25 @@
 
 package frc.robot.subsystems;
 
+import java.util.function.BooleanSupplier;
+
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
-
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.controller.PIDController;
 import frc.robot.Constants;
 import frc.robot.Constants.DriveTrainConstants;
 import frc.robot.RobotContainer.Side;
@@ -28,7 +33,7 @@ import frc.robot.RobotContainer.Side;
 /**
  * Add your docs here.
  */
-public class DriveTrain extends SubsystemBase {
+public class DriveTrain extends PIDSubsystem {
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
 
@@ -50,7 +55,12 @@ public class DriveTrain extends SubsystemBase {
 
 	private final NetworkTableEntry gyroEntry = NetworkTableInstance.getDefault().getEntry(Constants.NetworkTableEntries.GYRO_VALUE);
 
+	private final Encoder rightEncoder = new Encoder(Constants.DriveTrainConstants.RightA, Constants.DriveTrainConstants.RightB);
+	private final Encoder leftEncoder = new Encoder(Constants.DriveTrainConstants.LeftA, Constants.DriveTrainConstants.LeftB);
+
 	public DriveTrain() {
+		super(new PIDController(Constants.DriveTrainConstants.EncoderP, Constants.DriveTrainConstants.EncoderI, Constants.DriveTrainConstants.EncoderD, 0.0));
+
 		this.shift(Constants.DriveTrainConstants.defaultGear);
 
 		LeftAT.configFactoryDefault();
@@ -77,13 +87,15 @@ public class DriveTrain extends SubsystemBase {
 
 	@Override
 	public void periodic() {
+		super.periodic();
+
 		// Update the odometry in the periodic block
 		m_odometry.update(
 			m_gyro.getRotation2d (),
 			this.getLeftEncoderPosition(),
 			this.getRightEncoderPosition()
 		);
-		SmartDashboard.putNumber("Left Encoder", this.getLeftEncoderPosition() / 1660);
+		SmartDashboard.putNumber("Left Encoder", this.getLeftEncoderPosition());
 		this.gyroEntry.setNumber(this.m_gyro.getAngle());
 	}
 
@@ -132,11 +144,11 @@ public class DriveTrain extends SubsystemBase {
 	}
 
 	public double getLeftEncoderPosition() {
-		return LeftAT.getSelectedSensorPosition();
+		return leftEncoder.getDistance();
 	}
 
 	public double getRightEncoderPosition() {
-		return RightAT.getSelectedSensorPosition();
+		return rightEncoder.getDistance();
 	}
 
 	public void shift(boolean state) {
@@ -189,8 +201,6 @@ public class DriveTrain extends SubsystemBase {
 		RightAT.setSelectedSensorPosition(0, 0, 10);
 	}
 
-
-
 	/**
 	 * Gets the average distance of the two encoders.
 	 *
@@ -232,6 +242,34 @@ public class DriveTrain extends SubsystemBase {
 	 */
 	public double getTurnRate() {
 		return -m_gyro.getRate();
+	}
+
+	@Override
+	protected void useOutput(double outputDrive, double setPoint) {
+		this.arcadeDrive(outputDrive, 0);
+	}
+
+	public void enable(){
+		super.m_enabled = true;
+		this.resetEncoders();
+	}
+
+	/** Disables the PID control. Sets output to zero. */
+	public void disable() {
+		m_enabled = false;
+		useOutput(0, 0);
+	}   
+
+	public boolean onTarget(){
+		if(this.getLeftEncoderPosition() - getSetpoint() < 1) {
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	protected double getMeasurement() {
+		return this.getLeftEncoderPosition();
 	}
 }
 

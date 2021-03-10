@@ -169,6 +169,12 @@ public final class Constants {
 		public static final double botWidth = 22;
 		public static final double ticksPerInch = 100;
 
+		public static final int LeftA = 1;
+		public static final int LeftB = 2;
+		public static final int RightA = 3;
+		public static final int RightB = 4;
+		public static final double TicksPerInch = 10;
+
 	}
 
 	public static final class charlesConstants {
