@@ -55,11 +55,11 @@ public class DriveTrain extends PIDSubsystem {
 
 	private final NetworkTableEntry gyroEntry = NetworkTableInstance.getDefault().getEntry(Constants.NetworkTableEntries.GYRO_VALUE);
 
-	private final Encoder rightEncoder = new Encoder(Constants.DriveTrainConstants.RightA, Constants.DriveTrainConstants.RightB);
 	private final Encoder leftEncoder = new Encoder(Constants.DriveTrainConstants.LeftA, Constants.DriveTrainConstants.LeftB);
+	private final Encoder rightEncoder = new Encoder(Constants.DriveTrainConstants.RightA, Constants.DriveTrainConstants.RightB);
 
 	public DriveTrain() {
-		super(new PIDController(Constants.DriveTrainConstants.EncoderP, Constants.DriveTrainConstants.EncoderI, Constants.DriveTrainConstants.EncoderD, 0.0));
+		super(new PIDController(Constants.DriveTrainConstants.EncoderP, Constants.DriveTrainConstants.EncoderI, Constants.DriveTrainConstants.EncoderD));
 
 		this.shift(Constants.DriveTrainConstants.defaultGear);
 
@@ -95,7 +95,11 @@ public class DriveTrain extends PIDSubsystem {
 			this.getLeftEncoderPosition(),
 			this.getRightEncoderPosition()
 		);
+
 		SmartDashboard.putNumber("Left Encoder", this.getLeftEncoderPosition());
+		SmartDashboard.putNumber("Right Encoder", this.getRightEncoderPosition() / Constants.DriveTrainConstants.TicksPerInch);
+		SmartDashboard.putNumber("Target", this.getSetpoint());
+
 		this.gyroEntry.setNumber(this.m_gyro.getAngle());
 	}
 
@@ -144,11 +148,11 @@ public class DriveTrain extends PIDSubsystem {
 	}
 
 	public double getLeftEncoderPosition() {
-		return leftEncoder.getDistance();
+		return leftEncoder.get();
 	}
 
 	public double getRightEncoderPosition() {
-		return rightEncoder.getDistance();
+		return rightEncoder.get();
 	}
 
 	public void shift(boolean state) {
@@ -199,6 +203,8 @@ public class DriveTrain extends PIDSubsystem {
 	public void resetEncoders() {
 		LeftAT.setSelectedSensorPosition(0, 0, 10);
 		RightAT.setSelectedSensorPosition(0, 0, 10);
+		leftEncoder.reset();
+		rightEncoder.reset();
 	}
 
 	/**
@@ -247,6 +253,8 @@ public class DriveTrain extends PIDSubsystem {
 	@Override
 	protected void useOutput(double outputDrive, double setPoint) {
 		this.arcadeDrive(outputDrive, 0);
+		System.out.print("Drivingggg: ");
+		System.out.println(outputDrive);
 	}
 
 	public void enable(){
@@ -261,7 +269,7 @@ public class DriveTrain extends PIDSubsystem {
 	}   
 
 	public boolean onTarget(){
-		if(this.getLeftEncoderPosition() - getSetpoint() < 1) {
+		if(this.getRightEncoderPosition() - getSetpoint() < 1) {
 			return true;
 		}
 		return false;
@@ -269,7 +277,7 @@ public class DriveTrain extends PIDSubsystem {
 
 	@Override
 	protected double getMeasurement() {
-		return this.getLeftEncoderPosition();
+		return this.getRightEncoderPosition() / Constants.DriveTrainConstants.TicksPerInch;
 	}
 }
 

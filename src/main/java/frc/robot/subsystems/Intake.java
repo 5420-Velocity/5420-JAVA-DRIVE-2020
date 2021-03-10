@@ -145,27 +145,27 @@ public class Intake extends SubsystemBase {
 			 *  return the previous results received in this request.
 			 *
 			 */
-			int pixyStatus = this.pixy.getCCC().getBlocks(false, Pixy2CCC.CCC_SIG1, 8);
+			// int pixyStatus = this.pixy.getCCC().getBlocks(false, Pixy2CCC.CCC_SIG1, 8);
 
-			/**
-			 * Read response from the Pixy Class to update the network tables
-			 *  of the current status.
-			 * The getBlocks Function returns either an error code or the total
-			 *  amount of blocks detected.
-			 */
-			switch (pixyStatus) {
-				case Pixy2.PIXY_RESULT_BUSY:
-					this.ntPixyBlocks.setDouble(0.0);
-					this.ntPixyStatus.setString("Busy");
-					break;
-				case Pixy2.PIXY_RESULT_ERROR:
-					this.ntPixyBlocks.setDouble(0.0);
-					this.ntPixyStatus.setString("Error");
-					break;
-				default:
-					this.ntPixyBlocks.setDouble(pixyStatus);
-					this.ntPixyStatus.setString("Operational");
-			}
+			// /**
+			//  * Read response from the Pixy Class to update the network tables
+			//  *  of the current status.
+			//  * The getBlocks Function returns either an error code or the total
+			//  *  amount of blocks detected.
+			//  */
+			// switch (pixyStatus) {
+			// 	case Pixy2.PIXY_RESULT_BUSY:
+			// 		this.ntPixyBlocks.setDouble(0.0);
+			// 		this.ntPixyStatus.setString("Busy");
+			// 		break;
+			// 	case Pixy2.PIXY_RESULT_ERROR:
+			// 		this.ntPixyBlocks.setDouble(0.0);
+			// 		this.ntPixyStatus.setString("Error");
+			// 		break;
+			// 	default:
+			// 		this.ntPixyBlocks.setDouble(pixyStatus);
+			// 		this.ntPixyStatus.setString("Operational");
+			// }
 //		}
 //		else if (this.pixyCachedLoop == 120) {
 //			// Reset the Counter one 120 has been hit

@@ -162,10 +162,17 @@ public class RobotContainer {
 	private void configureAutoChooser() {
 		//positive power is intake forward
 		this.autoChooser.setDefaultOption("Do Nothing", new DoNothingAutoCommand());
-		this.autoChooser.addOption("Barrel Racing", new SequentialCommandGroup(
-			new RunnableCommand(() -> driveTrain.setSetpoint(100)),
-			new RunnableCommand(driveTrain::enable),
-			new RunnableCommand(driveTrain::onTarget)
+		this.autoChooser.addOption("Barrel Racing", new PIDCommand(
+			drivePidController,
+			() -> {
+				double pos = (this.driveTrain.getRightEncoderPosition() / Constants.DriveTrainConstants.TicksPerInch);
+				return Math.abs(pos);
+			},
+			110,
+			output -> {
+				output = MathUtil.clamp(output, -0.8, 0.8);
+				this.driveTrain.tankDrive(-output, -output);
+			}
 		));
 
 		this.autoChooser.addOption("Bounce Path", new SequentialCommandGroup(
@@ -334,13 +341,13 @@ public class RobotContainer {
 		new JoystickButton(this.driverJoystick, Constants.ControllerMapConstants.Red_Button_ID)
 			.whenPressed(this.joystickDrive::toggleFlipped);
 
+		new JoystickButton(this.driverJoystick, Constants.ControllerMapConstants.Yellow_Button_ID)
+			.whenPressed(this.driveTrain::resetEncoders);
+
 		/**
 		 * Used to dynamically adjust the speed used for shooting.
 		 */
 		AtomicReference<Double> shooterSpeed = new AtomicReference<Double>(0.65);
-
-		new JoystickButton(this.operatorJoystick, Constants.ControllerMapConstants.Yellow_Button_ID)
-		.whenPressed(this.driveTrain::resetEncoders);
 
 		/**
 		 * Setup Button Events for the Shooter on the Operator Controller

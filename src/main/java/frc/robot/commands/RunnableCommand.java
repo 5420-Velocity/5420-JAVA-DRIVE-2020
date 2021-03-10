@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.function.BooleanSupplier;
 
-import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
