@@ -154,9 +154,9 @@ public final class Constants {
 		public static final double TurnI = 0.0;
 		public static final double TurnD = 0.01;
 
-		public static final double EncoderP = 0.035;
+		public static final double EncoderP = 0.04;
 		public static final double EncoderI = 0.0;
-		public static final double EncoderD = 0.01;
+		public static final double EncoderD = 0.0;
 
 		// Trans Solenoid
 		public static final int transmission = 0;
@@ -167,7 +167,7 @@ public final class Constants {
 		public static final double SlowPower = 0.4;
 		public static final double botSpeedAtPower = 0.5/27.5; //0.5 power at 27.5 inches per second.
 		public static final double botWidth = 22;
-		public static final double ticksPerInch = 100;
+		public static final double FXticksPerInch = 100;
 
 		public static final int LeftA = 1;
 		public static final int LeftB = 2;

@@ -56,10 +56,7 @@ public class DriveTrain extends PIDSubsystem {
 		RightAT.configFactoryDefault();
 		RightBT.configFactoryDefault();
 
-		LeftAT.setNeutralMode(NeutralMode.Brake);
-		LeftBT.setNeutralMode(NeutralMode.Brake);
-		RightAT.setNeutralMode(NeutralMode.Brake);
-		RightBT.setNeutralMode(NeutralMode.Brake);
+		setBrakeMode(NeutralMode.Brake);
 
 		LeftAT.configOpenloopRamp(1);
 		LeftBT.configOpenloopRamp(1);
@@ -78,8 +75,8 @@ public class DriveTrain extends PIDSubsystem {
 
 		// Update the odometry in the periodic block
 	
-		SmartDashboard.putNumber("Left Encoder", this.getLeftEncoderPosition() / Constants.DriveTrainConstants.TicksPerInch);
-		SmartDashboard.putNumber("Right Encoder", this.getRightEncoderPosition() / Constants.DriveTrainConstants.TicksPerInch);
+		SmartDashboard.putNumber("Left Encoder", this.getLeftEncoderPosition());
+		SmartDashboard.putNumber("Right Encoder", this.getRightEncoderPosition());
 		SmartDashboard.putNumber("Target", this.getSetpoint());
 	}
 
@@ -128,15 +125,28 @@ public class DriveTrain extends PIDSubsystem {
 	}
 
 	public double getLeftEncoderPosition() {
-		return leftEncoder.get();
+		return leftEncoder.get() / DriveTrainConstants.TicksPerInch;
 	}
 
 	public double getRightEncoderPosition() {
-		return rightEncoder.get();
+		return rightEncoder.get() / DriveTrainConstants.TicksPerInch;
 	}
 
 	public void shift(boolean state) {
+		if(state == true){
+			setBrakeMode(NeutralMode.Coast);
+		}
+		else{
+			setBrakeMode(NeutralMode.Brake);
+		}
 		trans.set(state);
+	}
+
+	public void setBrakeMode(NeutralMode mode){
+		LeftAT.setNeutralMode(mode);
+		LeftBT.setNeutralMode(mode);
+		RightAT.setNeutralMode(mode);
+		RightBT.setNeutralMode(mode);
 	}
 
 

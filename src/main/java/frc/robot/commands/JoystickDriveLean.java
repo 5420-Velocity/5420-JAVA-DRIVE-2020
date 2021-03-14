@@ -43,22 +43,23 @@ public class JoystickDriveLean extends JoystickDrive {
 	@Override
 	public void executeDrive() {
 		// Intake forward
-		double inPower = 0.4;
+		double inPower = 0.33;
+		double radius = 12;
 
 		// Flip the controls of the drive forward and reverse code
 		if (this.isControlFlipped == true) {
 			// Shooter forward
-			inPower = -0.4;
+			inPower = -inPower;
 		}
 
 		if (this.leanLeft.getAsDouble() > 0.5) {
-			driveTrain.leanPower(25, inPower, Side.Left);
+			driveTrain.leanPower(radius, inPower, Side.Left);
 		}
 		else if (this.leanRight.getAsDouble() > 0.5) {
-			driveTrain.leanPower(25, inPower, Side.Right);
+			driveTrain.leanPower(radius, inPower, Side.Right);
 		}
 		else {
-			double controllerY = (-super.speed.getAsDouble() * 0.85);
+			double controllerY = (-super.speed.getAsDouble() * 0.87);
 			double controllerX = -rotation.getAsDouble() * 0.6;
 
 			// Flip the controls of the drive forward and reverse code

@@ -35,7 +35,7 @@ public class LeanWithEncoder extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    target = target * Constants.DriveTrainConstants.ticksPerInch;
+    target = target * Constants.DriveTrainConstants.TicksPerInch;
 
 		this.isFinished = false;
   }

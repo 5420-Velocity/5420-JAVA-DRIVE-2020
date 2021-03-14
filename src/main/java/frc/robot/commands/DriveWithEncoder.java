@@ -20,7 +20,8 @@ public class DriveWithEncoder extends CommandBase {
 	private final DriveTrain driveTrain;
 	private final double encoderTarget;
 	private final PIDController drivePidController;
-	private final PIDCommand pidCommand;
+	private PIDCommand pidCommand;
+	private boolean isFinished;
 
 	public DriveWithEncoder(DriveTrain subsystem, double targetDistance) {
 		this.driveTrain = subsystem;
@@ -31,17 +32,7 @@ public class DriveWithEncoder extends CommandBase {
 			DriveTrainConstants.EncoderI,
 			DriveTrainConstants.EncoderD);
 
-		this.pidCommand = new PIDCommand(drivePidController,
-		() -> {
-			double pos = (this.driveTrain.getRightEncoderPosition() / Constants.DriveTrainConstants.TicksPerInch);
-			return Math.abs(pos);
-		},
-		90,
-		output -> {
-			output = MathUtil.clamp(output, -0.8, 0.8);
-			this.driveTrain.tankDrive(-output, -output);
-		});
-
+		
 		addRequirements(subsystem);
 	}
 
@@ -49,6 +40,19 @@ public class DriveWithEncoder extends CommandBase {
 	@Override
 	public void initialize() {
 		this.driveTrain.resetEncoders();
+		this.isFinished = false;
+
+		this.pidCommand = new PIDCommand(drivePidController,
+		() -> {
+			double pos = (this.driveTrain.getRightEncoderPosition());
+			return Math.abs(pos);
+		},
+		encoderTarget,
+		output -> {
+			output = MathUtil.clamp(output, -0.8, 0.8);
+			this.driveTrain.tankDrive(-output, -output);
+		});
+
 
 		// Start the PID Command to run the task.
 		this.pidCommand.schedule();
@@ -57,9 +61,14 @@ public class DriveWithEncoder extends CommandBase {
 	// Called every time the scheduler runs while the command is scheduled.
 	@Override
 	public void execute() {
+		if(( Math.abs(this.driveTrain.getRightEncoderPosition())  - encoderTarget) < 2) {
+			this.isFinished = true;
+		}
+		else {
+			this.isFinished = false;
+		}
 		
 		this.pidCommand.execute();
-
 	}
 
 	// Called once the command ends or is interrupted.
@@ -73,6 +82,6 @@ public class DriveWithEncoder extends CommandBase {
 	// Returns true when the command should end.
 	@Override
 	public boolean isFinished() {
-		return this.pidCommand.isFinished();
+		return this.isFinished;
 	}
 }
