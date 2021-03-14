@@ -7,24 +7,18 @@
 
 package frc.robot.subsystems;
 
-import java.util.function.BooleanSupplier;
-
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.ADXRS450_Gyro;
-import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
-import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import frc.robot.Constants;
 import frc.robot.Constants.DriveTrainConstants;
@@ -46,12 +40,6 @@ public class DriveTrain extends PIDSubsystem {
 	private Solenoid trans = new Solenoid(Constants.DriveTrainConstants.transmission);
 
 	private DifferentialDrive drive;
-
-	// Odometry class for tracking robot pose
-	private final DifferentialDriveOdometry m_odometry;
-
-	// The gyro sensor
-	private final ADXRS450_Gyro m_gyro = new ADXRS450_Gyro(Constants.DriveTrainConstants.Port);
 
 	private final NetworkTableEntry gyroEntry = NetworkTableInstance.getDefault().getEntry(Constants.NetworkTableEntries.GYRO_VALUE);
 
@@ -82,7 +70,6 @@ public class DriveTrain extends PIDSubsystem {
 		RightBT.follow(RightAT);
 
 		drive = new DifferentialDrive(LeftAT, RightAT);
-		m_odometry = new DifferentialDriveOdometry(m_gyro.getRotation2d());
 	}
 
 	@Override
@@ -90,17 +77,10 @@ public class DriveTrain extends PIDSubsystem {
 		super.periodic();
 
 		// Update the odometry in the periodic block
-		m_odometry.update(
-			m_gyro.getRotation2d (),
-			this.getLeftEncoderPosition(),
-			this.getRightEncoderPosition()
-		);
-
-		SmartDashboard.putNumber("Left Encoder", this.getLeftEncoderPosition());
+	
+		SmartDashboard.putNumber("Left Encoder", this.getLeftEncoderPosition() / Constants.DriveTrainConstants.TicksPerInch);
 		SmartDashboard.putNumber("Right Encoder", this.getRightEncoderPosition() / Constants.DriveTrainConstants.TicksPerInch);
 		SmartDashboard.putNumber("Target", this.getSetpoint());
-
-		this.gyroEntry.setNumber(this.m_gyro.getAngle());
 	}
 
 	public void arcadeDrive(double speed, double rotation) {
@@ -159,14 +139,6 @@ public class DriveTrain extends PIDSubsystem {
 		trans.set(state);
 	}
 
-	/**
-	 * Returns the currently-estimated pose of the robot.
-	 *
-	 * @return The pose.
-	 */
-	public Pose2d getPose() {
-		return m_odometry.getPoseMeters();
-	}
 
 	/**
 	 * Returns the current wheel speeds of the robot.
@@ -188,7 +160,6 @@ public class DriveTrain extends PIDSubsystem {
 	 */
 	public void resetOdometry(Pose2d pose) {
 		resetEncoders();
-		m_odometry.resetPosition(pose, m_gyro.getRotation2d());
 	}
 
 	public double tankDriveVolts(double left, double right) {
@@ -223,31 +194,6 @@ public class DriveTrain extends PIDSubsystem {
 	 */
 	public void setMaxOutput(double maxOutput) {
 		drive.setMaxOutput(maxOutput);
-	}
-
-	/**
-	 * Zeroes the heading of the robot.
-	 */
-	public void zeroHeading() {
-		m_gyro.reset();
-	}
-
-	/**
-	 * Returns the heading of the robot.
-	 *
-	 * @return the robot's heading in degrees, from -180 to 180
-	 */
-	public double getHeading() {
-		return m_gyro.getRotation2d().getDegrees();
-	}
-
-	/**
-	 * Returns the turn rate of the robot.
-	 *
-	 * @return The turn rate of the robot, in degrees per second
-	 */
-	public double getTurnRate() {
-		return -m_gyro.getRate();
 	}
 
 	@Override

@@ -1,20 +1,13 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.controller.PIDController;
-import edu.wpi.first.wpilibj.controller.RamseteController;
-import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.trajectory.Trajectory;
-import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
-import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpiutil.math.MathUtil;
@@ -25,10 +18,7 @@ import frc.robot.subsystems.NewShooterSubsystem.coverState;
 import frc.robot.utils.JoystickDPad;
 import frc.robot.utils.DPad.Position;
 
-import java.io.IOException;
-import java.nio.file.Path;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.DoubleSupplier;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -162,27 +152,76 @@ public class RobotContainer {
 	private void configureAutoChooser() {
 		//positive power is intake forward
 		this.autoChooser.setDefaultOption("Do Nothing", new DoNothingAutoCommand());
-		this.autoChooser.addOption("Barrel Racing", new PIDCommand(
-			drivePidController,
-			() -> {
-				double pos = (this.driveTrain.getRightEncoderPosition() / Constants.DriveTrainConstants.TicksPerInch);
-				return Math.abs(pos);
-			},
-			110,
-			output -> {
-				output = MathUtil.clamp(output, -0.8, 0.8);
-				this.driveTrain.tankDrive(-output, -output);
-			}
+		this.autoChooser.addOption("Barrel Racing", new SequentialCommandGroup(
+			// Drive forward 90 inches
+			// new PIDCommand(drivePidController,
+			// () -> {
+			// 	double pos = (this.driveTrain.getRightEncoderPosition() / Constants.DriveTrainConstants.TicksPerInch);
+			// 	return Math.abs(pos);
+			// },
+			// 90,
+			// output -> {
+			// 	output = MathUtil.clamp(output, -0.8, 0.8);
+			// 	this.driveTrain.tankDrive(-output, -output);
+			// }),
+
+			// Drive 90 inches
+			new DriveWithEncoder(this.driveTrain, 90),
+
+			// Lean just under 1 full revolution
+			new LeanWithEncoder(this.driveTrain, 20, Side.Right, 0.25, 115),
+
+			// Drive forward 135 inches
+			new DriveWithEncoder(this.driveTrain, 135),
+
+			// Lean 1 full revolution
+			new LeanWithEncoder(this.driveTrain, 20, Side.Left, 0.25, 120),
+
+			//drive forward 30 inches
+			new DriveWithEncoder(this.driveTrain, 30),
+			
+			// Lean 1/2 revolution
+			new LeanWithEncoder(this.driveTrain, 20, Side.Left, 0.25, 63),
+
+			// Drive forward 240 inches
+			new DriveWithEncoder(this.driveTrain, 240)
 		));
 
 		this.autoChooser.addOption("Bounce Path", new SequentialCommandGroup(
-			new DriveWithTime(this.driveTrain, 1500, -0.75),
-			new LeanWithTime(this.driveTrain, 1000, Side.Right, -0.3),
-			new DriveWithTime(this.driveTrain, 2000, -0.75),
-			new LeanWithTime(this.driveTrain, 6800, Side.Left, -0.3)
-			
+			// Init distance, tune for first turn entry
+			new DriveWithEncoder(this.driveTrain, 4),
+			new LeanWithEncoder(this.driveTrain, 20, Side.Left, 0.25, 34),
+			new DriveWithEncoder(this.driveTrain, 12),
+			new LeanWithEncoder(this.driveTrain, 10, Side.Right, -0.25, -5),
+			new DriveWithEncoder(this.driveTrain, -100),
+			new LeanWithEncoder(this.driveTrain, 20, Side.Right, -0.25, -63),
+			new DriveWithEncoder(this.driveTrain, 100),
+			new LeanWithEncoder(this.driveTrain, 10, Side.Right, -0.25, -5),
+			new DriveWithEncoder(this.driveTrain, -100),
+			new LeanWithEncoder(this.driveTrain, 20, Side.Left, 0.25, 34),
+			new DriveWithEncoder(this.driveTrain, 12),
+			new LeanWithEncoder(this.driveTrain, 20, Side.Left, 0.25, 34),
+			new DriveWithEncoder(this.driveTrain, 100),
+			new LeanWithEncoder(this.driveTrain, 20, Side.Left, 0.25, 34),
+			new DriveWithEncoder(this.driveTrain, 20)
 		));
 
+		this.autoChooser.addOption("Slolom Path", new SequentialCommandGroup(
+			// Init distance, tune for first turn entry
+			new DriveWithEncoder(this.driveTrain, 4),
+			new LeanWithEncoder(this.driveTrain, 20, Side.Left, 0.25, 20),
+			new DriveWithEncoder(this.driveTrain, 25),
+			new LeanWithEncoder(this.driveTrain, 10, Side.Right, 0.25, 20),
+			new DriveWithEncoder(this.driveTrain, 120),
+			new LeanWithEncoder(this.driveTrain, 20, Side.Right, 0.25, 20),
+			new DriveWithEncoder(this.driveTrain, 25),
+			new LeanWithEncoder(this.driveTrain, 10, Side.Left, 0.25, 125),
+			new DriveWithEncoder(this.driveTrain, 15),
+			new LeanWithEncoder(this.driveTrain, 20, Side.Right, 0.25, 20),
+			new DriveWithEncoder(this.driveTrain, 120),
+			new LeanWithEncoder(this.driveTrain, 20, Side.Right, 0.25, 20),
+			new DriveWithEncoder(this.driveTrain, 25)
+		));
 		
 		// this.autoChooser.addOption("Barrel Racing", new PathWeaverAuto(this.driveTrain, "PathWeaver/Barrel Racing/Groups/AutoNav.json"));
 		// this.autoChooser.addOption("Bounce Path", new PathWeaverAuto(this.driveTrain, "paths/YourPath.wpilib.json"));

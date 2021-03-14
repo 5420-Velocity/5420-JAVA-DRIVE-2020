@@ -10,6 +10,8 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
+import edu.wpi.first.wpiutil.math.MathUtil;
+import frc.robot.Constants;
 import frc.robot.Constants.DriveTrainConstants;
 import frc.robot.subsystems.DriveTrain;
 
@@ -29,13 +31,16 @@ public class DriveWithEncoder extends CommandBase {
 			DriveTrainConstants.EncoderI,
 			DriveTrainConstants.EncoderD);
 
-		this.pidCommand = new PIDCommand(
-			drivePidController,
-			() -> (this.encoderTarget - this.driveTrain.getLeftEncoderPosition()),
-			0.0,
-			output -> this.driveTrain.arcadeDrive(output, 0),
-			this.driveTrain
-		);
+		this.pidCommand = new PIDCommand(drivePidController,
+		() -> {
+			double pos = (this.driveTrain.getRightEncoderPosition() / Constants.DriveTrainConstants.TicksPerInch);
+			return Math.abs(pos);
+		},
+		90,
+		output -> {
+			output = MathUtil.clamp(output, -0.8, 0.8);
+			this.driveTrain.tankDrive(-output, -output);
+		});
 
 		addRequirements(subsystem);
 	}

@@ -22,11 +22,12 @@ public class LeanWithEncoder extends CommandBase {
   private boolean isFinished = false;
   private double target;
 
-  public LeanWithEncoder(DriveTrain Subsystem, double radius, Side side, double innerPower) {
+  public LeanWithEncoder(DriveTrain Subsystem, double radius, Side side, double innerPower, double target) {
     this.driveTrain = Subsystem;
     this.radius = radius;
     this.side = side;
     this.power = innerPower;
+    this.target = target;
 
     addRequirements(Subsystem);
   }
@@ -34,7 +35,7 @@ public class LeanWithEncoder extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    target = (radius * 2 * Math.PI) * Constants.DriveTrainConstants.ticksPerInch;
+    target = target * Constants.DriveTrainConstants.ticksPerInch;
 
 		this.isFinished = false;
   }

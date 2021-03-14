@@ -16,7 +16,6 @@ import frc.robot.Constants;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.PixyAlgo;
 import io.github.pseudoresonance.pixy2api.Pixy2;
-import io.github.pseudoresonance.pixy2api.Pixy2CCC;
 import io.github.pseudoresonance.pixy2api.Pixy2CCC.Block;
 
 import java.util.ArrayList;
