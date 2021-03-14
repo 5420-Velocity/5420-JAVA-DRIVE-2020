@@ -56,7 +56,7 @@ public class DriveTrain extends PIDSubsystem {
 		RightAT.configFactoryDefault();
 		RightBT.configFactoryDefault();
 
-		setBrakeMode(NeutralMode.Brake);
+		setBrakeMode(NeutralMode.Coast);
 
 		LeftAT.configOpenloopRamp(1);
 		LeftBT.configOpenloopRamp(1);
@@ -133,12 +133,12 @@ public class DriveTrain extends PIDSubsystem {
 	}
 
 	public void shift(boolean state) {
-		if(state == true){
-			setBrakeMode(NeutralMode.Coast);
-		}
-		else{
-			setBrakeMode(NeutralMode.Brake);
-		}
+		// if(state == true){
+		// 	setBrakeMode(NeutralMode.Coast);
+		// }
+		// else{
+		// 	setBrakeMode(NeutralMode.Coast);
+		// }
 		trans.set(state);
 	}
 
