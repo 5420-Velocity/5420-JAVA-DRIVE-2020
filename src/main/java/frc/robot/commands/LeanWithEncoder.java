@@ -35,9 +35,8 @@ public class LeanWithEncoder extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    target = target * Constants.DriveTrainConstants.TicksPerInch;
-
-		this.isFinished = false;
+    this.isFinished = false;
+    this.driveTrain.resetEncoders();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -46,12 +45,12 @@ public class LeanWithEncoder extends CommandBase {
     driveTrain.leanPower(this.radius, this.power, this.side);
 
     if(this.side == Side.Left){
-      if(driveTrain.getLeftEncoderPosition() >= target){
+      if(Math.abs(driveTrain.getRightEncoderPosition()) >= target ){
         this.isFinished = true;
       }
     }
     else if(this.side == Side.Right){
-      if(driveTrain.getRightEncoderPosition() >= target){
+      if(Math.abs(driveTrain.getRightEncoderPosition()) >= target){
         this.isFinished = true;
       }    
     }

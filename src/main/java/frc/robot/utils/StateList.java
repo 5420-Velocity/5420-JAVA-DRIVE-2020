@@ -8,7 +8,7 @@ import java.util.function.Predicate;
  * Returns TRUE if the predicate value returns true for all elements
  *  in the length limited LinkedList.
  * 
- * StateList<boolean> state = new StateList<boolean>();
+ * StateList<Boolean> state = StateList.bool();
  * state.add(true);
  * state.get();
  */

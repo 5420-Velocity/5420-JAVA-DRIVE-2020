@@ -14,6 +14,7 @@ import edu.wpi.first.wpiutil.math.MathUtil;
 import frc.robot.Constants;
 import frc.robot.Constants.DriveTrainConstants;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.utils.StateList;
 
 public class DriveWithEncoder extends CommandBase {
 
@@ -21,7 +22,7 @@ public class DriveWithEncoder extends CommandBase {
 	private final double encoderTarget;
 	private final PIDController drivePidController;
 	private PIDCommand pidCommand;
-	private boolean isFinished;
+	private StateList<Boolean> state;
 
 	public DriveWithEncoder(DriveTrain subsystem, double targetDistance) {
 		this.driveTrain = subsystem;
@@ -32,6 +33,7 @@ public class DriveWithEncoder extends CommandBase {
 			DriveTrainConstants.EncoderI,
 			DriveTrainConstants.EncoderD);
 
+		this.state = StateList.bool();
 		
 		addRequirements(subsystem);
 	}
@@ -40,7 +42,6 @@ public class DriveWithEncoder extends CommandBase {
 	@Override
 	public void initialize() {
 		this.driveTrain.resetEncoders();
-		this.isFinished = false;
 
 		this.pidCommand = new PIDCommand(drivePidController,
 		() -> {
@@ -61,11 +62,11 @@ public class DriveWithEncoder extends CommandBase {
 	// Called every time the scheduler runs while the command is scheduled.
 	@Override
 	public void execute() {
-		if(( Math.abs(this.driveTrain.getRightEncoderPosition())  - encoderTarget) < 2) {
-			this.isFinished = true;
+		if(Math.abs(this.driveTrain.getRightEncoderPosition()  - encoderTarget) < 2) {
+			this.state.add(true);	
 		}
 		else {
-			this.isFinished = false;
+			this.state.add(false);
 		}
 		
 		this.pidCommand.execute();
@@ -82,6 +83,6 @@ public class DriveWithEncoder extends CommandBase {
 	// Returns true when the command should end.
 	@Override
 	public boolean isFinished() {
-		return this.isFinished;
+		return this.state.get();
 	}
 }

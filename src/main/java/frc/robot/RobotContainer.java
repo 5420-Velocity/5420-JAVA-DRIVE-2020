@@ -165,11 +165,11 @@ public class RobotContainer {
 			// 	this.driveTrain.tankDrive(-output, -output);
 			// }),
 
-			// Drive 90 inches
+			//Drive 90 inches
 			new DriveWithEncoder(this.driveTrain, 90),
 
-			// Lean just under 1 full revolution
-			new LeanWithEncoder(this.driveTrain, 20, Side.Right, 0.25, 115),
+			// Lean 1 full revolution
+			new LeanWithEncoder(this.driveTrain, 20, Side.Right, -0.25, 33),
 
 			// Drive forward 135 inches
 			new DriveWithEncoder(this.driveTrain, 135),
