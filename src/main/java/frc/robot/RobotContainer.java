@@ -295,19 +295,21 @@ public class RobotContainer {
 					// Range
 					new FinishablePIDCommand(
 						rangePIDController,
-						() -> {
-							// If no target is found, Offset is Zero
-							if (!this.limeLight.hasTarget()) return 0.0;
-							return this.limeLight.getDistance();
-						},
+						this.limeLight::getDistance,
 						Constants.ShooterConstants.rangeGoal,
 						output -> {
 							double turnSpeed = turnOutput.get();
 							double outSpeed = output;
 
 							// Set a max speed
-							if (turnSpeed > 0.4) turnSpeed = 0.4;
-							if (outSpeed > 0.6) outSpeed = 0.4;
+							turnSpeed = MathUtil.clamp(turnSpeed, -0.8, 0.8);
+							outSpeed = MathUtil.clamp(outSpeed, -0.5, 0.5);
+
+							if (!this.limeLight.hasTarget()) {
+								// No Target
+								outSpeed = -0.35;
+								turnSpeed = 0;
+							}
 
 							driveTrain.arcadeDrive(outSpeed, turnSpeed);
 						},
@@ -316,7 +318,7 @@ public class RobotContainer {
 							// Check LL to see if the values are "stable" or "within range" of our goal.
 							// Return true will kill this command.
 
-							if (Math.abs(offset) < 1) {
+							if (Math.abs(offset) < 2) {
 								SmartDashboard.putBoolean("Range Complete", true);
 								return true;
 							}
@@ -328,11 +330,7 @@ public class RobotContainer {
 					// Turning
 					new FinishablePIDCommand(
 						turnPIDController,
-						() -> {
-							// If no target is found, Offset is Zero
-							if (!this.limeLight.hasTarget()) return 0.0;
-							return limeLight.getTX();
-						},
+						limeLight::getTX,
 						0.0,
 						turnOutput::set,
 						FinishablePIDCommand.ConsumeValueType.Offset,
