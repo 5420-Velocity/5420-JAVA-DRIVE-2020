@@ -9,6 +9,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
+import frc.robot.Constants.DriveTrainConstants;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.RobotContainer.Side;
 
@@ -21,13 +22,14 @@ public class LeanWithEncoder extends CommandBase {
 
   private boolean isFinished = false;
   private double target;
+  private double revs;
 
-  public LeanWithEncoder(DriveTrain Subsystem, double radius, Side side, double innerPower, double target) {
+  public LeanWithEncoder(DriveTrain Subsystem, double radius, Side side, double innerPower, double revs) {
     this.driveTrain = Subsystem;
     this.radius = radius;
     this.side = side;
     this.power = innerPower;
-    this.target = target;
+    this.revs = revs;
 
     addRequirements(Subsystem);
   }
@@ -37,6 +39,8 @@ public class LeanWithEncoder extends CommandBase {
   public void initialize() {
     this.isFinished = false;
     this.driveTrain.resetEncoders();
+
+    target = revs * (radius / DriveTrainConstants.InchesPerRevolution);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

@@ -169,19 +169,19 @@ public class RobotContainer {
 			new DriveWithEncoder(this.driveTrain, 90),
 
 			// Lean 1 full revolution
-			new LeanWithEncoder(this.driveTrain, 20, Side.Right, -0.25, 33),
+			new LeanWithEncoder(this.driveTrain, 20, Side.Right, -0.25, 1),
 
 			// Drive forward 135 inches
 			new DriveWithEncoder(this.driveTrain, 135),
 
 			// Lean 1 full revolution
-			new LeanWithEncoder(this.driveTrain, 20, Side.Left, 0.25, 120),
+			new LeanWithEncoder(this.driveTrain, 20, Side.Left, 0.25, 0.2),
 
 			//drive forward 30 inches
 			new DriveWithEncoder(this.driveTrain, 30),
 			
 			// Lean 1/2 revolution
-			new LeanWithEncoder(this.driveTrain, 20, Side.Left, 0.25, 63),
+			new LeanWithEncoder(this.driveTrain, 20, Side.Left, 0.25, 0.5),
 
 			// Drive forward 240 inches
 			new DriveWithEncoder(this.driveTrain, 240)

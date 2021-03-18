@@ -174,6 +174,7 @@ public final class Constants {
 		public static final int RightA = 3;
 		public static final int RightB = 4;
 		public static final double TicksPerInch = 104;
+		public static final double InchesPerRevolution = 33;
 
 	}
 
