@@ -15,6 +15,8 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.FeedMoment;
+import frc.robot.FeedMoment.MomentType;
 import frc.robot.subsystems.ChuteSubsystem;
 import frc.robot.subsystems.NewShooterSubsystem;
 
@@ -23,10 +25,9 @@ public class AutoShoot extends CommandBase {
 	private final ChuteSubsystem shooterSubsystem;
 	private final NewShooterSubsystem newShooter;
 	private Date speedRampUpTime;
-	private LinkedList<Date> shootInterval = new LinkedList<Date>();
+	private LinkedList<FeedMoment> shootInterval = new LinkedList<FeedMoment>();
 	private DoubleSupplier speedRef;
-	private boolean feeding = false;
-	private Date currentDeadline;
+	private FeedMoment currentDeadline;
 	private boolean isFinished = false;
 
 	public AutoShoot(NewShooterSubsystem newShooter, ChuteSubsystem subsystem, double speedValue) {
@@ -49,12 +50,12 @@ public class AutoShoot extends CommandBase {
 	public void initialize() {
 
 		this.isFinished = false;
-		this.feeding = false;
 		this.currentDeadline = null;
 
 		int rampUpTime = 1800; // Delay Time
-		int feedTime = 700; // On Time
-		int feedTimeSpace = 1100; // Off Time
+		int feedForwardTime = 650; // Forward Feed Time
+		int feedReverseTime = 400; // Reverse Feed Time
+		int feedTimeSpace = 1000; // Off Time
 		int ballCount = 3;
 
 		Calendar calculateDate = GregorianCalendar.getInstance();
@@ -66,21 +67,27 @@ public class AutoShoot extends CommandBase {
 		// This is needed to set the correct interval.
 		Calendar sacrificialInit = GregorianCalendar.getInstance();
 		sacrificialInit.add(GregorianCalendar.MILLISECOND, timelinePosition);
-		this.shootInterval.add(sacrificialInit.getTime());
+		this.shootInterval.add(new FeedMoment(MomentType.Off, sacrificialInit.getTime()));
 
 		// Store the times of when to trigger the shooting
 		for (int i = 0; i < ballCount; i++) {
-			// On
-			Calendar calculateDateBall = GregorianCalendar.getInstance();
-			timelinePosition += feedTime;
-			calculateDateBall.add(GregorianCalendar.MILLISECOND, timelinePosition);
-			this.shootInterval.add(calculateDateBall.getTime());
+			// Forward
+			Calendar calculateDateBallOn = GregorianCalendar.getInstance();
+			timelinePosition += feedForwardTime;
+			calculateDateBallOn.add(GregorianCalendar.MILLISECOND, timelinePosition);
+			this.shootInterval.add(new FeedMoment(MomentType.Forward, calculateDateBallOn.getTime()));
+
+			// Reverse
+			Calendar calculateDateBallFeedReverse = GregorianCalendar.getInstance();
+			timelinePosition += feedReverseTime;
+			calculateDateBallFeedReverse.add(GregorianCalendar.MILLISECOND, timelinePosition);
+			this.shootInterval.add(new FeedMoment(MomentType.Reverse, calculateDateBallFeedReverse.getTime()));
 
 			// Off
-			Calendar calculateDateBallFeed = GregorianCalendar.getInstance();
+			Calendar calculateDateBallFeedOff = GregorianCalendar.getInstance();
 			timelinePosition += feedTimeSpace;
-			calculateDateBallFeed.add(GregorianCalendar.MILLISECOND, timelinePosition);
-			this.shootInterval.add(calculateDateBallFeed.getTime());
+			calculateDateBallFeedOff.add(GregorianCalendar.MILLISECOND, timelinePosition);
+			this.shootInterval.add(new FeedMoment(MomentType.Off, calculateDateBallFeedOff.getTime()));
 		}
 		
 	}
@@ -102,28 +109,40 @@ public class AutoShoot extends CommandBase {
 		else {
 			// Speed Ramp Complete, Fire using the feeder
 
-			if (this.currentDeadline == null && this.shootInterval.size() != 0) {
-				this.currentDeadline = this.shootInterval.pop();
-			}
+			if (this.currentDeadline == null) {
+				// If we dont have a Deadline.
 
-			if (this.currentDeadline != null && new Date().after(this.currentDeadline)) {
-				this.currentDeadline = null;
-
-				if (this.feeding) {
-					this.feeding = false;
-					this.shooterSubsystem.setRight(0.0);
-
-					// Routine is Complete, Mark Command is finished.
-					if (this.shootInterval.size() == 0) {
-						this.isFinished = true;
-					}
+				if (this.shootInterval.size() == 0) {
+					// We are out of tasks the Routine is Complete, Mark Command is finished
+					this.isFinished = true;
 				}
 				else {
-					// Not Feeding, Turn the motor on to feed
-					this.feeding = true;
-					this.shooterSubsystem.setRight(0.7);
+					// Grab the next Deadline
+					this.currentDeadline = this.shootInterval.pop();
 				}
 			}
+
+			if (this.currentDeadline != null) {
+				// We have a deadline
+
+				if (this.currentDeadline.expired()) {
+					// If we have a deadline AND it's expired
+					this.currentDeadline = null;
+				}
+				else {
+					// If we have a deadline
+					if (this.currentDeadline.type == MomentType.Off) {
+						this.shooterSubsystem.setRight(0);
+					}
+					else if (this.currentDeadline.type == MomentType.Forward) {
+						this.shooterSubsystem.setRight(0.7);
+					}
+					else if (this.currentDeadline.type == MomentType.Reverse) {
+						this.shooterSubsystem.setRight(-0.4);
+					}
+				}
+			}
+
 		}
 	}
 
