@@ -22,11 +22,13 @@ public class DriveWithEncoder extends CommandBase {
 	private final double encoderTarget;
 	private final PIDController drivePidController;
 	private PIDCommand pidCommand;
+	private final boolean reversed;
 	private StateList<Boolean> state;
 
-	public DriveWithEncoder(DriveTrain subsystem, double targetDistance) {
+	public DriveWithEncoder(DriveTrain subsystem, double targetDistance, boolean reversed) {
 		this.driveTrain = subsystem;
 		this.encoderTarget = targetDistance;
+		this.reversed = reversed;
 
 		this.drivePidController = new PIDController(
 			DriveTrainConstants.EncoderP,
@@ -50,6 +52,9 @@ public class DriveWithEncoder extends CommandBase {
 		},
 		encoderTarget,
 		output -> {
+			if(this.reversed == true){
+				output = -output;
+			}
 			output = MathUtil.clamp(output, -0.8, 0.8);
 			this.driveTrain.tankDrive(-output, -output);
 		});

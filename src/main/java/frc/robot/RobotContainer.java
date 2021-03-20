@@ -166,61 +166,61 @@ public class RobotContainer {
 			// }),
 
 			//Drive 90 inches
-			new DriveWithEncoder(this.driveTrain, 90),
+			new DriveWithEncoder(this.driveTrain, 90, false),
 
 			// Lean 1 full revolution
-			new LeanWithEncoder(this.driveTrain, 20, Side.Right, -0.25, 1),
+			new LeanWithEncoder(this.driveTrain, 20, Side.Right, -0.4, 1),
 
-			// Drive forward 135 inches
-			new DriveWithEncoder(this.driveTrain, 135),
+			//Drive forward 135 inches
+			new DriveWithEncoder(this.driveTrain, 135, false),
 
 			// Lean 1 full revolution
 			new LeanWithEncoder(this.driveTrain, 20, Side.Left, 0.25, 0.2),
 
 			//drive forward 30 inches
-			new DriveWithEncoder(this.driveTrain, 30),
+			new DriveWithEncoder(this.driveTrain, 30, false),
 			
 			// Lean 1/2 revolution
 			new LeanWithEncoder(this.driveTrain, 20, Side.Left, 0.25, 0.5),
 
 			// Drive forward 240 inches
-			new DriveWithEncoder(this.driveTrain, 240)
+			new DriveWithEncoder(this.driveTrain, 240, false)
 		));
 
 		this.autoChooser.addOption("Bounce Path", new SequentialCommandGroup(
 			// Init distance, tune for first turn entry
-			new DriveWithEncoder(this.driveTrain, 4),
-			new LeanWithEncoder(this.driveTrain, 20, Side.Left, 0.25, 34),
-			new DriveWithEncoder(this.driveTrain, 12),
-			new LeanWithEncoder(this.driveTrain, 10, Side.Right, -0.25, -5),
-			new DriveWithEncoder(this.driveTrain, -100),
-			new LeanWithEncoder(this.driveTrain, 20, Side.Right, -0.25, -63),
-			new DriveWithEncoder(this.driveTrain, 100),
-			new LeanWithEncoder(this.driveTrain, 10, Side.Right, -0.25, -5),
-			new DriveWithEncoder(this.driveTrain, -100),
-			new LeanWithEncoder(this.driveTrain, 20, Side.Left, 0.25, 34),
-			new DriveWithEncoder(this.driveTrain, 12),
-			new LeanWithEncoder(this.driveTrain, 20, Side.Left, 0.25, 34),
-			new DriveWithEncoder(this.driveTrain, 100),
-			new LeanWithEncoder(this.driveTrain, 20, Side.Left, 0.25, 34),
-			new DriveWithEncoder(this.driveTrain, 20)
+			new DriveWithEncoder(this.driveTrain, 10, false),
+			new LeanWithEncoder(this.driveTrain, 20, Side.Left, 0.4, 0.25),
+			new DriveWithEncoder(this.driveTrain, 10, true),
+			new LeanWithEncoder(this.driveTrain, 5, Side.Right, -0.4, 0.25),
+			new DriveWithEncoder(this.driveTrain, 20, true),
+			new LeanWithEncoder(this.driveTrain, 20, Side.Right, -0.4, 0.25),
+			new DriveWithEncoder(this.driveTrain, 30, true),
+			new DriveWithEncoder(this.driveTrain, 28, false),
+			new LeanWithEncoder(this.driveTrain, 20, Side.Left, 0.4, 0.25),
+			new DriveWithEncoder(this.driveTrain, 10, false),
+			new LeanWithEncoder(this.driveTrain, 20, Side.Left, 0.4, 0.25),
+			new DriveWithEncoder(this.driveTrain, 28, false),
+			new DriveWithEncoder(this.driveTrain, 5, true),
+			new LeanWithEncoder(this.driveTrain, 20, Side.Left, 0.4, 0.25),
+			new DriveWithEncoder(this.driveTrain, 10, false)
 		));
 
 		this.autoChooser.addOption("Slolom Path", new SequentialCommandGroup(
-			// Init distance, tune for first turn entry
-			new DriveWithEncoder(this.driveTrain, 4),
-			new LeanWithEncoder(this.driveTrain, 20, Side.Left, 0.25, 20),
-			new DriveWithEncoder(this.driveTrain, 25),
-			new LeanWithEncoder(this.driveTrain, 10, Side.Right, 0.25, 20),
-			new DriveWithEncoder(this.driveTrain, 120),
-			new LeanWithEncoder(this.driveTrain, 20, Side.Right, 0.25, 20),
-			new DriveWithEncoder(this.driveTrain, 25),
-			new LeanWithEncoder(this.driveTrain, 10, Side.Left, 0.25, 125),
-			new DriveWithEncoder(this.driveTrain, 15),
-			new LeanWithEncoder(this.driveTrain, 20, Side.Right, 0.25, 20),
-			new DriveWithEncoder(this.driveTrain, 120),
-			new LeanWithEncoder(this.driveTrain, 20, Side.Right, 0.25, 20),
-			new DriveWithEncoder(this.driveTrain, 25)
+			// // Init distance, tune for first turn entry
+			// new DriveWithEncoder(this.driveTrain, 4, false),
+			// new LeanWithEncoder(this.driveTrain, 20, Side.Left, 0.25, 20),
+			// new DriveWithEncoder(this.driveTrain, 25, false),
+			// new LeanWithEncoder(this.driveTrain, 10, Side.Right, 0.25, 20),
+			// new DriveWithEncoder(this.driveTrain, 120),
+			// new LeanWi//thEncoder(this.driveTrain, 20, Side.Right, 0.25, 20),
+			// new DriveWithE/ncoder(this.driveTrain, 25),
+			// new LeanWithEncoder(this.driveTrain, 10, Side.Left, 0.25, 125),
+			// new DriveWithEncoder(this.driveTrain, 15),
+			// new LeanWithEncoder(this.driveTrain, 20, Side.Right, 0.25, 20),
+			// new DriveWithEncoder(this.driveTrain, 120),
+			// new LeanWithEncoder(this.driveTrain, 20, Side.Right, 0.25, 20),
+			// new DriveWithEncoder(this.driveTrain, 25)
 		));
 		
 		// this.autoChooser.addOption("Barrel Racing", new PathWeaverAuto(this.driveTrain, "PathWeaver/Barrel Racing/Groups/AutoNav.json"));

@@ -40,7 +40,7 @@ public class LeanWithEncoder extends CommandBase {
     this.isFinished = false;
     this.driveTrain.resetEncoders();
 
-    target = revs * (radius / DriveTrainConstants.InchesPerRevolution);
+    target = revs * 40;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
