@@ -8,6 +8,8 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 import edu.wpi.first.wpiutil.math.MathUtil;
@@ -25,17 +27,30 @@ public class DriveWithEncoder extends CommandBase {
 	private final boolean reversed;
 	private StateList<Boolean> state;
 	private final double clampSpeed;
+	private final double tolerance;
+
+	public DriveWithEncoder(DriveTrain subsystem, double targetDistance, boolean reversed) {
+		this(subsystem, targetDistance, reversed, 0.8);
+	}
 
 	public DriveWithEncoder(DriveTrain subsystem, double targetDistance, boolean reversed, double clampSpeed) {
+		this(subsystem, targetDistance, reversed, clampSpeed, 8);
+	}
+
+	public DriveWithEncoder(DriveTrain subsystem, double targetDistance, boolean reversed, double clampSpeed, double tolerance) {
 		this.driveTrain = subsystem;
 		this.encoderTarget = targetDistance;
 		this.reversed = reversed;
 		this.clampSpeed = clampSpeed;
+		this.tolerance = tolerance;
 
 		this.drivePidController = new PIDController(
 			DriveTrainConstants.EncoderP,
 			DriveTrainConstants.EncoderI,
 			DriveTrainConstants.EncoderD);
+
+		
+		System.out.println("Command::DriveWithEncoder:" + this.hashCode() + ": CONSTRUCT");
 
 		addRequirements(subsystem);
 	}
@@ -43,24 +58,26 @@ public class DriveWithEncoder extends CommandBase {
 	// Called when the command is initially scheduled.
 	@Override
 	public void initialize() {
+		SmartDashboard.putString("Command", "Command::DriveWithEncoder:" + this.hashCode() + ": INIT");
+
 		this.driveTrain.resetEncoders();
 
-		this.state = StateList.bool(5);
+		this.state = StateList.bool(6);
 
 		this.pidCommand = new PIDCommand(drivePidController,
-		() -> {
-			double pos = (this.driveTrain.getRightEncoderPosition());
-			return Math.abs(pos);
-		},
-		encoderTarget,
-		output -> {
-			if(this.reversed == true){
-				output = -output;
+			() -> {
+				double pos = (this.driveTrain.getRightEncoderPosition());
+				return Math.abs(pos);
+			},
+			encoderTarget,
+			output -> {
+				if(this.reversed == true){
+					output = -output;
+				}
+				output = MathUtil.clamp(output, -clampSpeed, clampSpeed);
+				this.driveTrain.tankDrive(-output, -output);
 			}
-			output = MathUtil.clamp(output, -clampSpeed, clampSpeed);
-			this.driveTrain.tankDrive(-output, -output);
-		});
-
+		);
 
 		// Start the PID Command to run the task.
 		this.pidCommand.schedule();
@@ -69,7 +86,7 @@ public class DriveWithEncoder extends CommandBase {
 	// Called every time the scheduler runs while the command is scheduled.
 	@Override
 	public void execute() {
-		if(Math.abs(this.driveTrain.getRightEncoderPosition()  - encoderTarget) < 8) {
+		if(Math.abs(this.driveTrain.getRightEncoderPosition()  - encoderTarget) < this.tolerance) {
 			this.state.add(true);	
 		}
 		else {
@@ -85,6 +102,9 @@ public class DriveWithEncoder extends CommandBase {
 
 		// Stop the PID Command to run the task.
 		this.pidCommand.cancel();
+		this.driveTrain.resetEncoders();
+		
+		SmartDashboard.putString("Command", "Command::DriveWithEncoder:" + this.hashCode() + ": END");
 	}
 
 	// Returns true when the command should end.

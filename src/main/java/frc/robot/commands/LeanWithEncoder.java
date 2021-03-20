@@ -7,6 +7,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.Constants.DriveTrainConstants;
@@ -32,6 +33,7 @@ public class LeanWithEncoder extends CommandBase {
     this.revs = revs;
 
     addRequirements(Subsystem);
+	  System.out.println("Command::LeanWithEncoder:" + this.hashCode() + ": CONSTRUCT");
   }
 
   // Called when the command is initially scheduled.
@@ -39,6 +41,7 @@ public class LeanWithEncoder extends CommandBase {
   public void initialize() {
     this.isFinished = false;
     this.driveTrain.resetEncoders();
+		SmartDashboard.putString("Command", "Command::LeanWithEncoder:" + this.hashCode() + ": INIT");
 
     target = revs * 90;
   }
@@ -49,7 +52,7 @@ public class LeanWithEncoder extends CommandBase {
     driveTrain.leanPower(this.radius, this.power, this.side);
 
     if(this.side == Side.Left){
-      if(Math.abs(driveTrain.getLeftEncoderPosition()) >= target ){
+      if(Math.abs(driveTrain.getLeftEncoderPosition()) >= target){
         this.isFinished = true;
       }
     }
@@ -63,6 +66,10 @@ public class LeanWithEncoder extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    
+    this.driveTrain.resetEncoders();
+    
+		SmartDashboard.putString("Command", "Command::LeanWithEncoder:" + this.hashCode() + ": END");
   }
 
   // Returns true when the command should end.
