@@ -36,7 +36,7 @@ public class RobotContainer {
 	// The robot's subsystems and commands are defined here..
 	private final Joystick driverJoystick = new Joystick(ControllerConstants.JOYSTICK_USB_DRIVER);
 	private final Joystick operatorJoystick = new Joystick(ControllerConstants.JOYSTICK_USB_OPERATOR);
-	private final DriveTrain driveTrain = new DriveTrain();
+	public final DriveTrain driveTrain = new DriveTrain();
 	private final PIDController drivePidController = new PIDController(
 		DriveTrainConstants.EncoderP,
 		DriveTrainConstants.EncoderI,
@@ -166,44 +166,44 @@ public class RobotContainer {
 			// }),
 
 			//Drive 90 inches
-			new DriveWithEncoder(this.driveTrain, 90, false),
+			new DriveWithEncoder(this.driveTrain, 90, false, 0.8),
 
 			// Lean 1 full revolution
-			new LeanWithEncoder(this.driveTrain, 20, Side.Right, -0.4, 1),
+			new LeanWithEncoder(this.driveTrain, 20, Side.Right, -0.4, 0.99),
 
 			//Drive forward 135 inches
-			new DriveWithEncoder(this.driveTrain, 135, false),
+			new DriveWithEncoder(this.driveTrain, 90, false, 0.8),
 
 			// Lean 1 full revolution
-			new LeanWithEncoder(this.driveTrain, 20, Side.Left, 0.25, 0.2),
+			new LeanWithEncoder(this.driveTrain, 20, Side.Left, -0.4, 0.82),
 
 			//drive forward 30 inches
-			new DriveWithEncoder(this.driveTrain, 30, false),
+			new DriveWithEncoder(this.driveTrain, 90, false, 0.8),
 			
 			// Lean 1/2 revolution
-			new LeanWithEncoder(this.driveTrain, 20, Side.Left, 0.25, 0.5),
+			new LeanWithEncoder(this.driveTrain, 20, Side.Left, -0.4, 0.57),
 
 			// Drive forward 240 inches
-			new DriveWithEncoder(this.driveTrain, 240, false)
+			new DriveWithEncoder(this.driveTrain, 220, false, 0.9)
 		));
 
 		this.autoChooser.addOption("Bounce Path", new SequentialCommandGroup(
-			// Init distance, tune for first turn entry
-			new DriveWithEncoder(this.driveTrain, 10, false),
-			new LeanWithEncoder(this.driveTrain, 20, Side.Left, 0.4, 0.25),
-			new DriveWithEncoder(this.driveTrain, 10, true),
-			new LeanWithEncoder(this.driveTrain, 5, Side.Right, -0.4, 0.25),
-			new DriveWithEncoder(this.driveTrain, 20, true),
-			new LeanWithEncoder(this.driveTrain, 20, Side.Right, -0.4, 0.25),
-			new DriveWithEncoder(this.driveTrain, 30, true),
-			new DriveWithEncoder(this.driveTrain, 28, false),
-			new LeanWithEncoder(this.driveTrain, 20, Side.Left, 0.4, 0.25),
-			new DriveWithEncoder(this.driveTrain, 10, false),
-			new LeanWithEncoder(this.driveTrain, 20, Side.Left, 0.4, 0.25),
-			new DriveWithEncoder(this.driveTrain, 28, false),
-			new DriveWithEncoder(this.driveTrain, 5, true),
-			new LeanWithEncoder(this.driveTrain, 20, Side.Left, 0.4, 0.25),
-			new DriveWithEncoder(this.driveTrain, 10, false)
+			// // Init distance, tune for first turn entry
+			// new DriveWithEncoder(this.driveTrain, 10, false),
+			// new LeanWithEncoder(this.driveTrain, 20, Side.Left, 0.4, 0.25),
+			// new DriveWithEncoder(this.driveTrain, 10, true),
+			// new LeanWithEncoder(this.driveTrain, 5, Side.Right, -0.4, 0.25),
+			// new DriveWithEncoder(this.driveTrain, 20, true),
+			// new LeanWithEncoder(this.driveTrain, 20, Side.Right, -0.4, 0.25),
+			// new DriveWithEncoder(this.driveTrain, 30, true),
+			// new DriveWithEncoder(this.driveTrain, 28, false),
+			// new LeanWithEncoder(this.driveTrain, 20, Side.Left, 0.4, 0.25),
+			// new DriveWithEncoder(this.driveTrain, 10, false),
+			// new LeanWithEncoder(this.driveTrain, 20, Side.Left, 0.4, 0.25),
+			// new DriveWithEncoder(this.driveTrain, 28, false),
+			// new DriveWithEncoder(this.driveTrain, 5, true),
+			// new LeanWithEncoder(this.driveTrain, 20, Side.Left, 0.4, 0.25),
+			// new DriveWithEncoder(this.driveTrain, 10, false)
 		));
 
 		this.autoChooser.addOption("Slolom Path", new SequentialCommandGroup(

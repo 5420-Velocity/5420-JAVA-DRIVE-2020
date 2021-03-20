@@ -24,19 +24,19 @@ public class DriveWithEncoder extends CommandBase {
 	private PIDCommand pidCommand;
 	private final boolean reversed;
 	private StateList<Boolean> state;
+	private final double clampSpeed;
 
-	public DriveWithEncoder(DriveTrain subsystem, double targetDistance, boolean reversed) {
+	public DriveWithEncoder(DriveTrain subsystem, double targetDistance, boolean reversed, double clampSpeed) {
 		this.driveTrain = subsystem;
 		this.encoderTarget = targetDistance;
 		this.reversed = reversed;
+		this.clampSpeed = clampSpeed;
 
 		this.drivePidController = new PIDController(
 			DriveTrainConstants.EncoderP,
 			DriveTrainConstants.EncoderI,
 			DriveTrainConstants.EncoderD);
 
-		this.state = StateList.bool();
-		
 		addRequirements(subsystem);
 	}
 
@@ -44,6 +44,8 @@ public class DriveWithEncoder extends CommandBase {
 	@Override
 	public void initialize() {
 		this.driveTrain.resetEncoders();
+
+		this.state = StateList.bool(5);
 
 		this.pidCommand = new PIDCommand(drivePidController,
 		() -> {
@@ -55,7 +57,7 @@ public class DriveWithEncoder extends CommandBase {
 			if(this.reversed == true){
 				output = -output;
 			}
-			output = MathUtil.clamp(output, -0.8, 0.8);
+			output = MathUtil.clamp(output, -clampSpeed, clampSpeed);
 			this.driveTrain.tankDrive(-output, -output);
 		});
 
@@ -67,7 +69,7 @@ public class DriveWithEncoder extends CommandBase {
 	// Called every time the scheduler runs while the command is scheduled.
 	@Override
 	public void execute() {
-		if(Math.abs(this.driveTrain.getRightEncoderPosition()  - encoderTarget) < 2) {
+		if(Math.abs(this.driveTrain.getRightEncoderPosition()  - encoderTarget) < 8) {
 			this.state.add(true);	
 		}
 		else {

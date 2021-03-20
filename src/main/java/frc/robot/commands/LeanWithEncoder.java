@@ -40,7 +40,7 @@ public class LeanWithEncoder extends CommandBase {
     this.isFinished = false;
     this.driveTrain.resetEncoders();
 
-    target = revs * 40;
+    target = revs * 90;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -49,7 +49,7 @@ public class LeanWithEncoder extends CommandBase {
     driveTrain.leanPower(this.radius, this.power, this.side);
 
     if(this.side == Side.Left){
-      if(Math.abs(driveTrain.getRightEncoderPosition()) >= target ){
+      if(Math.abs(driveTrain.getLeftEncoderPosition()) >= target ){
         this.isFinished = true;
       }
     }
