@@ -43,7 +43,7 @@ public class JoystickDriveLean extends JoystickDrive {
 	@Override
 	public void executeDrive() {
 		// Intake forward
-		double inPower = 0.33;
+		double inPower = 0.45;
 		double radius = 12;
 
 		if (this.isControlFlipped == true && this.leanLeft.getAsDouble() > 0.5) {
@@ -55,10 +55,10 @@ public class JoystickDriveLean extends JoystickDrive {
 			driveTrain.leanPower(radius, -inPower * 0.75, Side.Right);
 		}
 		else if (this.leanLeft.getAsDouble() > 0.5) {
-			driveTrain.leanPower(radius * 1.5, inPower * 0.85, Side.Right);
+			driveTrain.leanPower(radius * 1.5, inPower * 0.87, Side.Right);
 		}
 		else if (this.leanRight.getAsDouble() > 0.5) {
-			driveTrain.leanPower(radius * 1.5, inPower * 0.85, Side.Left);
+			driveTrain.leanPower(radius * 1.5, inPower * 0.87, Side.Left);
 		}
 
 		else {
