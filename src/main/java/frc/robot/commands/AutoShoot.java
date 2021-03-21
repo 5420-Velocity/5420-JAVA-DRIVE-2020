@@ -53,8 +53,8 @@ public class AutoShoot extends CommandBase {
 		this.currentDeadline = null;
 
 		int rampUpTime = 1800; // Delay Time
-		int feedForwardTime = 650; // Forward Feed Time
-		int feedReverseTime = 400; // Reverse Feed Time
+		int feedForwardTime = 750; // Forward Feed Time
+		int feedReverseTime = 450; // Reverse Feed Time
 		int feedTimeSpace = 1000; // Off Time
 		int ballCount = 3;
 
