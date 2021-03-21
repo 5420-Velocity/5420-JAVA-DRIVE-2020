@@ -38,9 +38,9 @@ public class RobotContainer {
 	private final Joystick operatorJoystick = new Joystick(ControllerConstants.JOYSTICK_USB_OPERATOR);
 	public final DriveTrain driveTrain = new DriveTrain();
 	private final PIDController drivePidController = new PIDController(
-		DriveTrainConstants.EncoderP,
-		DriveTrainConstants.EncoderI,
-		DriveTrainConstants.EncoderD);
+		DriveTrainConstants.LongEncoderP,
+		DriveTrainConstants.LongEncoderI,
+		DriveTrainConstants.LongEncoderD);
 	// private final ControlPanelController controlPanelController = new ControlPanelController();
 	public Compressor compressor = new Compressor(0);
 	private final SendableChooser<Command> autoChooser = new SendableChooser<>();

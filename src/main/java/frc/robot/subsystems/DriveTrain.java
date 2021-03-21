@@ -47,7 +47,7 @@ public class DriveTrain extends PIDSubsystem {
 	private final Encoder rightEncoder = new Encoder(Constants.DriveTrainConstants.RightA, Constants.DriveTrainConstants.RightB);
 
 	public DriveTrain() {
-		super(new PIDController(Constants.DriveTrainConstants.EncoderP, Constants.DriveTrainConstants.EncoderI, Constants.DriveTrainConstants.EncoderD));
+		super(new PIDController(Constants.DriveTrainConstants.LongEncoderP, Constants.DriveTrainConstants.LongEncoderI, Constants.DriveTrainConstants.LongEncoderD));
 
 		this.shift(Constants.DriveTrainConstants.defaultGear);
 

@@ -44,12 +44,19 @@ public class DriveWithEncoder extends CommandBase {
 		this.clampSpeed = clampSpeed;
 		this.tolerance = tolerance;
 
-		this.drivePidController = new PIDController(
-			DriveTrainConstants.EncoderP,
-			DriveTrainConstants.EncoderI,
-			DriveTrainConstants.EncoderD);
+		if(targetDistance > 40){
+			this.drivePidController = new PIDController(
+			DriveTrainConstants.LongEncoderP,
+			DriveTrainConstants.LongEncoderI,
+			DriveTrainConstants.LongEncoderD);
+		}
+		else{
+			this.drivePidController = new PIDController(
+			DriveTrainConstants.ShortEncoderP,
+			DriveTrainConstants.ShortEncoderI,
+			DriveTrainConstants.ShortEncoderD);
+		}
 
-		
 		System.out.println("Command::DriveWithEncoder:" + this.hashCode() + ": CONSTRUCT");
 
 		addRequirements(subsystem);

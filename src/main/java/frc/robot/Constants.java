@@ -154,9 +154,13 @@ public final class Constants {
 		public static final double TurnI = 0.0;
 		public static final double TurnD = 0.01;
 
-		public static final double EncoderP = 0.04;
-		public static final double EncoderI = 0.0;
-		public static final double EncoderD = 0.0;
+		public static final double LongEncoderP = 0.04;
+		public static final double LongEncoderI = 0.0;
+		public static final double LongEncoderD = 0.0;
+
+		public static final double ShortEncoderP = 0.08;
+		public static final double ShortEncoderI = 0.0;
+		public static final double ShortEncoderD = 0.0;
 
 		// Trans Solenoid
 		public static final int transmission = 0;
