@@ -2,6 +2,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -9,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpiutil.math.MathUtil;
 import frc.robot.Constants.*;
@@ -177,12 +179,12 @@ public class RobotContainer {
 
 		this.autoChooser.addOption("Bounce Path", new SequentialCommandGroup(
 			// Init distance, tune for first turn entry
-			new DriveWithEncoder(this.driveTrain, 20, false, 0.8, 3),
-			new LeanWithEncoder(this.driveTrain, 20, Side.Left, -0.4, 0.15),
-			new DriveWithEncoder(this.driveTrain, 20, true, 0.8, 3)
-			// new LeanWithEncoder(this.driveTrain, 5, Side.Right, 0.4, 0.25),
-			// new DriveWithEncoder(this.driveTrain, 20, true, 0.8),
-			// new LeanWithEncoder(this.driveTrain, 20, Side.Right, 0.4, 0.25),
+			new DriveWithEncoder(this.driveTrain, 30, false, 0.6, 3),
+			new LeanWithEncoder(this.driveTrain, 20, Side.Left, -0.3, 0.12),
+			new DriveWithEncoder(this.driveTrain, 30, true, 0.6, 3),
+			new LeanWithEncoder(this.driveTrain, 20, Side.Right, 0.3, 0.12),
+			new DriveWithEncoder(this.driveTrain, 20, true, 0.6, 3),
+			new LeanWithEncoder(this.driveTrain, 20, Side.Right, 0.3, 0.12)
 			// new DriveWithEncoder(this.driveTrain, 30, true, 0.8),
 			// new DriveWithEncoder(this.driveTrain, 28, false, 0.8),
 			// new LeanWithEncoder(this.driveTrain, 20, Side.Left, -0.4, 0.25),

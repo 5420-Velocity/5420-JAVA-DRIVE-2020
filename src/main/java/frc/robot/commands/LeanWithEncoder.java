@@ -9,8 +9,6 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
-import frc.robot.Constants.DriveTrainConstants;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.RobotContainer.Side;
 
@@ -66,9 +64,8 @@ public class LeanWithEncoder extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    
-    this.driveTrain.resetEncoders();
-    
+    this.driveTrain.tankDrive(0, 0);
+        
 		SmartDashboard.putString("Command", "Command::LeanWithEncoder:" + this.hashCode() + ": END");
   }
 

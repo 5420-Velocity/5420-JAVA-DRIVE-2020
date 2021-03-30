@@ -44,7 +44,7 @@ public class DriveWithEncoder extends CommandBase {
 		this.clampSpeed = clampSpeed;
 		this.tolerance = tolerance;
 
-		if(targetDistance > 40){
+		if(targetDistance > 40) {
 			this.drivePidController = new PIDController(
 			DriveTrainConstants.LongEncoderP,
 			DriveTrainConstants.LongEncoderI,
@@ -72,10 +72,7 @@ public class DriveWithEncoder extends CommandBase {
 		this.state = StateList.bool(6);
 
 		this.pidCommand = new PIDCommand(drivePidController,
-			() -> {
-				double pos = (this.driveTrain.getRightEncoderPosition());
-				return Math.abs(pos);
-			},
+			() -> Math.abs(this.driveTrain.getRightEncoderPosition()),
 			encoderTarget,
 			output -> {
 				if(this.reversed == true){
@@ -93,13 +90,29 @@ public class DriveWithEncoder extends CommandBase {
 	// Called every time the scheduler runs while the command is scheduled.
 	@Override
 	public void execute() {
-		if(Math.abs(this.driveTrain.getRightEncoderPosition()  - encoderTarget) < this.tolerance) {
-			this.state.add(true);	
+
+		if (this.reversed == true) {
+			if (this.driveTrain.getRightEncoderPosition() < 0) {
+				if(Math.abs(Math.abs(this.driveTrain.getRightEncoderPosition()) - encoderTarget) < this.tolerance) {
+					System.out.println(":: At Target (from LSS 0)");
+					this.state.add(true);
+				}
+			}
+			else {
+				this.state.add(false);
+			}
 		}
 		else {
-			this.state.add(false);
+			if(Math.abs(this.driveTrain.getRightEncoderPosition() - encoderTarget) < this.tolerance) {
+				System.out.println(this.driveTrain.getRightEncoderPosition());
+				System.out.println(":: At Target (from GTR 0)");
+				this.state.add(true);
+			}
+			else {
+				this.state.add(false);
+			}
 		}
-		
+
 		this.pidCommand.execute();
 	}
 
@@ -109,7 +122,6 @@ public class DriveWithEncoder extends CommandBase {
 
 		// Stop the PID Command to run the task.
 		this.pidCommand.cancel();
-		this.driveTrain.resetEncoders();
 		
 		SmartDashboard.putString("Command", "Command::DriveWithEncoder:" + this.hashCode() + ": END");
 	}

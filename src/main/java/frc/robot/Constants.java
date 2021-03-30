@@ -87,7 +87,7 @@ public final class Constants {
 			public static final int feedMotor = 16;
 		}
 		public static final int shooterCover = 1;
-
+	
 	}
 
 	public static final class ControlPanelConstants {
