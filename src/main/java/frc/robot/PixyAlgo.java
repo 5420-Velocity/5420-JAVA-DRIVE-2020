@@ -84,6 +84,7 @@ public class PixyAlgo {
 		TreeSet<Integer> zeroRank = new TreeSet<Integer>();
 		ArrayList<BlockExtra> blocks = this.convertToBlockExtra(this.getPixyBlocks());
 
+		
 		// Add Blocks to the TreeSets for the Area and the Distance from Zero
 		for (BlockExtra block : blocks) {
 			areaRank.add(block.getArea());
@@ -123,6 +124,7 @@ public class PixyAlgo {
 				// Block 1 is a better choice, Move it up!
 				// Block 2 is a better choice, Move Block 1 down!
 				// Blocks are equal, Let it be.
+			
 			}
 		});
 
