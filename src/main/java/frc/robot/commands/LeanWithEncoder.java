@@ -7,8 +7,8 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.RobotContainer.Side;
 
@@ -21,22 +21,27 @@ public class LeanWithEncoder extends CommandBase {
 
   private boolean isFinished = false;
   private double target;
+  private double revs;
 
-  public LeanWithEncoder(DriveTrain Subsystem, double radius, Side side, double innerPower) {
+  public LeanWithEncoder(DriveTrain Subsystem, double radius, Side side, double innerPower, double revs) {
     this.driveTrain = Subsystem;
     this.radius = radius;
     this.side = side;
     this.power = innerPower;
+    this.revs = revs;
 
     addRequirements(Subsystem);
+	  System.out.println("Command::LeanWithEncoder:" + this.hashCode() + ": CONSTRUCT");
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    target = (radius * 2 * Math.PI) * Constants.DriveTrainConstants.ticksPerInch;
+    this.isFinished = false;
+    this.driveTrain.resetEncoders();
+		SmartDashboard.putString("Command", "Command::LeanWithEncoder:" + this.hashCode() + ": INIT");
 
-		this.isFinished = false;
+    target = revs * 90;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -45,12 +50,12 @@ public class LeanWithEncoder extends CommandBase {
     driveTrain.leanPower(this.radius, this.power, this.side);
 
     if(this.side == Side.Left){
-      if(driveTrain.getLeftEncoderPosition() >= target){
+      if(Math.abs(driveTrain.getLeftEncoderPosition()) >= target){
         this.isFinished = true;
       }
     }
     else if(this.side == Side.Right){
-      if(driveTrain.getRightEncoderPosition() >= target){
+      if(Math.abs(driveTrain.getRightEncoderPosition()) >= target){
         this.isFinished = true;
       }    
     }
@@ -59,6 +64,9 @@ public class LeanWithEncoder extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    this.driveTrain.tankDrive(0, 0);
+        
+		SmartDashboard.putString("Command", "Command::LeanWithEncoder:" + this.hashCode() + ": END");
   }
 
   // Returns true when the command should end.

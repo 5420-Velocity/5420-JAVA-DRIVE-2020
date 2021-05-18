@@ -12,15 +12,9 @@ import java.nio.file.Path;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
-import edu.wpi.first.wpilibj.controller.PIDController;
-import edu.wpi.first.wpilibj.controller.RamseteController;
-import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.RamseteCommand;
-import frc.robot.Constants;
-import frc.robot.Constants.AutoConstants;
 import frc.robot.subsystems.DriveTrain;
 
 public class PathWeaverAuto extends CommandBase {
@@ -44,28 +38,11 @@ public class PathWeaverAuto extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-
-		RamseteCommand ramseteCommand = new RamseteCommand(
-			trajectory,
-			this.driveTrain::getPose,
-			new RamseteController(AutoConstants.kRamseteB, AutoConstants.kRamseteZeta),
-			new SimpleMotorFeedforward(Constants.DriveTrainConstants.ksVolts,
-        Constants.DriveTrainConstants.kvVoltSecondsPerMeter,
-        Constants.DriveTrainConstants.kaVoltSecondsSquaredPerMeter),
-      Constants.DriveTrainConstants.kDriveKinematics,
-			this.driveTrain::getWheelSpeeds,
-			new PIDController(Constants.DriveTrainConstants.kPDriveVel, 0, 0),
-			new PIDController(Constants.DriveTrainConstants.kPDriveVel, 0, 0),
-			// RamseteCommand passes volts to the callback
-			this.driveTrain::tankDriveVolts,
-			this.driveTrain
-		);
 	
 		// Reset odometry to the starting pose of the trajectory.
 		this.driveTrain.resetOdometry(trajectory.getInitialPose());
 	
 		// Run path following command, then stop at the end.
-    finalCommand = ramseteCommand.andThen(() -> this.driveTrain.tankDriveVolts(0, 0));
 
     this.finalCommand.initialize();
   }

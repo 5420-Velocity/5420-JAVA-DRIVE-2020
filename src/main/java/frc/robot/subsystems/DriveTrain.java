@@ -7,24 +7,18 @@
 
 package frc.robot.subsystems;
 
-import java.util.function.BooleanSupplier;
-
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.ADXRS450_Gyro;
-import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
-import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import frc.robot.Constants;
 import frc.robot.Constants.DriveTrainConstants;
@@ -47,19 +41,13 @@ public class DriveTrain extends PIDSubsystem {
 
 	private DifferentialDrive drive;
 
-	// Odometry class for tracking robot pose
-	private final DifferentialDriveOdometry m_odometry;
-
-	// The gyro sensor
-	private final ADXRS450_Gyro m_gyro = new ADXRS450_Gyro(Constants.DriveTrainConstants.Port);
-
 	private final NetworkTableEntry gyroEntry = NetworkTableInstance.getDefault().getEntry(Constants.NetworkTableEntries.GYRO_VALUE);
 
-	private final Encoder rightEncoder = new Encoder(Constants.DriveTrainConstants.RightA, Constants.DriveTrainConstants.RightB);
 	private final Encoder leftEncoder = new Encoder(Constants.DriveTrainConstants.LeftA, Constants.DriveTrainConstants.LeftB);
+	private final Encoder rightEncoder = new Encoder(Constants.DriveTrainConstants.RightA, Constants.DriveTrainConstants.RightB);
 
 	public DriveTrain() {
-		super(new PIDController(Constants.DriveTrainConstants.EncoderP, Constants.DriveTrainConstants.EncoderI, Constants.DriveTrainConstants.EncoderD, 0.0));
+		super(new PIDController(Constants.DriveTrainConstants.LongEncoderP, Constants.DriveTrainConstants.LongEncoderI, Constants.DriveTrainConstants.LongEncoderD));
 
 		this.shift(Constants.DriveTrainConstants.defaultGear);
 
@@ -68,10 +56,7 @@ public class DriveTrain extends PIDSubsystem {
 		RightAT.configFactoryDefault();
 		RightBT.configFactoryDefault();
 
-		LeftAT.setNeutralMode(NeutralMode.Brake);
-		LeftBT.setNeutralMode(NeutralMode.Brake);
-		RightAT.setNeutralMode(NeutralMode.Brake);
-		RightBT.setNeutralMode(NeutralMode.Brake);
+		setBrakeMode(NeutralMode.Coast);
 
 		LeftAT.configOpenloopRamp(1);
 		LeftBT.configOpenloopRamp(1);
@@ -82,7 +67,6 @@ public class DriveTrain extends PIDSubsystem {
 		RightBT.follow(RightAT);
 
 		drive = new DifferentialDrive(LeftAT, RightAT);
-		m_odometry = new DifferentialDriveOdometry(m_gyro.getRotation2d());
 	}
 
 	@Override
@@ -90,13 +74,10 @@ public class DriveTrain extends PIDSubsystem {
 		super.periodic();
 
 		// Update the odometry in the periodic block
-		m_odometry.update(
-			m_gyro.getRotation2d (),
-			this.getLeftEncoderPosition(),
-			this.getRightEncoderPosition()
-		);
+	
 		SmartDashboard.putNumber("Left Encoder", this.getLeftEncoderPosition());
-		this.gyroEntry.setNumber(this.m_gyro.getAngle());
+		SmartDashboard.putNumber("Right Encoder", this.getRightEncoderPosition());
+		SmartDashboard.putNumber("Target", this.getSetpoint());
 	}
 
 	public void arcadeDrive(double speed, double rotation) {
@@ -144,25 +125,30 @@ public class DriveTrain extends PIDSubsystem {
 	}
 
 	public double getLeftEncoderPosition() {
-		return leftEncoder.getDistance();
+		return leftEncoder.get() / DriveTrainConstants.TicksPerInch;
 	}
 
 	public double getRightEncoderPosition() {
-		return rightEncoder.getDistance();
+		return rightEncoder.get() / DriveTrainConstants.TicksPerInch;
 	}
 
 	public void shift(boolean state) {
+		// if(state == true){
+		// 	setBrakeMode(NeutralMode.Coast);
+		// }
+		// else{
+		// 	setBrakeMode(NeutralMode.Coast);
+		// }
 		trans.set(state);
 	}
 
-	/**
-	 * Returns the currently-estimated pose of the robot.
-	 *
-	 * @return The pose.
-	 */
-	public Pose2d getPose() {
-		return m_odometry.getPoseMeters();
+	public void setBrakeMode(NeutralMode mode){
+		LeftAT.setNeutralMode(mode);
+		LeftBT.setNeutralMode(mode);
+		RightAT.setNeutralMode(mode);
+		RightBT.setNeutralMode(mode);
 	}
+
 
 	/**
 	 * Returns the current wheel speeds of the robot.
@@ -184,7 +170,6 @@ public class DriveTrain extends PIDSubsystem {
 	 */
 	public void resetOdometry(Pose2d pose) {
 		resetEncoders();
-		m_odometry.resetPosition(pose, m_gyro.getRotation2d());
 	}
 
 	public double tankDriveVolts(double left, double right) {
@@ -199,6 +184,8 @@ public class DriveTrain extends PIDSubsystem {
 	public void resetEncoders() {
 		LeftAT.setSelectedSensorPosition(0, 0, 10);
 		RightAT.setSelectedSensorPosition(0, 0, 10);
+		leftEncoder.reset();
+		rightEncoder.reset();
 	}
 
 	/**
@@ -219,34 +206,11 @@ public class DriveTrain extends PIDSubsystem {
 		drive.setMaxOutput(maxOutput);
 	}
 
-	/**
-	 * Zeroes the heading of the robot.
-	 */
-	public void zeroHeading() {
-		m_gyro.reset();
-	}
-
-	/**
-	 * Returns the heading of the robot.
-	 *
-	 * @return the robot's heading in degrees, from -180 to 180
-	 */
-	public double getHeading() {
-		return m_gyro.getRotation2d().getDegrees();
-	}
-
-	/**
-	 * Returns the turn rate of the robot.
-	 *
-	 * @return The turn rate of the robot, in degrees per second
-	 */
-	public double getTurnRate() {
-		return -m_gyro.getRate();
-	}
-
 	@Override
 	protected void useOutput(double outputDrive, double setPoint) {
 		this.arcadeDrive(outputDrive, 0);
+		System.out.print("Drivingggg: ");
+		System.out.println(outputDrive);
 	}
 
 	public void enable(){
@@ -261,7 +225,7 @@ public class DriveTrain extends PIDSubsystem {
 	}   
 
 	public boolean onTarget(){
-		if(this.getLeftEncoderPosition() - getSetpoint() < 1) {
+		if(this.getRightEncoderPosition() - getSetpoint() < 1) {
 			return true;
 		}
 		return false;
@@ -269,7 +233,7 @@ public class DriveTrain extends PIDSubsystem {
 
 	@Override
 	protected double getMeasurement() {
-		return this.getLeftEncoderPosition();
+		return this.getRightEncoderPosition() / Constants.DriveTrainConstants.TicksPerInch;
 	}
 }
 

@@ -87,7 +87,7 @@ public final class Constants {
 			public static final int feedMotor = 16;
 		}
 		public static final int shooterCover = 1;
-
+	
 	}
 
 	public static final class ControlPanelConstants {
@@ -146,17 +146,21 @@ public final class Constants {
 
 
 		// PID values
-		public static final double RangeP = 0.04;
+		public static final double RangeP = 0.25;
 		public static final double RangeI = 0.0;
-		public static final double RangeD = 0.00;
+		public static final double RangeD = 0.1;
 
 		public static final double TurnP = 0.14;
 		public static final double TurnI = 0.0;
 		public static final double TurnD = 0.01;
 
-		public static final double EncoderP = 0.12;
-		public static final double EncoderI = 0.0;
-		public static final double EncoderD = 0.00;
+		public static final double LongEncoderP = 0.04;
+		public static final double LongEncoderI = 0.0;
+		public static final double LongEncoderD = 0.0;
+
+		public static final double ShortEncoderP = 0.08;
+		public static final double ShortEncoderI = 0.0;
+		public static final double ShortEncoderD = 0.0;
 
 		// Trans Solenoid
 		public static final int transmission = 0;
@@ -167,13 +171,14 @@ public final class Constants {
 		public static final double SlowPower = 0.4;
 		public static final double botSpeedAtPower = 0.5/27.5; //0.5 power at 27.5 inches per second.
 		public static final double botWidth = 22;
-		public static final double ticksPerInch = 100;
+		public static final double FXticksPerInch = 100;
 
 		public static final int LeftA = 1;
 		public static final int LeftB = 2;
 		public static final int RightA = 3;
 		public static final int RightB = 4;
-		public static final double TicksPerInch = 10;
+		public static final double TicksPerInch = 104;
+		public static final double InchesPerRevolution = 20/33;
 
 	}
 

@@ -1,21 +1,16 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.controller.PIDController;
-import edu.wpi.first.wpilibj.controller.RamseteController;
-import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.trajectory.Trajectory;
-import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
-import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpiutil.math.MathUtil;
 import frc.robot.Constants.*;
@@ -25,10 +20,7 @@ import frc.robot.subsystems.NewShooterSubsystem.coverState;
 import frc.robot.utils.JoystickDPad;
 import frc.robot.utils.DPad.Position;
 
-import java.io.IOException;
-import java.nio.file.Path;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.DoubleSupplier;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -46,11 +38,11 @@ public class RobotContainer {
 	// The robot's subsystems and commands are defined here..
 	private final Joystick driverJoystick = new Joystick(ControllerConstants.JOYSTICK_USB_DRIVER);
 	private final Joystick operatorJoystick = new Joystick(ControllerConstants.JOYSTICK_USB_OPERATOR);
-	private final DriveTrain driveTrain = new DriveTrain();
+	public final DriveTrain driveTrain = new DriveTrain();
 	private final PIDController drivePidController = new PIDController(
-		DriveTrainConstants.EncoderP,
-		DriveTrainConstants.EncoderI,
-		DriveTrainConstants.EncoderD);
+		DriveTrainConstants.LongEncoderP,
+		DriveTrainConstants.LongEncoderI,
+		DriveTrainConstants.LongEncoderD);
 	// private final ControlPanelController controlPanelController = new ControlPanelController();
 	public Compressor compressor = new Compressor(0);
 	private final SendableChooser<Command> autoChooser = new SendableChooser<>();
@@ -163,19 +155,63 @@ public class RobotContainer {
 		//positive power is intake forward
 		this.autoChooser.setDefaultOption("Do Nothing", new DoNothingAutoCommand());
 		this.autoChooser.addOption("Barrel Racing", new SequentialCommandGroup(
-			new RunnableCommand(() -> driveTrain.setSetpoint(100)),
-			new RunnableCommand(driveTrain::enable),
-			new RunnableCommand(driveTrain::onTarget)
+			//Drive 90 inches
+			new DriveWithEncoder(this.driveTrain, 90, false),
+
+			// Lean 1 full revolution
+			new LeanWithEncoder(this.driveTrain, 20, Side.Right, -0.4, 0.99),
+
+			//Drive forward 135 inches
+			new DriveWithEncoder(this.driveTrain, 90, false),
+
+			// Lean 1 full revolution
+			new LeanWithEncoder(this.driveTrain, 20, Side.Left, -0.4, 0.82),
+
+			//drive forward 30 inches
+			new DriveWithEncoder(this.driveTrain, 90, false),
+			
+			// Lean 1/2 revolution
+			new LeanWithEncoder(this.driveTrain, 20, Side.Left, -0.4, 0.57),
+
+			// Drive forward 240 inches
+			new DriveWithEncoder(this.driveTrain, 220, false, 0.9)
 		));
 
 		this.autoChooser.addOption("Bounce Path", new SequentialCommandGroup(
-			new DriveWithTime(this.driveTrain, 1500, -0.75),
-			new LeanWithTime(this.driveTrain, 1000, Side.Right, -0.3),
-			new DriveWithTime(this.driveTrain, 2000, -0.75),
-			new LeanWithTime(this.driveTrain, 6800, Side.Left, -0.3)
-			
+			// Init distance, tune for first turn entry
+			new DriveWithEncoder(this.driveTrain, 30, false, 0.6, 3),
+			new LeanWithEncoder(this.driveTrain, 20, Side.Left, -0.3, 0.12),
+			new DriveWithEncoder(this.driveTrain, 30, true, 0.6, 3),
+			new LeanWithEncoder(this.driveTrain, 20, Side.Right, 0.3, 0.12),
+			new DriveWithEncoder(this.driveTrain, 20, true, 0.6, 3),
+			new LeanWithEncoder(this.driveTrain, 20, Side.Right, 0.3, 0.12)
+			// new DriveWithEncoder(this.driveTrain, 30, true, 0.8),
+			// new DriveWithEncoder(this.driveTrain, 28, false, 0.8),
+			// new LeanWithEncoder(this.driveTrain, 20, Side.Left, -0.4, 0.25),
+			// new DriveWithEncoder(this.driveTrain, 10, false, 0.8),
+			// new LeanWithEncoder(this.driveTrain, 20, Side.Left, -0.4, 0.25),
+			// new DriveWithEncoder(this.driveTrain, 28, false, 0.8),
+			// new DriveWithEncoder(this.driveTrain, 5, true, 0.8),
+			// new LeanWithEncoder(this.driveTrain, 20, Side.Left, -0.4, 0.25),
+			// new DriveWithEncoder(this.driveTrain, 10, false, 0.8)
 		));
 
+		this.autoChooser.addOption("Slolom Path", new SequentialCommandGroup(
+			// // Init distance, tune for first turn entry
+			// new DriveWithEncoder(this.driveTrain, 4, false),
+			// new LeanWithEncoder(this.driveTrain, 20, Side.Left, 0.25, 20),
+			// new DriveWithEncoder(this.driveTrain, 25, false),
+			// new LeanWithEncoder(this.driveTrain, 10, Side.Right, 0.25, 20),
+			// new DriveWithEncoder(this.driveTrain, 120),
+			// new LeanWi//thEncoder(this.driveTrain, 20, Side.Right, 0.25, 20),
+			// new DriveWithE/ncoder(this.driveTrain, 25),
+			// new LeanWithEncoder(this.driveTrain, 10, Side.Left, 0.25, 125),
+			// new DriveWithEncoder(this.driveTrain, 15),
+			// new LeanWithEncoder(this.driveTrain, 20, Side.Right, 0.25, 20),
+			// new DriveWithEncoder(this.driveTrain, 120),
+			// new LeanWithEncoder(this.driveTrain, 20, Side.Right, 0.25, 20),
+			// new DriveWithEncoder(this.driveTrain, 25)
+		));
 		
 		// this.autoChooser.addOption("Barrel Racing", new PathWeaverAuto(this.driveTrain, "PathWeaver/Barrel Racing/Groups/AutoNav.json"));
 		// this.autoChooser.addOption("Bounce Path", new PathWeaverAuto(this.driveTrain, "paths/YourPath.wpilib.json"));
@@ -249,19 +285,21 @@ public class RobotContainer {
 					// Range
 					new FinishablePIDCommand(
 						rangePIDController,
-						() -> {
-							// If no target is found, Offset is Zero
-							if (!this.limeLight.hasTarget()) return 0.0;
-							return this.limeLight.getDistance();
-						},
+						this.limeLight::getDistance,
 						Constants.ShooterConstants.rangeGoal,
 						output -> {
 							double turnSpeed = turnOutput.get();
 							double outSpeed = output;
 
 							// Set a max speed
-							if (turnSpeed > 0.4) turnSpeed = 0.4;
-							if (outSpeed > 0.6) outSpeed = 0.4;
+							turnSpeed = MathUtil.clamp(turnSpeed, -0.8, 0.8);
+							outSpeed = MathUtil.clamp(outSpeed, -0.5, 0.5);
+
+							if (!this.limeLight.hasTarget()) {
+								// No Target
+								outSpeed = -0.35;
+								turnSpeed = 0;
+							}
 
 							driveTrain.arcadeDrive(outSpeed, turnSpeed);
 						},
@@ -270,7 +308,7 @@ public class RobotContainer {
 							// Check LL to see if the values are "stable" or "within range" of our goal.
 							// Return true will kill this command.
 
-							if (Math.abs(offset) < 1) {
+							if (Math.abs(offset) < 2) {
 								SmartDashboard.putBoolean("Range Complete", true);
 								return true;
 							}
@@ -282,11 +320,7 @@ public class RobotContainer {
 					// Turning
 					new FinishablePIDCommand(
 						turnPIDController,
-						() -> {
-							// If no target is found, Offset is Zero
-							if (!this.limeLight.hasTarget()) return 0.0;
-							return limeLight.getTX();
-						},
+						limeLight::getTX,
 						0.0,
 						turnOutput::set,
 						FinishablePIDCommand.ConsumeValueType.Offset,
@@ -334,13 +368,13 @@ public class RobotContainer {
 		new JoystickButton(this.driverJoystick, Constants.ControllerMapConstants.Red_Button_ID)
 			.whenPressed(this.joystickDrive::toggleFlipped);
 
+		new JoystickButton(this.driverJoystick, Constants.ControllerMapConstants.Yellow_Button_ID)
+			.whenPressed(this.driveTrain::resetEncoders);
+
 		/**
 		 * Used to dynamically adjust the speed used for shooting.
 		 */
 		AtomicReference<Double> shooterSpeed = new AtomicReference<Double>(0.65);
-
-		new JoystickButton(this.operatorJoystick, Constants.ControllerMapConstants.Yellow_Button_ID)
-		.whenPressed(this.driveTrain::resetEncoders);
 
 		/**
 		 * Setup Button Events for the Shooter on the Operator Controller
