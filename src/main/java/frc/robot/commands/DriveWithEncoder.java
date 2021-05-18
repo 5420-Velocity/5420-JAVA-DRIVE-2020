@@ -92,6 +92,7 @@ public class DriveWithEncoder extends CommandBase {
 	public void execute() {
 
 		if (this.reversed == true) {
+			System.out.println(this.driveTrain.getRightEncoderPosition());
 			if (this.driveTrain.getRightEncoderPosition() < 0) {
 				if(Math.abs(Math.abs(this.driveTrain.getRightEncoderPosition()) - encoderTarget) < this.tolerance) {
 					System.out.println(":: At Target (from LSS 0)");

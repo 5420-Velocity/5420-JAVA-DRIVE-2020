@@ -154,7 +154,7 @@ public final class Constants {
 		public static final double TurnI = 0.0;
 		public static final double TurnD = 0.01;
 
-		public static final double LongEncoderP = 0.04;
+		public static final double LongEncoderP = 0.05;
 		public static final double LongEncoderI = 0.0;
 		public static final double LongEncoderD = 0.0;
 
