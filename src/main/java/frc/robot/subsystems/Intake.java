@@ -16,6 +16,7 @@ import frc.robot.Constants;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.PixyAlgo;
 import io.github.pseudoresonance.pixy2api.Pixy2;
+import io.github.pseudoresonance.pixy2api.Pixy2CCC;
 import io.github.pseudoresonance.pixy2api.Pixy2CCC.Block;
 
 import java.util.ArrayList;
@@ -136,45 +137,48 @@ public class Intake extends SubsystemBase {
 		// Push Encoder Value to the Dashboard via NetworkTables.
 		this.ntEncoderValue.setDouble(this.getEncoderValue());
 
-//		if (this.pixyCachedLoop == 0) {
-			/**
-			 * Must be called in order for the subsystem to request
-			 *  blocks from the pixy.
-			 * Calling this function without the given params will
-			 *  return the previous results received in this request.
-			 *
-			 */
-			// int pixyStatus = this.pixy.getCCC().getBlocks(false, Pixy2CCC.CCC_SIG1, 8);
+		if (this.pixyCachedLoop == 60) {
+			//  Reset the Counter one 120 has been hit
+			this.pixyCachedLoop = 0;
+		} else {
+			this.pixyCachedLoop++;
+		}
 
-			// /**
-			//  * Read response from the Pixy Class to update the network tables
-			//  *  of the current status.
-			//  * The getBlocks Function returns either an error code or the total
-			//  *  amount of blocks detected.
-			//  */
-			// switch (pixyStatus) {
-			// 	case Pixy2.PIXY_RESULT_BUSY:
-			// 		this.ntPixyBlocks.setDouble(0.0);
-			// 		this.ntPixyStatus.setString("Busy");
-			// 		break;
-			// 	case Pixy2.PIXY_RESULT_ERROR:
-			// 		this.ntPixyBlocks.setDouble(0.0);
-			// 		this.ntPixyStatus.setString("Error");
-			// 		break;
-			// 	default:
-			// 		this.ntPixyBlocks.setDouble(pixyStatus);
-			// 		this.ntPixyStatus.setString("Operational");
-			// }
-//		}
-//		else if (this.pixyCachedLoop == 120) {
-//			// Reset the Counter one 120 has been hit
-//			this.pixyCachedLoop = 0;
-//		}
-//		else {
-//			// Update the loop that allowed a skip of updating the Pixy Data
-//			this.pixyCachedLoop++;
-//		}
+		if (this.pixyCachedLoop == 0) {
 
+			// System.out.println(this.pixy.getVersion());
+			
+			//   Must be called in order for the subsystem to request
+			//    blocks from the pixy.
+			//   Calling this function without the given params will
+			//    return the previous results received in this request.
+			 
+			 
+			int pixyStatus = this.pixy.getCCC().getBlocks(false, Pixy2CCC.CCC_SIG1, 8);
+			int pixyBlockCount = this.pixy.getCCC().getBlockCache().size();
+			
+			//  Read response from the Pixy Class to update the network tables
+			// 	  of the current status.
+			// 	 The getBlocks Function returns either an error code or the total
+			// 	 amount of blocks detected.
+			
+			switch (pixyStatus) {
+				case Pixy2.PIXY_RESULT_BUSY:
+					this.ntPixyStatus.setString("Busy");
+					break;
+				case Pixy2.PIXY_RESULT_OK:
+					this.ntPixyStatus.setString("Operational");
+					break;
+				default:
+					if (pixyBlockCount == 0) {
+						this.ntPixyBlocks.setDouble(0);
+						this.ntPixyStatus.setString("error " + pixyStatus);
+					} else {
+						this.ntPixyBlocks.setDouble(pixyStatus);
+						this.ntPixyStatus.setString("Operational");
+					}
+			}
+		}
 
 	}
 
