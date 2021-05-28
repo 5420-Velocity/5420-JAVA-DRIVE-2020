@@ -156,35 +156,47 @@ public class RobotContainer {
 		this.autoChooser.setDefaultOption("Do Nothing", new DoNothingAutoCommand());
 		this.autoChooser.addOption("Barrel Racing", new SequentialCommandGroup(
 			//Drive 90 inches
-			new DriveWithEncoder(this.driveTrain, 90, false),
+			new DriveWithEncoder(this.driveTrain, 84, false, 0.9),
 
 			// Lean 1 full revolution
-			new LeanWithEncoder(this.driveTrain, 20, Side.Right, -0.4, 0.99),
+			new LeanWithEncoder(this.driveTrain, 20, Side.Right, -0.4, 1.08),
 
 			//Drive forward 135 inches
-			new DriveWithEncoder(this.driveTrain, 90, false),
+			new DriveWithEncoder(this.driveTrain, 76, false, 0.9),
 
 			// Lean 1 full revolution
 			new LeanWithEncoder(this.driveTrain, 20, Side.Left, -0.4, 0.82),
 
 			//drive forward 30 inches
-			new DriveWithEncoder(this.driveTrain, 90, false),
+			new DriveWithEncoder(this.driveTrain, 80, false, 0.9),
 			
 			// Lean 1/2 revolution
-			new LeanWithEncoder(this.driveTrain, 20, Side.Left, -0.4, 0.57),
+			new LeanWithEncoder(this.driveTrain, 20, Side.Left, -0.4, 0.59),
 
 			// Drive forward 240 inches
-			new DriveWithEncoder(this.driveTrain, 220, false, 0.9)
+			new DriveWithEncoder(this.driveTrain, 210, false, 1)
 		));
 
 		this.autoChooser.addOption("Bounce Path", new SequentialCommandGroup(
 			// Init distance, tune for first turn entry
 			new DriveWithEncoder(this.driveTrain, 30, false, 0.6, 3),
-			new LeanWithEncoder(this.driveTrain, 20, Side.Left, -0.3, 0.12),
-			new DriveWithEncoder(this.driveTrain, 30, true, 0.6, 3),
-			new LeanWithEncoder(this.driveTrain, 20, Side.Right, 0.3, 0.12),
+			new LeanWithEncoder(this.driveTrain, 20, Side.Left, -0.3, 0.155),
+			new DriveWithEncoder(this.driveTrain, 30, false, 0.6, 3),
+			new LeanWithEncoder(this.driveTrain, 20, Side.Left, -0.3, 0.03),
+			new DriveWithEncoder(this.driveTrain, 75, true, 0.6, 4),
+			new LeanWithEncoder(this.driveTrain, 20, Side.Right, 0.3, 0.09),
 			new DriveWithEncoder(this.driveTrain, 20, true, 0.6, 3),
-			new LeanWithEncoder(this.driveTrain, 20, Side.Right, 0.3, 0.12)
+			new LeanWithEncoder(this.driveTrain, 20, Side.Right, 0.3, 0.11),
+			new DriveWithEncoder(this.driveTrain, 100, true, 0.6, 3),
+			new DriveWithEncoder(this.driveTrain, 90, false, 0.6, 3),
+			new LeanWithEncoder(this.driveTrain, 20, Side.Left, -0.3, 0.14),
+			new DriveWithEncoder(this.driveTrain, 45, false, 0.6, 3),
+			new LeanWithEncoder(this.driveTrain, 20, Side.Left, -0.3, 0.155),
+			new DriveWithEncoder(this.driveTrain, 94, false, 0.6, 3),
+			new DriveWithEncoder(this.driveTrain, 14, true, 0.6, 3),
+			new LeanWithEncoder(this.driveTrain, 20, Side.Right, 0.3, 0.14),
+			new DriveWithEncoder(this.driveTrain, 20, true, 0.6, 3)
+
 			// new DriveWithEncoder(this.driveTrain, 30, true, 0.8),
 			// new DriveWithEncoder(this.driveTrain, 28, false, 0.8),
 			// new LeanWithEncoder(this.driveTrain, 20, Side.Left, -0.4, 0.25),
@@ -198,19 +210,22 @@ public class RobotContainer {
 
 		this.autoChooser.addOption("Slolom Path", new SequentialCommandGroup(
 			// // Init distance, tune for first turn entry
-			// new DriveWithEncoder(this.driveTrain, 4, false),
-			// new LeanWithEncoder(this.driveTrain, 20, Side.Left, 0.25, 20),
-			// new DriveWithEncoder(this.driveTrain, 25, false),
-			// new LeanWithEncoder(this.driveTrain, 10, Side.Right, 0.25, 20),
-			// new DriveWithEncoder(this.driveTrain, 120),
-			// new LeanWi//thEncoder(this.driveTrain, 20, Side.Right, 0.25, 20),
-			// new DriveWithE/ncoder(this.driveTrain, 25),
-			// new LeanWithEncoder(this.driveTrain, 10, Side.Left, 0.25, 125),
-			// new DriveWithEncoder(this.driveTrain, 15),
-			// new LeanWithEncoder(this.driveTrain, 20, Side.Right, 0.25, 20),
-			// new DriveWithEncoder(this.driveTrain, 120),
-			// new LeanWithEncoder(this.driveTrain, 20, Side.Right, 0.25, 20),
-			// new DriveWithEncoder(this.driveTrain, 25)
+			new DriveWithEncoder(this.driveTrain, 27, false, 0.6, 3),
+			new LeanWithEncoder(this.driveTrain, 20, Side.Left, -0.3, 0.13),
+			new DriveWithEncoder(this.driveTrain, 35, false, 0.6, 3),
+			new LeanWithEncoder(this.driveTrain, 20, Side.Right, -0.3, 0.075),
+			new DriveWithEncoder(this.driveTrain, 90, false, 0.9, 8),
+			new LeanWithEncoder(this.driveTrain, 20, Side.Right, -0.3, 0.45),
+			new DriveWithEncoder(this.driveTrain, 30, false, 0.6, 3),
+			new LeanWithEncoder(this.driveTrain, 25, Side.Left, -0.4, 1),
+			new DriveWithEncoder(this.driveTrain, 28, false, 0.6, 3),
+			new LeanWithEncoder(this.driveTrain, 20, Side.Right, -0.3, 0.09),
+			new DriveWithEncoder(this.driveTrain, 100, false, 0.9, 9),
+			new LeanWithEncoder(this.driveTrain, 20, Side.Right, -0.3, 0.44),
+			new DriveWithEncoder(this.driveTrain, 35, false, 0.8, 3),
+			new LeanWithEncoder(this.driveTrain, 20, Side.Left, -0.3, 0.13),
+			new DriveWithEncoder(this.driveTrain, 30, false, 0.6, 3)
+
 		));
 		
 		// this.autoChooser.addOption("Barrel Racing", new PathWeaverAuto(this.driveTrain, "PathWeaver/Barrel Racing/Groups/AutoNav.json"));
@@ -279,77 +294,77 @@ public class RobotContainer {
 			// Enable the Limelight LED
 			.whenPressed(() -> this.limeLight.setLedMode(0))
 			// Disable the Limelight LED
-			.whenReleased(() -> this.limeLight.setLedMode(1))
-			.whenHeld(new SequentialCommandGroup(
-				new ParallelCommandGroup(
-					// Range
-					new FinishablePIDCommand(
-						rangePIDController,
-						this.limeLight::getDistance,
-						Constants.ShooterConstants.rangeGoal,
-						output -> {
-							double turnSpeed = turnOutput.get();
-							double outSpeed = output;
+			.whenReleased(() -> this.limeLight.setLedMode(1));
+			// .whenHeld(new SequentialCommandGroup(
+			// 	new ParallelCommandGroup(
+			// 		// Range
+			// 		new FinishablePIDCommand(
+			// 			rangePIDController,
+			// 			this.limeLight::getDistance,
+			// 			Constants.ShooterConstants.rangeGoal,
+			// 			output -> {
+			// 				double turnSpeed = turnOutput.get();
+			// 				double outSpeed = output;
 
-							// Set a max speed
-							turnSpeed = MathUtil.clamp(turnSpeed, -0.8, 0.8);
-							outSpeed = MathUtil.clamp(outSpeed, -0.5, 0.5);
+			// 				// Set a max speed
+			// 				turnSpeed = MathUtil.clamp(turnSpeed, -0.8, 0.8);
+			// 				outSpeed = MathUtil.clamp(outSpeed, -0.5, 0.5);
 
-							if (!this.limeLight.hasTarget()) {
-								// No Target
-								outSpeed = -0.35;
-								turnSpeed = 0;
-							}
+			// 				if (!this.limeLight.hasTarget()) {
+			// 					// No Target
+			// 					outSpeed = -0.35;
+			// 					turnSpeed = 0;
+			// 				}
 
-							driveTrain.arcadeDrive(outSpeed, turnSpeed);
-						},
-						FinishablePIDCommand.ConsumeValueType.Offset,
-						offset -> {
-							// Check LL to see if the values are "stable" or "within range" of our goal.
-							// Return true will kill this command.
+			// 				driveTrain.arcadeDrive(outSpeed, turnSpeed);
+			// 			},
+			// 			FinishablePIDCommand.ConsumeValueType.Offset,
+			// 			offset -> {
+			// 				// Check LL to see if the values are "stable" or "within range" of our goal.
+			// 				// Return true will kill this command.
 
-							if (Math.abs(offset) < 2) {
-								SmartDashboard.putBoolean("Range Complete", true);
-								return true;
-							}
-							SmartDashboard.putBoolean("Range Complete", false);
-							return false;
-						},
-						driveTrain
-					),
-					// Turning
-					new FinishablePIDCommand(
-						turnPIDController,
-						limeLight::getTX,
-						0.0,
-						turnOutput::set,
-						FinishablePIDCommand.ConsumeValueType.Offset,
-						offset -> {
-							// Check LL to see if the values are "stable" or "within range" of our goal.
-							// Return true will kill this command.
-							if (Math.abs(offset) < 1) {
-								SmartDashboard.putBoolean("Turning Complete", true);
-								return true;
-							}
-							SmartDashboard.putBoolean("Turning Complete", false);
-							return false;
-						},
-						driveTrain
-					)
-				),
-				new AutoShoot(this.newShooter, this.chute, () -> {
-					if(this.limeLight.getDistance() < 90) {
-						this.newShooter.coverSet(coverState.Up);
-						double speed = (0.01/30) * this.limeLight.getDistance() + 0.313;
-						return speed;
-					} 
-					else {
-						this.newShooter.coverSet(coverState.Down);
-						double speed = (0.04/3000) * Math.pow(this.limeLight.getDistance() - 170, 2) + 0.46;
-						return speed;
-					}
-				})
-			));
+			// 				if (Math.abs(offset) < 2) {
+			// 					SmartDashboard.putBoolean("Range Complete", true);
+			// 					return true;
+			// 				}
+			// 				SmartDashboard.putBoolean("Range Complete", false);
+			// 				return false;
+			// 			},
+			// 			driveTrain
+			// 		),
+			// 		// Turning
+			// 		new FinishablePIDCommand(
+			// 			turnPIDController,
+			// 			limeLight::getTX,
+			// 			0.0,
+			// 			turnOutput::set,
+			// 			FinishablePIDCommand.ConsumeValueType.Offset,
+			// 			offset -> {
+			// 				// Check LL to see if the values are "stable" or "within range" of our goal.
+			// 				// Return true will kill this command.
+			// 				if (Math.abs(offset) < 1) {
+			// 					SmartDashboard.putBoolean("Turning Complete", true);
+			// 					return true;
+			// 				}
+			// 				SmartDashboard.putBoolean("Turning Complete", false);
+			// 				return false;
+			// 			},
+			// 			driveTrain
+			// 		)
+			// 	),
+			// 	new AutoShoot(this.newShooter, this.chute, () -> {
+			// 		if(this.limeLight.getDistance() < 90) {
+			// 			this.newShooter.coverSet(coverState.Up);
+			// 			double speed = (0.01/30) * this.limeLight.getDistance() + 0.313;
+			// 			return speed;
+			// 		} 
+			// 		else {
+			// 			this.newShooter.coverSet(coverState.Down);
+			// 			double speed = (0.04/3000) * Math.pow(this.limeLight.getDistance() - 170, 2) + 0.46;
+			// 			return speed;
+			// 		}
+			// 	})
+			// ));
 
 		// new JoystickButton(this.operatorJoystick, Constants.ControllerMapConstants.Joystick_Left_Button)
 		// 	.whenPressed(new PanelLiftDown(controlPanelController));
@@ -405,7 +420,7 @@ public class RobotContainer {
 			.whileActiveOnce(new AutoShoot(this.newShooter, this.chute, shooterSpeed));	
 
 		new JoystickButton(this.operatorJoystick, Constants.ControllerMapConstants.Right_Bumper)
-			.whenPressed(() -> this.chute.setRight(0.7))
+			.whenPressed(() -> this.chute.setRight(0.6))
 			.whenReleased(() -> this.chute.setRight(0));
 
 		/**
