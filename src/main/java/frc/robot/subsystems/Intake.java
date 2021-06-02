@@ -141,17 +141,20 @@ public class Intake extends SubsystemBase {
 
 		// Push Encoder Value to the Dashboard via NetworkTables.
 		this.ntEncoderValue.setDouble(this.getEncoderValue());
-		if(this.pixyAlgo.getPixyBest() != null){
+		if(this.pixyAlgo.getPixyBest() != null) {
 			this.ntPixyWidth.setDouble(currentBlock.getWidth());
 			this.ntPixySigniture.setNumber(currentBlock.getIndex());
 		}
-		else{
+		else {
 			this.ntPixyWidth.setDouble(0.0);
 		}
+
 		if (this.pixyCachedLoop == 60) {
 			//  Reset the Counter one 120 has been hit
 			this.pixyCachedLoop = 0;
-		} else {
+		}
+		else {
+			// Update the loop that allowed a skip of updating the Pixy Data
 			this.pixyCachedLoop++;
 		}
 
