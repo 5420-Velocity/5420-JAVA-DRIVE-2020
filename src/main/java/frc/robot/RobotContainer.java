@@ -112,6 +112,7 @@ public class RobotContainer {
 	private final LiftSubsystem lift = new LiftSubsystem();
 	private final ChuteSubsystem chute = new ChuteSubsystem();
 
+
 	// private final Shoot shoot = new Shoot(shooter,
 	// 	() -> operatorJoystick.getRawButton(Constants.ControllerMapConstants.Blue_Button_ID),
 	// 	() -> operatorJoystick.getRawButton(5),
@@ -152,6 +153,9 @@ public class RobotContainer {
 	 * Configure the auto commands
 	 */
 	private void configureAutoChooser() {
+
+		this.autoChooser.addOption("Balls", new SequentialCommandGroup(new PixyDrive(this.intake, this.driveTrain)));
+		
 		//positive power is intake forward
 		this.autoChooser.setDefaultOption("Do Nothing", new DoNothingAutoCommand());
 		this.autoChooser.addOption("Barrel Racing", new SequentialCommandGroup(
