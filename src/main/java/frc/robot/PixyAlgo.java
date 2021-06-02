@@ -129,6 +129,9 @@ public class PixyAlgo {
 		});
 
 		// Grab the "best" block from the list!
+		if(blocks.size() ==0){
+			return null;
+		}
 		return blocks.get(0);
 	}
 
