@@ -41,7 +41,7 @@ public class BlockExtra extends Block {
 	 * @return The total area of the object
 	 */
 	public Integer getArea() {
-		return this.getX() * this.getY();
+		return this.getWidth() * this.getHeight();
 	}
 
 	/**
