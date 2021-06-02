@@ -11,7 +11,9 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.BlockExtra;
 import frc.robot.Constants;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.PixyAlgo;
@@ -31,8 +33,10 @@ public class Intake extends SubsystemBase {
 	private final NetworkTableEntry ntEncoderValue = NetworkTableInstance.getDefault().getEntry("Ball Lift Encoder Value");
 	private final NetworkTableEntry ntPixyStatus = NetworkTableInstance.getDefault().getEntry("Pixy Status");
 	private final NetworkTableEntry ntPixyBlocks = NetworkTableInstance.getDefault().getEntry("Pixy Blocks");
+	private final NetworkTableEntry ntPixyWidth = NetworkTableInstance.getDefault().getEntry("Pixy Width");
+	private final NetworkTableEntry ntPixySigniture = NetworkTableInstance.getDefault().getEntry("Pixy Signiture");
 	private final Pixy2 pixy = Pixy2.createInstance(IntakeConstants.pixyLink);
-	private final PixyAlgo pixyAlgo = new PixyAlgo(pixy);
+	public final PixyAlgo pixyAlgo = new PixyAlgo(pixy);
 	private boolean forceUpperlimitDown = false;
 	private int pixyCachedLoop = 0;
 
@@ -132,11 +136,18 @@ public class Intake extends SubsystemBase {
 
 	@Override
 	public void periodic() {
+		BlockExtra currentBlock = this.pixyAlgo.getPixyBest();
 		// This method will be called once per scheduler run
 
 		// Push Encoder Value to the Dashboard via NetworkTables.
 		this.ntEncoderValue.setDouble(this.getEncoderValue());
-
+		if(this.pixyAlgo.getPixyBest() != null){
+			this.ntPixyWidth.setDouble(currentBlock.getWidth());
+			this.ntPixySigniture.setNumber(currentBlock.getIndex());
+		}
+		else{
+			this.ntPixyWidth.setDouble(0.0);
+		}
 		if (this.pixyCachedLoop == 60) {
 			//  Reset the Counter one 120 has been hit
 			this.pixyCachedLoop = 0;
