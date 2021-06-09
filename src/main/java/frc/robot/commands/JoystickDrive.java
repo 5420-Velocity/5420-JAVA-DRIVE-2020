@@ -22,6 +22,7 @@ public class JoystickDrive extends CommandBase {
 	protected final DoubleSupplier rotation;
 	protected final Joystick DPADController;
 	protected boolean isControlFlipped = true;
+	private boolean isFinished = false;
 
 	/**
 	 * This function will get the input value on a scale of
@@ -52,6 +53,7 @@ public class JoystickDrive extends CommandBase {
 	// Called just before this Command runs the first time
 	@Override
 	public void initialize() {
+		this.isFinished = true;
 	}
 
 	public void setFlipped(boolean isFlipped) {
@@ -117,12 +119,13 @@ public class JoystickDrive extends CommandBase {
 	// Called once after isFinished returns true
 	@Override
 	public void end(boolean interrupted) {
+		this.isFinished = true;
 	}
 
 	// Returns true when the command should end.
 	@Override
 	public boolean isFinished() {
-		return false;
+		return this.isFinished;
 	}
 
 }
