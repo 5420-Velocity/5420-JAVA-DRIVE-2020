@@ -151,7 +151,7 @@ public class Intake extends SubsystemBase {
 			this.ntPixyWidth.setDouble(0.0);
 		}
 
-		if (this.pixyCachedLoop == 40) {
+		if (this.pixyCachedLoop == 15) {
 			//  Reset the Counter one 120 has been hit
 			this.pixyCachedLoop = 0;
 		}
