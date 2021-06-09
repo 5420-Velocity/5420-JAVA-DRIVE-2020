@@ -154,7 +154,9 @@ public class RobotContainer {
 	 */
 	private void configureAutoChooser() {
 
-		this.autoChooser.addOption("Balls", new SequentialCommandGroup(new PixyDrive(this.intake, this.driveTrain)));
+		this.autoChooser.addOption("Balls", new SequentialCommandGroup(
+			new PixyTurn(this.intake, this.driveTrain)
+			));
 		
 		//positive power is intake forward
 		this.autoChooser.setDefaultOption("Do Nothing", new DoNothingAutoCommand());
