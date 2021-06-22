@@ -151,16 +151,16 @@ public class Intake extends SubsystemBase {
 			this.ntPixyWidth.setDouble(0.0);
 		}
 
-		if (this.pixyCachedLoop == 15) {
-			//  Reset the Counter one 120 has been hit
-			this.pixyCachedLoop = 0;
-		}
-		else {
-			// Update the loop that allowed a skip of updating the Pixy Data
-			this.pixyCachedLoop++;
-		}
-
-		if (this.pixyCachedLoop == 0) {
+//		if (this.pixyCachedLoop == 10) {
+//			//  Reset the Counter one 120 has been hit
+//			this.pixyCachedLoop = 0;
+//		}
+//		else {
+//			// Update the loop that allowed a skip of updating the Pixy Data
+//			this.pixyCachedLoop++;
+//		}
+//
+//		if (this.pixyCachedLoop == 0) {
 
 			// System.out.println(this.pixy.getVersion());
 			
@@ -194,7 +194,7 @@ public class Intake extends SubsystemBase {
 						this.ntPixyStatus.setString("Operational");
 					}
 			}
-		}
+//		}
 
 	}
 

@@ -10,6 +10,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.ScheduleCommand;
 import frc.robot.utils.DPad;
 import frc.robot.subsystems.DriveTrain;
 
@@ -28,7 +29,7 @@ public class JoystickDrive extends CommandBase {
 	 * This function will get the input value on a scale of
 	 * a curve using the Square Root Function
 	 *
-	 * @param double
+	 * @param input
 	 * @return Curved Value
 	 */
 	public static double getCurve(double input) {
@@ -53,7 +54,7 @@ public class JoystickDrive extends CommandBase {
 	// Called just before this Command runs the first time
 	@Override
 	public void initialize() {
-		this.isFinished = true;
+		this.isFinished = false;
 	}
 
 	public void setFlipped(boolean isFlipped) {
@@ -61,12 +62,7 @@ public class JoystickDrive extends CommandBase {
 	}
 
 	public void toggleFlipped() {
-		if (this.isControlFlipped == true) {
-			this.setFlipped(false);
-		}
-		else {
-			this.setFlipped(true);
-		}
+		this.setFlipped(!this.isControlFlipped);
 	}
 
 	public boolean shouldDrive() {
@@ -78,7 +74,7 @@ public class JoystickDrive extends CommandBase {
 		double controllerX = -rotation.getAsDouble() * 0.7;
 
 		// Flip the controls of the drive forward and reverse code
-		if (this.isControlFlipped == true) controllerY = controllerY * -1;
+		if (this.isControlFlipped) controllerY = controllerY * -1;
 
 		// Apply a curve to the given input controls.
 		controllerY = JoystickDrive.getCurve(controllerY);
@@ -90,6 +86,8 @@ public class JoystickDrive extends CommandBase {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	public void execute() {
+		if (this.isFinished) return;
+
 		// Apply a Deadband to the Input mapped at 0.03
 		if (this.shouldDrive()) {
 			this.executeDrive();
@@ -108,7 +106,7 @@ public class JoystickDrive extends CommandBase {
 		}
 		else {
 			// Set the motor to zero, Its not out of the deadband
-			// driveTrain.arcadeDrive(0, 0);
+			 driveTrain.arcadeDrive(0, 0);
 		}
 
 		SmartDashboard.putBoolean("Inverted", this.isControlFlipped);
@@ -120,6 +118,7 @@ public class JoystickDrive extends CommandBase {
 	@Override
 	public void end(boolean interrupted) {
 		this.isFinished = true;
+		driveTrain.arcadeDrive(0, 0);
 	}
 
 	// Returns true when the command should end.
