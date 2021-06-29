@@ -21,26 +21,29 @@ public class PixyDrive extends CommandBase {
   public PixyDrive(Intake subsystem, DriveTrain driveTrain) {
     this.subsystem = subsystem;
     this.driveTrain = driveTrain;
+    addRequirements(driveTrain);
   }
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
     motorSpeed = 0;
     isFinished = false;
+    
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
     if(subsystem.pixyAlgo.getPixyBest() != null) {
+      System.out.println("drivin");
       if(subsystem.pixyAlgo.getPixyBest().getWidth() < targetArea) {
-        driveTrain.arcadeDrive(0.6, 0);
+        driveTrain.arcadeDrive(0.4, 0);
       }
-      else {
-        driveTrain.arcadeDrive(0, 0);
-        isFinished = true;
-      }
+    }
+    else {
+      System.out.println("donee");
+      driveTrain.arcadeDrive(0, 0);
+      isFinished = true;
     }
 
   }

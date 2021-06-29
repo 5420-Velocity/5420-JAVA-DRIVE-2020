@@ -16,14 +16,14 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
  * This allows you to run commands in a command group
  * in parallel calling all of the common functions.
  */
-public class ParallelCommandGroup extends CommandBase {
+public class ParallelCommandTogetherGroup extends CommandBase {
 
 	private Command[] commands;
 
 	/**
 	 * Creates a new CommandGroup.
 	 */
-	public ParallelCommandGroup(Command... commands) {
+	public ParallelCommandTogetherGroup(Command... commands) {
 		this.commands = commands;
 	}
 

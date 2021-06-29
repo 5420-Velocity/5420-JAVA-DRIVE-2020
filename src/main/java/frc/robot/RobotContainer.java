@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -155,7 +156,11 @@ public class RobotContainer {
 	private void configureAutoChooser() {
 
 		this.autoChooser.addOption("Balls", new SequentialCommandGroup(
-			new PixyTurn(this.intake, this.driveTrain)
+			new PixyTurn(this.intake, this.driveTrain),
+			new ParallelCommandGroup(
+				new PixyDrive(this.intake, this.driveTrain),
+				new IntakePIDCommand(this.pidController, this.intake)
+			)
 		));
 		
 		//positive power is intake forward

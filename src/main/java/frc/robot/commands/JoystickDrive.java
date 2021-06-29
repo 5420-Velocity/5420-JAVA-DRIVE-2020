@@ -106,7 +106,7 @@ public class JoystickDrive extends CommandBase {
 		}
 		else {
 			// Set the motor to zero, Its not out of the deadband
-			 driveTrain.arcadeDrive(0, 0);
+			driveTrain.arcadeDrive(0, 0);
 		}
 
 		SmartDashboard.putBoolean("Inverted", this.isControlFlipped);

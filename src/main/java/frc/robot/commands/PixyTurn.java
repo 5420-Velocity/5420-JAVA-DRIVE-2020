@@ -18,6 +18,7 @@ public class PixyTurn extends CommandBase {
   public PixyTurn(Intake subsystem, DriveTrain driveTrain) {
     this.subsystem = subsystem;
     this.driveTrain = driveTrain;
+    addRequirements(driveTrain);
   }
 
   // Called when the command is initially scheduled.
@@ -29,13 +30,14 @@ public class PixyTurn extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    
     if(subsystem.pixyAlgo.getPixyBest() != null) {
-      if(subsystem.pixyAlgo.getPixyBest().getX() < (targetX - 20)) {
-        driveTrain.arcadeDrive(0, 0.4);
+      if(subsystem.pixyAlgo.getPixyBest().getX() < (targetX - 5)) {
+        System.out.println("adjustment+");
+        driveTrain.arcadeDrive(0, 0.3);
       }
-      else if(subsystem.pixyAlgo.getPixyBest().getX() > (targetX + 20)){
-        driveTrain.arcadeDrive(0, -0.4);
+      else if(subsystem.pixyAlgo.getPixyBest().getX() > (targetX + 5)){
+        System.out.println("adjustment-");
+        driveTrain.arcadeDrive(0, -0.3);
       }
       else {
         System.out.println("Done");
