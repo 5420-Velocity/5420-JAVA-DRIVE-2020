@@ -95,7 +95,7 @@ public class BackgroundCommandGroup extends CommandBase {
 	@Override
 	public boolean isFinished() {
 		// Hold the command open if the lead command is running.
-		return this.m_leadCommand.isFinished();
+		return this.leadCommandFinished;
 	}
 
 	@Override
