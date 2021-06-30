@@ -78,16 +78,14 @@ public class BackgroundCommandGroup extends CommandBase {
 
 	@Override
 	public void end(boolean interrupted) {
-		if (interrupted) {
-			if (!this.leadCommandEnded) {
-				this.m_leadCommand.end(true);
-				this.leadCommandEnded = true;
-			}
+		if (!this.leadCommandEnded) {
+			this.m_leadCommand.end(interrupted);
+			this.leadCommandEnded = true;
+		}
 
-			for (Map.Entry<Command, Boolean> commandRunning : m_commands.entrySet()) {
-				if (commandRunning.getValue()) {
-					commandRunning.getKey().end(true);
-				}
+		for (Map.Entry<Command, Boolean> commandRunning : m_commands.entrySet()) {
+			if (commandRunning.getValue()) {
+				commandRunning.getKey().end(interrupted);
 			}
 		}
 	}
