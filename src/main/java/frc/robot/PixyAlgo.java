@@ -68,23 +68,21 @@ public class PixyAlgo {
 		return largestBlock.get();
 	}
 
+
 	/**
-	 * This will return the block that is nearest based on the area and
-	 * distance from 0 (center screen).
+	 * Return the blocks sorted as an ArrayList.
 	 * <p>
 	 * This function will convert the Pixy Blocks objects X and Y values to
 	 * the offset from CENTER of the camera screen.
 	 * </p>
-	 * @return Block X Offset from the Nearest based on Area (distance away) and
-	 * offset from 0 on the X target.
-	 * @link https://stackoverflow.com/a/30449464
+	 * @return Blocks sorted by the best values.
 	 */
-	public BlockExtra getPixyBest() {
+	public ArrayList<BlockExtra> getPixySorted(){
 		TreeSet<Integer> areaRank = new TreeSet<Integer>();
 		TreeSet<Integer> zeroRank = new TreeSet<Integer>();
 		ArrayList<BlockExtra> blocks = this.convertToBlockExtra(this.getPixyBlocks());
 
-		
+
 		// Add Blocks to the TreeSets for the Area and the Distance from Zero
 		for (BlockExtra block : blocks) {
 			areaRank.add(block.getArea());
@@ -124,9 +122,26 @@ public class PixyAlgo {
 				// Block 1 is a better choice, Move it up!
 				// Block 2 is a better choice, Move Block 1 down!
 				// Blocks are equal, Let it be.
-			
+
 			}
 		});
+
+		return blocks;
+	}
+
+	/**
+	 * This will return the block that is nearest based on the area and
+	 * distance from 0 (center screen).
+	 * <p>
+	 * This function will convert the Pixy Blocks objects X and Y values to
+	 * the offset from CENTER of the camera screen.
+	 * </p>
+	 * @return Block X Offset from the Nearest based on Area (distance away) and
+	 * offset from 0 on the X target.
+	 * @link https://stackoverflow.com/a/30449464
+	 */
+	public BlockExtra getPixyBest() {
+		ArrayList<BlockExtra> blocks = this.getPixySorted();
 
 		// Grab the "best" block from the list!
 		if(blocks.size() == 0){
