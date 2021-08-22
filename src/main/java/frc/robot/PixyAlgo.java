@@ -79,11 +79,13 @@ public class PixyAlgo {
 	 * offset from 0 on the X target.
 	 * @link https://stackoverflow.com/a/30449464
 	 */
+
+	 
 	public BlockExtra getPixyBest() {
 		TreeSet<Integer> areaRank = new TreeSet<Integer>();
 		TreeSet<Integer> zeroRank = new TreeSet<Integer>();
 		ArrayList<BlockExtra> blocks = this.convertToBlockExtra(this.getPixyBlocks());
-
+		
 		
 		// Add Blocks to the TreeSets for the Area and the Distance from Zero
 		for (BlockExtra block : blocks) {
