@@ -26,6 +26,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class PixyAlgo {
 
 	private final Pixy2 pixy;
+	public Boolean secondaryClockwise;
 
 	public PixyAlgo(Pixy2 pixy) {
 		this.pixy = pixy;
@@ -68,6 +69,21 @@ public class PixyAlgo {
 		return largestBlock.get();
 	}
 
+	public void saveSecondary(BlockExtra currentBlock){
+		// Check if there is a second best ball, if there is save the direction, if not set direction to null
+		ArrayList<BlockExtra> blocks = getPixySorted();
+		if(blocks.get(1) != null){
+			if(blocks.get(1).getX() > currentBlock.getX()){
+				secondaryClockwise = true;
+			}
+			else{
+				secondaryClockwise = false;
+			}
+		}
+		else{
+			secondaryClockwise = null;
+		}
+	}
 
 	/**
 	 * Return the blocks sorted as an ArrayList.

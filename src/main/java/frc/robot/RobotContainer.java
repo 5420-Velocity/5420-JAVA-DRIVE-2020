@@ -44,7 +44,7 @@ public class RobotContainer {
 		DriveTrainConstants.LongEncoderP,
 		DriveTrainConstants.LongEncoderI,
 		DriveTrainConstants.LongEncoderD);
-	// private final ControlPanelController controlPanelController = new ControlPanelController();
+	private final ControlPanelController controlPanelController = new ControlPanelController();
 	public Compressor compressor = new Compressor(0);
 	private final SendableChooser<Command> autoChooser = new SendableChooser<>();
 
@@ -156,8 +156,21 @@ public class RobotContainer {
 	private void configureAutoChooser() {
 
 		this.autoChooser.addOption("Balls", new SequentialCommandGroup(
+			new PixySearch(this.intake, this.driveTrain),
 			new PixyTurn(this.intake, this.driveTrain),
-			new ParallelCommandGroup(
+			new BackgroundCommandGroup(
+				new PixyDrive(this.intake, this.driveTrain),
+				new IntakePIDCommand(this.pidController, this.intake)
+			),
+			new PixySearch(this.intake, this.driveTrain),
+			new PixyTurn(this.intake, this.driveTrain),
+			new BackgroundCommandGroup(
+				new PixyDrive(this.intake, this.driveTrain),
+				new IntakePIDCommand(this.pidController, this.intake)
+			),
+			new PixySearch(this.intake, this.driveTrain),
+			new PixyTurn(this.intake, this.driveTrain),
+			new BackgroundCommandGroup(
 				new PixyDrive(this.intake, this.driveTrain),
 				new IntakePIDCommand(this.pidController, this.intake)
 			)
@@ -377,11 +390,11 @@ public class RobotContainer {
 			// 	})
 			// ));
 
-		// new JoystickButton(this.operatorJoystick, Constants.ControllerMapConstants.Joystick_Left_Button)
-		// 	.whenPressed(new PanelLiftDown(controlPanelController));
+		 new JoystickButton(this.operatorJoystick, Constants.ControllerMapConstants.Joystick_Left_Button)
+		 	.whenPressed(new PanelLiftDown(controlPanelController));
 
-		// new JoystickButton(this.operatorJoystick, Constants.ControllerMapConstants.Joystick_Right_Button)
-		// 	.whenPressed(new PanelLiftUp(controlPanelController));
+		 new JoystickButton(this.operatorJoystick, Constants.ControllerMapConstants.Joystick_Right_Button)
+		 	.whenPressed(new PanelLiftUp(controlPanelController));
 
 		/**
 		 * Setup Button Events for the Shooter on the Driver Controller
