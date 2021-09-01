@@ -7,6 +7,9 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -15,7 +18,7 @@ public class LiftSubsystem extends SubsystemBase {
 	/**
 	 * Creates a new LiftSubsystem.
 	 */
-	private VictorSP liftMotor = new VictorSP(Constants.LiftConstants.PWM.liftMotor);
+	private WPI_TalonSRX liftMotor = new WPI_TalonSRX(Constants.LiftConstants.CAN.liftMotor);
 
 	public LiftSubsystem() {
 

@@ -84,7 +84,7 @@ public final class Constants {
 		public static final class CAN {
 			public static final int shooterOne = 14;
 			public static final int shooterTwo = 15;
-			public static final int feedMotor = 16;
+			public static final int feedMotor = 12;
 		}
 		public static final int shooterCover = 1;
 	
@@ -116,8 +116,8 @@ public final class Constants {
 
 	public static final class LiftConstants {
 
-		public static final class PWM {
-			public static final int liftMotor = 3;
+		public static final class CAN {
+			public static final int liftMotor = 6;
 		}
 
 	}
