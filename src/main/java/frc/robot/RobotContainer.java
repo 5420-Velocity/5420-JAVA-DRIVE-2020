@@ -32,7 +32,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class RobotContainer {
 
 	public enum Side {
-		Left, 
+		Left,
 		Right;
 	}
 
@@ -156,13 +156,26 @@ public class RobotContainer {
 	private void configureAutoChooser() {
 
 		this.autoChooser.addOption("Balls", new SequentialCommandGroup(
+			new PixySearch(this.intake, this.driveTrain),
 			new PixyTurn(this.intake, this.driveTrain),
-			new ParallelCommandGroup(
+			new BackgroundCommandGroup(
+				new PixyDrive(this.intake, this.driveTrain),
+				new IntakePIDCommand(this.pidController, this.intake)
+			),
+			new PixySearch(this.intake, this.driveTrain),
+			new PixyTurn(this.intake, this.driveTrain),
+			new BackgroundCommandGroup(
+				new PixyDrive(this.intake, this.driveTrain),
+				new IntakePIDCommand(this.pidController, this.intake)
+			),
+			new PixySearch(this.intake, this.driveTrain),
+			new PixyTurn(this.intake, this.driveTrain),
+			new BackgroundCommandGroup(
 				new PixyDrive(this.intake, this.driveTrain),
 				new IntakePIDCommand(this.pidController, this.intake)
 			)
 		));
-		
+
 		//positive power is intake forward
 		this.autoChooser.setDefaultOption("Do Nothing", new DoNothingAutoCommand());
 		this.autoChooser.addOption("Barrel Racing", new SequentialCommandGroup(
@@ -180,7 +193,7 @@ public class RobotContainer {
 
 			//drive forward 30 inches
 			new DriveWithEncoder(this.driveTrain, 80, false, 0.9),
-			
+
 			// Lean 1/2 revolution
 			new LeanWithEncoder(this.driveTrain, 20, Side.Left, -0.4, 0.59),
 
@@ -238,7 +251,7 @@ public class RobotContainer {
 			new DriveWithEncoder(this.driveTrain, 30, false, 0.6, 3)
 
 		));
-		
+
 		// this.autoChooser.addOption("Barrel Racing", new PathWeaverAuto(this.driveTrain, "PathWeaver/Barrel Racing/Groups/AutoNav.json"));
 		// this.autoChooser.addOption("Bounce Path", new PathWeaverAuto(this.driveTrain, "paths/YourPath.wpilib.json"));
 		// this.autoChooser.addOption("Slolom Path", new PathWeaverAuto(this.driveTrain, "paths/YourPath.wpilib.json"));
@@ -368,7 +381,7 @@ public class RobotContainer {
 			// 			this.newShooter.coverSet(coverState.Up);
 			// 			double speed = (0.01/30) * this.limeLight.getDistance() + 0.313;
 			// 			return speed;
-			// 		} 
+			// 		}
 			// 		else {
 			// 			this.newShooter.coverSet(coverState.Down);
 			// 			double speed = (0.04/3000) * Math.pow(this.limeLight.getDistance() - 170, 2) + 0.46;
@@ -428,7 +441,7 @@ public class RobotContainer {
 		// 	.whenReleased(() -> this.chute.setLeft(0));
 
 		new JoystickButton(this.operatorJoystick, Constants.ControllerMapConstants.Left_Bumper)
-			.whileActiveOnce(new AutoShoot(this.newShooter, this.chute, shooterSpeed));	
+			.whileActiveOnce(new AutoShoot(this.newShooter, this.chute, shooterSpeed));
 
 		new JoystickButton(this.operatorJoystick, Constants.ControllerMapConstants.Right_Bumper)
 			.whenPressed(() -> this.chute.setRight(0.6))
