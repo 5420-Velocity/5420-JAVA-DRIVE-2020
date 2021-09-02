@@ -36,6 +36,8 @@ public class Intake extends SubsystemBase {
 	private final NetworkTableEntry ntPixyWidth = NetworkTableInstance.getDefault().getEntry("Pixy Width");
 	private final NetworkTableEntry ntPixySigniture = NetworkTableInstance.getDefault().getEntry("Pixy Signiture");
 	private final NetworkTableEntry ntPixyBlockX = NetworkTableInstance.getDefault().getEntry("Pixy Block X");
+	private final NetworkTableEntry ntIntakeEncoder = NetworkTableInstance.getDefault().getEntry("Intake Encoder");
+
 	private final Pixy2 pixy = Pixy2.createInstance(IntakeConstants.pixyLink);
 	public final PixyAlgo pixyAlgo = new PixyAlgo(pixy);
 	private boolean forceUpperlimitDown = false;
@@ -150,6 +152,8 @@ public class Intake extends SubsystemBase {
 		else {
 			this.ntPixyWidth.setDouble(0.0);
 		}
+
+		ntIntakeEncoder.setDouble(this.getEncoderValue());
 
 //		if (this.pixyCachedLoop == 10) {
 //			//  Reset the Counter one 120 has been hit

@@ -486,14 +486,14 @@ public class RobotContainer {
 		scheduler.setDefaultCommand(this.driveTrain, this.joystickDrive);
 
 		scheduler.setDefaultCommand(this.lift, new LiftControl(lift, intake,
-			() -> driverJoystick.getRawAxis(Constants.ControllerMapConstants.Right_Trigger),
-			() -> driverJoystick.getRawAxis(Constants.ControllerMapConstants.Left_Trigger)
+			() -> operatorJoystick.getRawAxis(Constants.ControllerMapConstants.Right_Trigger),
+			() -> operatorJoystick.getRawAxis(Constants.ControllerMapConstants.Left_Trigger)
 		));
 
 		// Go Up By Default
 		scheduler.setDefaultCommand(this.intake, new PIDCommand(
 			this.pidController,
-			this.intake::getEncoderFromHighValue,
+			this.intake::getEncoderFromLowValue,
 			0.0,
 			intake::armSpeed,
 			this.intake

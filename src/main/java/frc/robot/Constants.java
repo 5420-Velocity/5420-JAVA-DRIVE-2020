@@ -39,9 +39,9 @@ public final class Constants {
 		public static final double lowTarget = 25.5; // Encoder Position for low position
 
 		// PID Control Values
-		public static final double Proportional = 0.08;
-		public static final double Integral = 0.04;
-		public static final double Derivative = 0.005;
+		public static final double Proportional = 0.07;
+		public static final double Integral = 0.0;
+		public static final double Derivative = 0.0;
 
 		public static final class DIO {
 			public static final int encoderPort = 0;
@@ -108,8 +108,8 @@ public final class Constants {
 
 		public static final class DIO {
 			// Upper and lower limits for the panel controller lift
-			public static final int upperLimit = 2;
-			public static final int lowerLimit = 1;
+			public static final int upperLimit = 8;
+			public static final int lowerLimit = 7;
 		}
 
 	}
