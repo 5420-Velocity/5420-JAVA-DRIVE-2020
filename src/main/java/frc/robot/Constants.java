@@ -230,7 +230,7 @@ public final class Constants {
 
 		public static final class CAN {
 			public static final int LeftChute = 12;
-			public static final int RightChute = 10;
+			public static final int RightChute = 12;
 		}
 
 	}

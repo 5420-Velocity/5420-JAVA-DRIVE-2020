@@ -50,6 +50,7 @@ public class Intake extends SubsystemBase {
 		 */
 		this.ntEncoderValue.setDouble(0.0);
 		this.ntPixyStatus.setDefaultString("");
+		this.ntPixyBlocks.setDouble(0);
 
 		/**
 		 * Setup the encoder setting

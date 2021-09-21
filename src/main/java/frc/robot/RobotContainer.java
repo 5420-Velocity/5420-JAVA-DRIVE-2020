@@ -155,6 +155,16 @@ public class RobotContainer {
 	 */
 	private void configureAutoChooser() {
 
+		this.autoChooser.addOption("Balls1", new SequentialCommandGroup(
+			new DriveWithEncoder(this.driveTrain, 100, true, 0.6),
+			new PixySearch(this.intake, this.driveTrain),
+			new PixyTurn(this.intake, this.driveTrain),
+			new BackgroundCommandGroup(
+				new PixyDrive(this.intake, this.driveTrain),
+				new IntakePIDCommand(this.pidController, this.intake)
+			)
+		));
+
 		this.autoChooser.addOption("Balls", new SequentialCommandGroup(
 			new PixySearch(this.intake, this.driveTrain),
 			new PixyTurn(this.intake, this.driveTrain),
