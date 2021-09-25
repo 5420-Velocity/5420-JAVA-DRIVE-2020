@@ -31,11 +31,11 @@ public class PixyTurn extends CommandBase {
   @Override
   public void execute() {
     if(subsystem.pixyAlgo.getPixyBest() != null) {
-      if(subsystem.pixyAlgo.getPixyBest().getX() < (targetX - 5)) {
+      if(subsystem.pixyAlgo.getPixyBest().getX() < (targetX - 2)) {
         System.out.println("adjustment+");
         driveTrain.arcadeDrive(0, 0.3);
       }
-      else if(subsystem.pixyAlgo.getPixyBest().getX() > (targetX + 5)){
+      else if(subsystem.pixyAlgo.getPixyBest().getX() > (targetX + 2)){
         System.out.println("adjustment-");
         driveTrain.arcadeDrive(0, -0.3);
       }

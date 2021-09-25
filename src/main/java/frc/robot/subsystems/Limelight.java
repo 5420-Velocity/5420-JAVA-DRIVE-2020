@@ -80,6 +80,7 @@ public class Limelight extends SubsystemBase {
 
 		double k = this.knownDistance * Math.sqrt(this.knownArea);
 		double v = k / Math.sqrt(area);
+		System.out.println((double) Math.round(v * scale) / scale);
 		return (double) Math.round(v * scale) / scale;
 	}
 
