@@ -72,7 +72,7 @@ public class DriveWithEncoder extends CommandBase {
 		this.state = StateList.bool(6);
 
 		this.pidCommand = new PIDCommand(drivePidController,
-			() -> Math.abs(this.driveTrain.getRightEncoderPosition()),
+			() -> Math.abs(this.driveTrain.getLeftEncoderPosition()),
 			encoderTarget,
 			output -> {
 				if(this.reversed == true){
@@ -92,9 +92,9 @@ public class DriveWithEncoder extends CommandBase {
 	public void execute() {
 
 		if (this.reversed == true) {
-			System.out.println(this.driveTrain.getRightEncoderPosition());
-			if (this.driveTrain.getRightEncoderPosition() < 0) {
-				if(Math.abs(Math.abs(this.driveTrain.getRightEncoderPosition()) - encoderTarget) < this.tolerance) {
+			System.out.println(this.driveTrain.getLeftEncoderPosition());
+			if (this.driveTrain.getLeftEncoderPosition() < 0) {
+				if(Math.abs(Math.abs(this.driveTrain.getLeftEncoderPosition()) - encoderTarget) < this.tolerance) {
 					System.out.println(":: At Target (from LSS 0)");
 					this.state.add(true);
 				}
@@ -104,8 +104,8 @@ public class DriveWithEncoder extends CommandBase {
 			}
 		}
 		else {
-			if(Math.abs(this.driveTrain.getRightEncoderPosition() - encoderTarget) < this.tolerance) {
-				System.out.println(this.driveTrain.getRightEncoderPosition());
+			if(Math.abs(this.driveTrain.getLeftEncoderPosition() - encoderTarget) < this.tolerance) {
+				//System.out.println(this.driveTrain.getLeftEncoderPosition());
 				System.out.println(":: At Target (from GTR 0)");
 				this.state.add(true);
 			}
@@ -125,6 +125,7 @@ public class DriveWithEncoder extends CommandBase {
 		this.pidCommand.cancel();
 		
 		SmartDashboard.putString("Command", "Command::DriveWithEncoder:" + this.hashCode() + ": END");
+		System.out.println("end!!!!!!!!");
 	}
 
 	// Returns true when the command should end.
