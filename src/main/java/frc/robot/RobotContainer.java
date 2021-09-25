@@ -163,11 +163,10 @@ public class RobotContainer {
 
 		AtomicReference<Double> turnOutput = new AtomicReference<Double>(0.0);
 
-		this.autoChooser.addOption("Balls1", new SequentialCommandGroup(
-			new DriveWithEncoder(this.driveTrain, 65, true, 0.4),
+		this.autoChooser.addOption("BallsMiddle", new SequentialCommandGroup(
+			//new DriveWithEncoder(this.driveTrain, 0, true, 0.7),
 			new FunctionCommand(() -> {
 				this.limeLight.setLedMode(0);
-				System.out.println("blah blah blah");
 			}),
 			new FinishablePIDCommand(
 					autoTurnPIDController,
@@ -189,9 +188,13 @@ public class RobotContainer {
 						 	},
 						FinishablePIDCommand.ConsumeValueType.Offset,
 						offset -> {
+							if(!this.limeLight.hasTarget()) {
+								return false;
+							}
+
 							// Check LL to see if the values are "stable" or "within range" of our goal.
 							// Return true will kill this command.
-							if (Math.abs(offset) < 0) {
+							if (Math.abs(offset) < 1) {
 								SmartDashboard.putBoolean("Turning Complete", true);
 								return true;
 							}
@@ -200,8 +203,79 @@ public class RobotContainer {
 							return false;
 						},
 						driveTrain
-					)
+					),
+					new AutoShoot(newShooter, chute, 0.45),
+					new DriveWithEncoder(this.driveTrain, 20, true, 0.45),
+					new FunctionCommand(() -> {
+						this.limeLight.setLedMode(1);
+					})
 			
+		));
+
+		this.autoChooser.addOption("BallsRight", new SequentialCommandGroup(
+			//new DriveWithEncoder(this.driveTrain, 0, true, 0.7),
+			new FunctionCommand(() -> {
+				this.limeLight.setLedMode(0);
+			}),
+			new FinishablePIDCommand(
+					autoTurnPIDController,
+						limeLight::getTX,
+						0.0,
+						output -> {
+									double turnSpeed = output;
+									System.out.println(limeLight.getTX());
+									// Set a max speed
+									turnSpeed = MathUtil.clamp(turnSpeed, -0.8, 0.8);
+		
+									if (!this.limeLight.hasTarget()) {
+										// No Target
+										turnSpeed = 0;
+									}
+		
+									driveTrain.arcadeDrive(0, turnSpeed);
+									//System.out.println(turnSpeed);
+						 	},
+						FinishablePIDCommand.ConsumeValueType.Offset,
+						offset -> {
+							if(!this.limeLight.hasTarget()) {
+								return false;
+							}
+
+							// Check LL to see if the values are "stable" or "within range" of our goal.
+							// Return true will kill this command.
+							if (Math.abs(offset) < 1) {
+								SmartDashboard.putBoolean("Turning Complete", true);
+								return true;
+							}
+							SmartDashboard.putBoolean("Turning Complete", false);
+							//System.out.println(offset);
+							return false;
+						},
+						driveTrain
+					),
+					new AutoShoot(newShooter, chute, 0.45),
+					//new DriveWithEncoder(this.driveTrain, 20, true, 0.45),
+					new FunctionCommand(() -> {
+						this.limeLight.setLedMode(1);
+					}),
+				new PixySearch(this.intake, this.driveTrain),
+				new PixyTurn(this.intake, this.driveTrain),
+				new BackgroundCommandGroup(
+					new PixyDrive(this.intake, this.driveTrain),
+					new IntakePIDCommand(this.pidController, this.intake)
+				),
+				new PixySearch(this.intake, this.driveTrain),
+				new PixyTurn(this.intake, this.driveTrain),
+				new BackgroundCommandGroup(
+					new PixyDrive(this.intake, this.driveTrain),
+					new IntakePIDCommand(this.pidController, this.intake)
+				),
+				new PixySearch(this.intake, this.driveTrain),
+				new PixyTurn(this.intake, this.driveTrain),
+				new BackgroundCommandGroup(
+					new PixyDrive(this.intake, this.driveTrain),
+					new IntakePIDCommand(this.pidController, this.intake)
+				)
 		));
 
 		this.autoChooser.addOption("Balls", new SequentialCommandGroup(
@@ -362,6 +436,9 @@ public class RobotContainer {
 			.whenPressed(() -> this.newShooter.coverSet(coverState.Up))
 			.whenReleased(() -> this.newShooter.coverSet(coverState.Down));
 
+		new JoystickButton(this.operatorJoystick, ControllerMapConstants.Yellow_Button_ID)
+			.whenPressed(() -> this.limeLight.setLedMode(0))
+			.whenReleased(() -> this.limeLight.setLedMode(1));
 
 		new JoystickButton(this.driverJoystick, ControllerMapConstants.Green_Button_ID)
 			// Enable the Limelight LED

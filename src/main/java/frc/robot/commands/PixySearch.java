@@ -40,17 +40,20 @@ public class PixySearch extends CommandBase {
   @Override
   public void execute() {
     // Turn until pixy has a target
-    if(Intake.pixyAlgo.getPixyBest() != null){
-      this.isFinished = true;
-    }
-    else{
-      if(Clockwise){
-        DriveTrain.arcadeDrive(0, -0.4);
-      }
-      else{
-        DriveTrain.arcadeDrive(0, 0.4);
-      }
-    }
+    // if(Intake.pixyAlgo.getPixyBest() != null){
+    //   this.isFinished = true;
+    // }
+    // else{
+    //   if(Clockwise){
+    //     DriveTrain.arcadeDrive(0, -0.4);
+    //   }
+    //   else{
+    //     DriveTrain.arcadeDrive(0, 0.4);
+    //   }
+    // }
+
+    
+
 
   }
 
