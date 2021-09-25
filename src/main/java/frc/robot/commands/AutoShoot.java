@@ -35,7 +35,7 @@ public class AutoShoot extends CommandBase {
 	}
 
 	public AutoShoot(NewShooterSubsystem newShooter, ChuteSubsystem subsystem, AtomicReference<Double> speedValue) {
-		this(newShooter, subsystem, () -> speedValue.get());
+		this(newShooter, subsystem, speedValue::get);
 	}
 
 	public AutoShoot(NewShooterSubsystem newShooter, ChuteSubsystem subsystem, DoubleSupplier speedRef) {
