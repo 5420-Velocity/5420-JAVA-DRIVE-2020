@@ -21,6 +21,7 @@ public class RepeatedCommand extends CommandBase {
 	public RepeatedCommand(int loopCountLimit, Command command) {
 		this.command = command;
 		this.loopCountLimit = loopCountLimit;
+		this.m_requirements = this.command.getRequirements();
 	}
 
 	@Override
