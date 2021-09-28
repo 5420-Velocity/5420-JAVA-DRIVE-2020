@@ -217,44 +217,45 @@ public class RobotContainer {
 			new FunctionCommand(() -> {
 				this.limeLight.setLedMode(0);
 			}),
-			new FinishablePIDCommand(
-					autoTurnPIDController,
-						limeLight::getTX,
-						0.0,
-						output -> {
-									double turnSpeed = output;
-									System.out.println(limeLight.getTX());
-									// Set a max speed
-									turnSpeed = MathUtil.clamp(turnSpeed, -0.8, 0.8);
+			// new FinishablePIDCommand(
+			// 		autoTurnPIDController,
+			// 			limeLight::getTX,
+			// 			0.0,
+			// 			output -> {
+			// 						double turnSpeed = output;
+			// 						System.out.println(limeLight.getTX());
+			// 						// Set a max speed
+			// 						turnSpeed = MathUtil.clamp(turnSpeed, -0.8, 0.8);
 		
-									if (!this.limeLight.hasTarget()) {
-										// No Target
-										turnSpeed = 0;
-									}
+			// 						if (!this.limeLight.hasTarget()) {
+			// 							// No Target
+			// 							turnSpeed = 0;
+			// 						}
 		
-									driveTrain.arcadeDrive(0, turnSpeed);
-									//System.out.println(turnSpeed);
-						 	},
-						FinishablePIDCommand.ConsumeValueType.Offset,
-						offset -> {
-							if(!this.limeLight.hasTarget()) {
-								return false;
-							}
+			// 						driveTrain.arcadeDrive(0, turnSpeed);
+			// 						//System.out.println(turnSpeed);
+			// 			 	},
+			// 			FinishablePIDCommand.ConsumeValueType.Offset,
+			// 			offset -> {
+			// 				if(!this.limeLight.hasTarget()) {
+			// 					return false;
+			// 				}
 
-							// Check LL to see if the values are "stable" or "within range" of our goal.
-							// Return true will kill this command.
-							if (Math.abs(offset) < 1) {
-								SmartDashboard.putBoolean("Turning Complete", true);
-								return true;
-							}
-							SmartDashboard.putBoolean("Turning Complete", false);
-							//System.out.println(offset);
-							return false;
-						},
-						driveTrain
-					),
+			// 				// Check LL to see if the values are "stable" or "within range" of our goal.
+			// 				// Return true will kill this command.
+			// 				if (Math.abs(offset) < 1) {
+			// 					SmartDashboard.putBoolean("Turning Complete", true);
+			// 					return true;
+			// 				}
+			// 				SmartDashboard.putBoolean("Turning Complete", false);
+			// 				//System.out.println(offset);
+			// 				return false;
+			// 			},
+			// 			driveTrain
+			// 		),
 					new AutoShoot(newShooter, chute, 0.45),
-					//new DriveWithEncoder(this.driveTrain, 20, true, 0.45),
+					new DriveWithEncoder(this.driveTrain, 35, true, 0.45),
+					new TurnWithTime(this.driveTrain, 500, Side.Right),
 					new FunctionCommand(() -> {
 						this.limeLight.setLedMode(1);
 					}),
@@ -270,8 +271,6 @@ public class RobotContainer {
 					new PixyDrive(this.intake, this.driveTrain),
 					new IntakePIDCommand(this.pidController, this.intake)
 				),
-				new PixySearch(this.intake, this.driveTrain),
-				new PixyTurn(this.intake, this.driveTrain),
 				new BackgroundCommandGroup(
 					new PixyDrive(this.intake, this.driveTrain),
 					new IntakePIDCommand(this.pidController, this.intake)
