@@ -35,7 +35,7 @@ public class ShuffleboardDelay extends CommandBase {
 	@Override
 	public void initialize() {
 		Calendar calculateDate = GregorianCalendar.getInstance();
-		calculateDate.add(GregorianCalendar.SECOND, (int) this.duration.getNumber(0));
+		calculateDate.add(GregorianCalendar.SECOND, this.duration.getNumber(0).intValue());
 
 		this.finishingTime = calculateDate.getTime();
 

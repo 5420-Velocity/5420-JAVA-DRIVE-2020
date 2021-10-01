@@ -52,10 +52,10 @@ public class AutoShoot extends CommandBase {
 		this.isFinished = false;
 		this.currentDeadline = null;
 
-		int rampUpTime = 500; // Delay Time norm 1800 but I'm getting rid of it ~Jake
+		int rampUpTime = 800; // Delay Time norm 1800 but I'm getting rid of it ~Jake
 		int feedForwardTime = 1200; // Forward Feed Time
 		int feedReverseTime = 0; // Reverse Feed Time
-		int feedTimeSpace = 300; // Off Time
+		int feedTimeSpace = 400; // Off Time
 		int ballCount = 3;
 
 		Calendar calculateDate = GregorianCalendar.getInstance();

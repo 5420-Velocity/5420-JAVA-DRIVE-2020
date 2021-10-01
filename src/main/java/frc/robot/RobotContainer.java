@@ -23,6 +23,8 @@ import frc.robot.utils.DPad.Position;
 
 import java.util.concurrent.atomic.AtomicReference;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -164,6 +166,7 @@ public class RobotContainer {
 		AtomicReference<Double> turnOutput = new AtomicReference<Double>(0.0);
 
 		this.autoChooser.addOption("BallsMiddle", new SequentialCommandGroup(
+			new ShuffleboardDelay("Auto Delay", 2),
 			//new DriveWithEncoder(this.driveTrain, 0, true, 0.7),
 			// new FunctionCommand(() -> {
 			// 	this.limeLight.setLedMode(0);
@@ -232,6 +235,7 @@ public class RobotContainer {
 
 		this.autoChooser.addOption("BallsRight", new SequentialCommandGroup(
 			//new DriveWithEncoder(this.driveTrain, 0, true, 0.7),
+			new ShuffleboardDelay("Auto Delay", 0),
 			new FunctionCommand(() -> {
 				this.limeLight.setLedMode(0);
 			}),
@@ -328,6 +332,40 @@ public class RobotContainer {
 				new IntakePIDCommand(this.pidController, this.intake)
 			)
 		));
+
+		this.autoChooser.addOption("BallsLeft", new SequentialCommandGroup(
+			//new DriveWithEncoder(this.driveTrain, 0, true, 0.7),
+				new ShuffleboardDelay("Auto Delay", 2),
+				new AutoShoot(newShooter, chute, 0.45),
+				new TurnWithTime(this.driveTrain, 2300, Side.Left),
+				new DriveWithEncoder(this.driveTrain, 100, false, 0.5),
+				new FunctionCommand(() -> {
+					this.driveTrain.setBrakeMode(NeutralMode.Coast);
+				})
+
+		));
+
+		this.autoChooser.addOption("Balls", new SequentialCommandGroup(
+			new PixySearch(this.intake, this.driveTrain),
+			new PixyTurn(this.intake, this.driveTrain),
+			new BackgroundCommandGroup(
+				new PixyDrive(this.intake, this.driveTrain),
+				new IntakePIDCommand(this.pidController, this.intake)
+			),
+			new PixySearch(this.intake, this.driveTrain),
+			new PixyTurn(this.intake, this.driveTrain),
+			new BackgroundCommandGroup(
+				new PixyDrive(this.intake, this.driveTrain),
+				new IntakePIDCommand(this.pidController, this.intake)
+			),
+			new PixySearch(this.intake, this.driveTrain),
+			new PixyTurn(this.intake, this.driveTrain),
+			new BackgroundCommandGroup(
+				new PixyDrive(this.intake, this.driveTrain),
+				new IntakePIDCommand(this.pidController, this.intake)
+			)
+		));
+
 
 		//positive power is intake forward
 		this.autoChooser.setDefaultOption("Do Nothing", new DoNothingAutoCommand());
@@ -474,7 +512,49 @@ public class RobotContainer {
 			// Enable the Limelight LED
 			.whenPressed(() -> this.limeLight.setLedMode(0))
 			// Disable the Limelight LED
-			.whenReleased(() -> this.limeLight.setLedMode(1));
+			.whenReleased(() -> this.limeLight.setLedMode(1))
+			
+			.whenHeld(
+				new SequentialCommandGroup(
+					new FinishablePIDCommand(
+					turnPIDController,
+						limeLight::getTX,
+						0.0,
+						output -> {
+									double turnSpeed = output;
+									System.out.println(limeLight.getTX());
+									// Set a max speed
+									turnSpeed = MathUtil.clamp(turnSpeed, -0.8, 0.8);
+		
+									if (!this.limeLight.hasTarget()) {
+										// No Target
+										turnSpeed = 0;
+									}
+		
+									driveTrain.arcadeDrive(0, turnSpeed);
+									//System.out.println(turnSpeed);
+						 	},
+						FinishablePIDCommand.ConsumeValueType.Offset,
+						offset -> {
+							if(!this.limeLight.hasTarget()) {
+								return false;
+							}
+
+							// Check LL to see if the values are "stable" or "within range" of our goal.
+							// Return true will kill this command.
+							if (Math.abs(offset) < 1) {
+								SmartDashboard.putBoolean("Turning Complete", true);
+								return true;
+							}
+							SmartDashboard.putBoolean("Turning Complete", false);
+							//System.out.println(offset);
+							return false;
+						},
+						driveTrain
+					))
+				);
+				
+
 			// .whenHeld(new SequentialCommandGroup(
 			// 	new ParallelCommandGroup(
 			// 		// Range
@@ -531,19 +611,8 @@ public class RobotContainer {
 			// 			},
 			// 			driveTrain
 			// 		)
-			// 	),
-			// 	new AutoShoot(this.newShooter, this.chute, () -> {
-			// 		if(this.limeLight.getDistance() < 90) {
-			// 			this.newShooter.coverSet(coverState.Up);
-			// 			double speed = (0.01/30) * this.limeLight.getDistance() + 0.313;
-			// 			return speed;
-			// 		}
-			// 		else {
-			// 			this.newShooter.coverSet(coverState.Down);
-			// 			double speed = (0.04/3000) * Math.pow(this.limeLight.getDistance() - 170, 2) + 0.46;
-			// 			return speed;
-			// 		}
-			// 	})
+			// 	)
+			// //	new AutoShoot(this.newShooter, this.chute, shooterSpeed.get())
 			// ));
 
 		new JoystickButton(this.operatorJoystick, Constants.ControllerMapConstants.Joystick_Left_Button)

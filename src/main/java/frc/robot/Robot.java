@@ -6,7 +6,6 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.subsystems.DriveTrain;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -65,7 +64,7 @@ public class Robot extends TimedRobot {
 	public void autonomousInit() {
 		m_robotContainer.intake.forceArmDown(false);
 
-		m_robotContainer.driveTrain.setBrakeMode(NeutralMode.Brake);
+		m_robotContainer.driveTrain.setBrakeMode(NeutralMode.Coast);
 
 		m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
@@ -86,7 +85,7 @@ public class Robot extends TimedRobot {
 	public void teleopInit() {
 		m_robotContainer.intake.forceArmDown(false);
 
-		m_robotContainer.driveTrain.setBrakeMode(NeutralMode.Coast);
+		m_robotContainer.driveTrain.setBrakeMode(NeutralMode.Brake);
 
 		// This makes sure that the autonomous stops running when
 		// teleop starts running. If you want the autonomous to
@@ -110,6 +109,7 @@ public class Robot extends TimedRobot {
 		CommandScheduler.getInstance().cancelAll();
 		m_robotContainer.compressor.setClosedLoopControl(true);
 		this.m_robotContainer.limeLight.setLedMode(3);
+		m_robotContainer.driveTrain.setBrakeMode(NeutralMode.Coast);
 	}
 
 	/**

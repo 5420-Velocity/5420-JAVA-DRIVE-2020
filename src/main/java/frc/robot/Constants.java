@@ -93,10 +93,10 @@ public final class Constants {
 	public static final class ControlPanelConstants {
 
 		// Timeout wait in milliseconds
-		public static final int timeOutTime = 3500;
+		public static final int timeOutTime = 2000;
 
 		// Number of changes in color
-		public static final int targetRotations = 32;
+		public static final int targetRotations = 40;
 
 		public static final class CAN {
 			public static final int ControlPanelDriver = 5;
@@ -150,7 +150,7 @@ public final class Constants {
 		public static final double RangeI = 0.0;
 		public static final double RangeD = 0.1;
 
-		public static final double TurnP = 0.26;
+		public static final double TurnP = 0.27;
 		public static final double TurnI = 0.0;
 		public static final double TurnD = 0.15;
 
