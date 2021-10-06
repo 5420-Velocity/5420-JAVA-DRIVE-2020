@@ -166,7 +166,7 @@ public class RobotContainer {
 		AtomicReference<Double> turnOutput = new AtomicReference<Double>(0.0);
 
 		this.autoChooser.addOption("BallsMiddle", new SequentialCommandGroup(
-			new ShuffleboardDelay("Auto Delay", 2),
+			new ShuffleboardDelay("Auto Delay", 0),
 			//new DriveWithEncoder(this.driveTrain, 0, true, 0.7),
 			// new FunctionCommand(() -> {
 			// 	this.limeLight.setLedMode(0);
@@ -335,7 +335,7 @@ public class RobotContainer {
 
 		this.autoChooser.addOption("BallsLeft", new SequentialCommandGroup(
 			//new DriveWithEncoder(this.driveTrain, 0, true, 0.7),
-				new ShuffleboardDelay("Auto Delay", 2),
+				new ShuffleboardDelay("Auto Delay", 0),
 				new AutoShoot(newShooter, chute, 0.45),
 				new TurnWithTime(this.driveTrain, 2300, Side.Left),
 				new DriveWithEncoder(this.driveTrain, 100, false, 0.5),
@@ -616,10 +616,26 @@ public class RobotContainer {
 			// ));
 
 		new JoystickButton(this.operatorJoystick, Constants.ControllerMapConstants.Joystick_Left_Button)
-			.whenPressed(new PanelLiftDown(controlPanelController));
+			.whenPressed(new SequentialCommandGroup(
+				new FunctionCommand(() -> {
+					this.driveTrain.setBrakeMode(NeutralMode.Coast);
+				}),
+				new PanelLiftDown(controlPanelController)
+			));
 
 		new JoystickButton(this.operatorJoystick, Constants.ControllerMapConstants.Joystick_Right_Button)
-			.whenPressed(new PanelLiftUp(controlPanelController));
+			.whenPressed(new SequentialCommandGroup(
+				new FunctionCommand(() -> {
+					this.driveTrain.setBrakeMode(NeutralMode.Brake);
+				}),
+				new PanelLiftUp(controlPanelController)
+			));
+
+		// new JoystickButton(this.operatorJoystick, Constants.ControllerMapConstants.Joystick_Left_Button)
+		// 	.whenPressed(new PanelLiftDown(controlPanelController));
+
+		// new JoystickButton(this.operatorJoystick, Constants.ControllerMapConstants.Joystick_Right_Button)
+		// 	.whenPressed(new PanelLiftUp(controlPanelController));
 
 		/**
 		 * Setup Button Events for the Shooter on the Driver Controller
@@ -638,7 +654,7 @@ public class RobotContainer {
 		/**
 		 * Used to dynamically adjust the speed used for shooting.
 		 */
-		AtomicReference<Double> shooterSpeed = new AtomicReference<Double>(0.65);
+		AtomicReference<Double> shooterSpeed = new AtomicReference<Double>(0.5);
 
 		/**
 		 * Setup Button Events for the Shooter on the Operator Controller

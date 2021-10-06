@@ -85,7 +85,7 @@ public class Robot extends TimedRobot {
 	public void teleopInit() {
 		m_robotContainer.intake.forceArmDown(false);
 
-		m_robotContainer.driveTrain.setBrakeMode(NeutralMode.Brake);
+		m_robotContainer.driveTrain.setBrakeMode(NeutralMode.Coast);
 
 		// This makes sure that the autonomous stops running when
 		// teleop starts running. If you want the autonomous to

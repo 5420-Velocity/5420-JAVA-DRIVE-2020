@@ -55,15 +55,15 @@ public class JoystickDriveLean extends JoystickDrive {
 			driveTrain.leanPower(radius, -inPower * 0.75, Side.Right);
 		}
 		else if (this.leanLeft.getAsDouble() > 0.5) {
-			driveTrain.leanPower(radius * 1.5, inPower * 0.87, Side.Right);
+			driveTrain.leanPower(radius * 1.5, inPower * 0.7, Side.Right);
 		}
 		else if (this.leanRight.getAsDouble() > 0.5) {
-			driveTrain.leanPower(radius * 1.5, inPower * 0.87, Side.Left);
+			driveTrain.leanPower(radius * 1.5, inPower * 0.7, Side.Left);
 		}
 
 		else {
 			double controllerY = (-super.speed.getAsDouble() * 0.85);
-			double controllerX = -rotation.getAsDouble() * 0.6;
+			double controllerX = -rotation.getAsDouble() * 0.45;
 
 			// Flip the controls of the drive forward and reverse code
 			if (this.isControlFlipped == true) controllerY = controllerY * -1;
