@@ -27,7 +27,7 @@ public class Limelight extends SubsystemBase {
 	/**
 	 * Creates a new Limelight Subsystem
 	 *
-	 * @param limelightSuffix When you setup the limelight you can given it a custom name.
+	 * @param limelightSuffix When you setup the limelight you can give it a custom name.
 	 *                        All setup with limelight-{name}
 	 * @param knownArea       Used in combination with knownDistance to calculate the distance
 	 * @param knownDistance   See knownArea
@@ -134,46 +134,59 @@ public class Limelight extends SubsystemBase {
 	/**
 	 * Set the Camera Mode
 	 *
-	 * @param value 0,1
-	 *              0 Vision processor
-	 *              1 Driver Camera (Increases exposure, disables vision processing)
+	 * @param value 0, 1
+	 *    0 Vision processor
+	 *     Driver Camera (Increases exposure, disables vision processing)
 	 */
-	public void setCamMode(double value) {
+	public void setCamMode(int value) {
 		this.table.getEntry("camMode").setDouble(value);
 	}
 
 	/**
 	 * Set Stream Mode
 	 *
-	 * @param value 0,1,2
-	 *              0 Standard - Side-by-side streams if a webcam is attached to Limelight
-	 *              1 PiP Main - The secondary camera stream is placed in the lower-right corner of the primary camera stream
-	 *              2 PiP Secondary - The primary camera stream is placed in the lower-right corner of the secondary camera stream
+	 * @param value 0, 1, 2
+	 *    0 Standard - Side-by-side streams if a webcam is attached to Limelight
+	 *    1 PiP Main - The secondary camera stream is placed in the lower-right corner of the primary camera stream
+	 *    2 PiP Secondary - The primary camera stream is placed in the lower-right corner of the secondary camera stream
 	 */
-	public void setStreamMode(double value) {
+	public void setStreamMode(int value) {
 		this.table.getEntry("stream").setDouble(value);
 	}
 
 	/**
 	 * Set Pipeline
 	 *
-	 * @param value 0-9
+	 * @param value Pipeline Number 0-9
 	 */
-	public void setPipeline(double value) {
+	public void setPipeline(int value) {
 		this.table.getEntry("pipeline").setDouble(value);
+	}
+
+	/**
+	 * Get the Pipeline
+	 * This is the true value that the limelight is using.
+	 *
+	 * This has an additional delay because the limelight has to read the network table
+	 *  value "pipeline" then set "getpipe" to the value.
+	 *
+	 * @return Pipeline Number 0-9
+	 */
+	public int getPipeline() {
+		return (int) this.table.getEntry("getpipe").getDouble(0.0);
 	}
 
 	/**
 	 * Set the LED Mode
 	 *
-	 * @param value 0,1,2,3
-	 *              0 Use the LED Mode set in the current pipeline
-	 *              1 Force off
-	 *              2 Force blink
-	 *              3 Force on
+	 * @param value Mode 0, 1, 2, 3
+	 *    0 Use the LED Mode set in the current pipeline
+	 *    1 Force off
+	 *    2 Force blink
+	 *    3 Force on
 	 * @link https://docs.limelightvision.io/en/latest/networktables_api.html
 	 */
-	public void setLedMode(double value) {
+	public void setLedMode(int value) {
 		this.table.getEntry("ledMode").setDouble(value);
 	}
 
@@ -182,7 +195,6 @@ public class Limelight extends SubsystemBase {
 		// Set the Limelight Distance Value from the calculated Value
 		this.limelightDistance.setDouble(this.getDistance());
 		this.limelightDistanceNew.setDouble(this.getDistanceNew());
-
 	}
 
 }
