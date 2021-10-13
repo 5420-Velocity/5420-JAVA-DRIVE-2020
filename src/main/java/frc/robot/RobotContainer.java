@@ -207,10 +207,10 @@ public class RobotContainer {
 			// 			},
 			// 			driveTrain
 			// 		),
-					new AutoShoot(newShooter, chute, 0.45),
-					new DriveWithEncoder(this.driveTrain, 80, true, 0.45),
-					new TurnWithTime(this.driveTrain, 1200, Side.Left),
-					new DriveWithEncoder(this.driveTrain, 25, true, 0.45),
+				new AutoShoot(newShooter, chute, 0.45),
+				new DriveWithEncoder(this.driveTrain, 80, true, 0.45),
+				new TurnWithTime(this.driveTrain, 1200, Side.Left),
+				new DriveWithEncoder(this.driveTrain, 25, true, 0.45),
 
 				new PixySearch(this.intake, this.driveTrain, Side.Right),
 				new PixyTurn(this.intake, this.driveTrain),
@@ -522,7 +522,6 @@ public class RobotContainer {
 						0.0,
 						output -> {
 									double turnSpeed = output;
-									System.out.println(limeLight.getTX());
 									// Set a max speed
 									turnSpeed = MathUtil.clamp(turnSpeed, -0.8, 0.8);
 		
@@ -532,7 +531,6 @@ public class RobotContainer {
 									}
 		
 									driveTrain.arcadeDrive(0, turnSpeed);
-									//System.out.println(turnSpeed);
 						 	},
 						FinishablePIDCommand.ConsumeValueType.Offset,
 						offset -> {
