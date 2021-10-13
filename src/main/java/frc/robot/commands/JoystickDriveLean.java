@@ -63,7 +63,7 @@ public class JoystickDriveLean extends JoystickDrive {
 
 		else {
 			double controllerY = (-super.speed.getAsDouble() * 0.85);
-			double controllerX = -rotation.getAsDouble() * 0.45;
+			double controllerX = -rotation.getAsDouble() * 0.5;
 
 			// Flip the controls of the drive forward and reverse code
 			if (this.isControlFlipped == true) controllerY = controllerY * -1;
