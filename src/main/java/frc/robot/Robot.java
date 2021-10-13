@@ -66,6 +66,9 @@ public class Robot extends TimedRobot {
 
 		m_robotContainer.driveTrain.setBrakeMode(NeutralMode.Coast);
 
+		
+		this.m_robotContainer.limeLight.setLedMode(3);
+
 		m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
 		if (m_autonomousCommand != null) {
