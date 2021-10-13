@@ -210,8 +210,6 @@ public class DriveTrain extends PIDSubsystem {
 	@Override
 	protected void useOutput(double outputDrive, double setPoint) {
 		this.arcadeDrive(outputDrive, 0);
-		System.out.print("Drivingggg: ");
-		System.out.println(outputDrive);
 	}
 
 	public void enable(){
