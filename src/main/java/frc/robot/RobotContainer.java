@@ -21,6 +21,7 @@ import frc.robot.subsystems.NewShooterSubsystem.coverState;
 import frc.robot.utils.JoystickDPad;
 import frc.robot.utils.DPad.Position;
 
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -114,6 +115,8 @@ public class RobotContainer {
 	private final NewShooterSubsystem newShooter = new NewShooterSubsystem();
 	private final LiftSubsystem lift = new LiftSubsystem();
 	private final ChuteSubsystem chute = new ChuteSubsystem();
+	public AtomicBoolean forceHighValue = new AtomicBoolean(true);
+
 
 
 	// private final Shoot shoot = new Shoot(shooter,
@@ -208,8 +211,8 @@ public class RobotContainer {
 			// 			driveTrain
 			// 		),
 				new AutoShoot(newShooter, chute, 0.45),
-				new DriveWithEncoder(this.driveTrain, 80, true, 0.45),
-				new TurnWithTime(this.driveTrain, 1200, Side.Left),
+				new DriveWithEncoder(this.driveTrain, 60, true, 0.45),
+				new TurnWithTime(this.driveTrain, 1000, Side.Left),
 				new DriveWithEncoder(this.driveTrain, 25, true, 0.45),
 
 				new PixySearch(this.intake, this.driveTrain, Side.Right),
@@ -704,6 +707,11 @@ public class RobotContainer {
 			// Turn off Motor
 			.whenReleased(() -> this.intake.intakeMove(0));
 
+			new JoystickButton(this.driverJoystick, ControllerMapConstants.Blue_Button_ID)
+				.whenPressed(() -> {
+					this.forceHighValue.set(!forceHighValue.get());
+				});
+
 
 		// String trajectoryJSON = "paths/YourPath.wpilib.json";
 		// Trajectory trajectory = new Trajectory();
@@ -732,7 +740,12 @@ public class RobotContainer {
 		// Go Up By Default
 		scheduler.setDefaultCommand(this.intake, new PIDCommand(
 			this.pidController,
-			this.intake::getEncoderFromLowValue,
+			() -> {
+				if (this.forceHighValue.get()) {
+					return this.intake.getEncoderFromHighValue();
+				}
+				return this.intake.getEncoderFromLowValue();
+			},
 			0.0,
 			intake::armSpeed,
 			this.intake

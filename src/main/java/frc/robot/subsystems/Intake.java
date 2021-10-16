@@ -42,6 +42,7 @@ public class Intake extends SubsystemBase {
 	public final PixyAlgo pixyAlgo = new PixyAlgo(pixy);
 	private boolean forceUpperlimitDown = false;
 	private int pixyCachedLoop = 0;
+	private boolean encoderUp = false;
 
 	public Intake() {
 

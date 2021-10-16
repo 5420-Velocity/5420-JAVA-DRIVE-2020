@@ -7,6 +7,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
@@ -21,7 +22,7 @@ public class LiftSubsystem extends SubsystemBase {
 	private WPI_TalonSRX liftMotor = new WPI_TalonSRX(Constants.LiftConstants.CAN.liftMotor);
 
 	public LiftSubsystem() {
-
+		liftMotor.setNeutralMode(NeutralMode.Brake);
 	}
 
 	public void liftSpeed(double power) {
